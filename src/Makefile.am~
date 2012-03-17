@@ -1,0 +1,2 @@
+AM_CFLAGS=-Wall -Werror -Wextra -O2
+
