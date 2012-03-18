@@ -45,7 +45,7 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
-am_maleficus_OBJECTS = main.$(OBJEXT)
+am_maleficus_OBJECTS = main.$(OBJEXT) elf_object.$(OBJEXT)
 maleficus_OBJECTS = $(am_maleficus_OBJECTS)
 maleficus_LDADD = $(LDADD)
 DEFAULT_INCLUDES = -I. -I$(top_builddir)
@@ -148,7 +148,7 @@ top_build_prefix = ../
 top_builddir = ..
 top_srcdir = ..
 AM_CFLAGS = -Wall -Werror -Wextra -O2
-maleficus_SOURCES = main.c
+maleficus_SOURCES = main.c elf_object.c
 all: all-am
 
 .SUFFIXES:
@@ -230,6 +230,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+include ./$(DEPDIR)/elf_object.Po
 include ./$(DEPDIR)/main.Po
 
 .c.o:
