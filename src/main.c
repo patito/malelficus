@@ -347,6 +347,7 @@ void help() {
   SAY(" Commands:\n");
   SAY(" \tdissect\n");
   SAY(" \tentry_point\n");
+  SAY(" \tinfect\n");
   
   SAY("\n");
   SAY("Use:\n \t./malelficus command -h\n to get help about the command.\n"); 
