@@ -127,7 +127,7 @@ void pretty_print_elf_header(ElfW(Ehdr)* header) {
   SAY("\te_phnum\t\tNumber of entries in PHT\t%d\n", header->e_phnum);
   SAY("\te_shentsize\tSize of one entry in SHT\t%d\n", header->e_shentsize);
   SAY("\te_shnum\t\tNumber of sections:\t\t%d\n", header->e_shnum);
-  SAY("\te_shstrndx\tSHT index of the section name\t%d\n", header->e_shstrndx);
+  SAY("\te_shstrndx\tSHT index of the section strtab\t%d\n", header->e_shstrndx);
 
   SAY("-------------------------------------------------------------------------------\n");
 }
@@ -168,4 +168,50 @@ void pretty_print_sht(elf_object* elf, ElfW(Ehdr)* header, ElfW(Shdr)* sections)
     _u8 sht_type = sect->sh_type;
     SAY("| %d |\t0x%08x\t|\t0x%04x\t| %s%s|  %s\t|\n", i, sect->sh_addr, sect->sh_offset, sect_name, strlen(sect_name) > 5 ? "\t\t" : "\t\t\t", sht_type >= N_SHTYPES-1 ? "UNKNOWN" : elf_shtypes[sht_type].name);
   }
+}
+
+/**
+ * Algorithm based on Elfrw function elfr_symtable_dump at (https://github.com/felipensp/ELFrw)
+ *
+ * TODO: *rewrite this*
+ */
+void pretty_print_strtab(elf_object* elf, ElfW(Ehdr)* header, ElfW(Shdr)* sections) {
+  _u32 i, j, stable = 0, n_entries;
+  ElfW(Sym)* elf_sym;
+  char sname[14];
+  char* sect_name;
+
+  SAY("--------------------------------------------------------------------------------\n");
+  SAY("\t\t\t\tSymbol Table\t\t\t\t\n");
+  SAY("--------------------------------------------------------------------------------\n");
+  SAY("\tSymbol\t\t\t|\tOffset\t\t|\tSection\n");
+  SAY("--------------------------------------------------------------------------------\n");
+  /* Search the string table */
+  for (i = 0; i < header->e_shnum; ++i) {
+    if (sections[i].sh_type == SHT_STRTAB
+        && sections[i].sh_flags == 0
+        && i != header->e_shstrndx) {
+      stable = sections[i].sh_offset;
+      break;
+    }
+  }
+
+  /* Search the symbol table */
+  for (i = 0; i < header->e_shnum; ++i) {
+    if (sections[i].sh_type != SHT_SYMTAB) {
+      continue;
+    }
+    n_entries = sections[i].sh_size / sections[i].sh_entsize;
+		
+    elf_sym = (ElfW(Sym)*) (elf->mem + sections[i].sh_offset);
+		
+    for (j = 0; j < n_entries; ++j) {
+      strncpy(sname, elf_sym[j].st_name ? (char*) (elf->mem + stable + elf_sym[j].st_name) : "", 14);
+      sname[13] = 0;
+      sect_name = (char*) elf->mem + sections[header->e_shstrndx].sh_offset + sections[i].sh_name;
+      printf("%s%s|\t%08x\t|\t\t%s\n", sname, strlen(sname) < 8 ? "\t\t\t\t" : "\t\t\t", elf_sym[j].st_value, sect_name);
+    }
+  }
+
+  SAY("--------------------------------------------------------------------------------\n");
 }

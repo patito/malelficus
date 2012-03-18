@@ -173,20 +173,35 @@ _u8 dissect(int argc, char** argv) {
   ElfW(Phdr) *pheaders = NULL;
   ElfW(Shdr) *sections = NULL;
   elf_object input;
+  _u16 option = 0;
   int opt;
+
+#define DISPLAY_EHT 0x01
+#define DISPLAY_PHT 0x02
+#define DISPLAY_SHT 0x04
+#define DISPLAY_STRTAB 0x08
 
   input.fname = NULL;
 
 #define ACTION_DISSECT 0x01
 #define ACTION_PHT 0x02
 
-  while((opt = getopt(argc, argv, "hvi:")) != -1) {
+  while((opt = getopt(argc, argv, "hepsSi:")) != -1) {
     switch(opt) {
     case 'h':
       help_dissect();
       break;
-    case 'v':
-      verbose_mode = 0x01;
+    case 'e':
+      option |= DISPLAY_EHT;
+      break;
+    case 'p':
+      option |= DISPLAY_PHT;
+      break;
+    case 's':
+      option |= DISPLAY_SHT;
+      break;
+    case 'S':
+      option |= DISPLAY_STRTAB;
       break;
     case 'i':
       input.fname = optarg;
@@ -206,6 +221,11 @@ _u8 dissect(int argc, char** argv) {
     help_dissect();
   }
 
+  if (option == 0) {
+    option = DISPLAY_EHT | DISPLAY_SHT | DISPLAY_PHT | DISPLAY_STRTAB;
+  }
+    
+
   read_file(&input);
   if (check_elf(input.mem) == ERROR) {
     LOG_ERROR("invalid ELF!!! aborting...\n");
@@ -220,13 +240,25 @@ _u8 dissect(int argc, char** argv) {
   pheaders = (ElfW(Phdr)*) (input.mem + header->e_phoff);
   sections = (ElfW(Shdr)*) (input.mem + header->e_shoff);
 
-  pretty_print_elf_header(header);
-  
-  SAY("\n");
-  pretty_print_pht(header, pheaders);
-  SAY("\n");
-  
-  pretty_print_sht(&input, header, sections);
+  if ((option & DISPLAY_EHT) == DISPLAY_EHT) {
+    pretty_print_elf_header(header);
+    SAY("\n");
+  }
+
+  if ((option & DISPLAY_PHT) == DISPLAY_PHT) {
+    pretty_print_pht(header, pheaders);
+    SAY("\n");
+  }
+
+  if ((option & DISPLAY_SHT) == DISPLAY_SHT) {
+    pretty_print_sht(&input, header, sections);
+    SAY("\n");
+  }
+
+  if ((option & DISPLAY_STRTAB) == DISPLAY_STRTAB) {
+    pretty_print_strtab(&input, header, sections);
+    SAY("\n");
+  }
   
   return SUCCESS;
 }
@@ -340,10 +372,13 @@ void help_entry_point() {
 
 void help_dissect() {
   SAY("Dissect command\n");
-  SAY("./malelficus dissect [-hv] -i <input file>\n");
+  SAY("./malelficus dissect [-hvepsS] -i <input file>\n");
   SAY(" -h\tdissect help\n");
-  SAY(" -v\t verbose mode\n");
   SAY(" -i <file>\t Input binary file\n");
+  SAY(" -e\tDisplay ELF Header Table\n");
+  SAY(" -p\tDisplay Program Header Table\n");
+  SAY(" -s\tDisplay Section Header Table\n");
+  SAY(" -S\tDisplay Symbol Table\n");
   exit(SUCCESS);
 }
 
