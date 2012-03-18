@@ -269,12 +269,13 @@ int main(int argc, char **argv) {
     help(1);
   }
 
-  if (!strcmp("dissect", argv[1])) {
+  if (!strcmp("-h", argv[1])) {
+    help();
+  } else if (!strcmp("dissect", argv[1])) {
     dissect(argc, argv);
-  } else  
-    if (!strcmp("entry_point", argv[1])) {
-      entry_point(argc, argv);
-    }
+  } else if (!strcmp("entry_point", argv[1])) {
+    entry_point(argc, argv);
+  } else help();
 
   return 0;
 }
@@ -344,7 +345,7 @@ void help() {
   printf("./malelficus <command> <options>\n\n");
 
   SAY(" Commands:\n");
-  SAY(" \tview\n");
+  SAY(" \tdissect\n");
   SAY(" \tentry_point\n");
   
   SAY("\n");
@@ -373,6 +374,7 @@ void help_entry_point() {
 void help_dissect() {
   SAY("Dissect command\n");
   SAY("./malelficus dissect [-hvepsS] -i <input file>\n");
+  SAY("\tThis command display information about the ELF binary\n\n");
   SAY(" -h\tdissect help\n");
   SAY(" -i <file>\t Input binary file\n");
   SAY(" -e\tDisplay ELF Header Table\n");
