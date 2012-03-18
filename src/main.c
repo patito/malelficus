@@ -38,22 +38,9 @@
 #include <link.h> /* ElfW(type) and others */
 
 #include "defines.h"
+#include "util.h"
 #include "types.h"
 #include "elf_object.h"
-
-/**
- * Macros
- */
-#define LOG_RAW(out, format...) fprintf(out, format)
-#define SAY(format...) LOG_RAW(stdout, format)
-#define LOG(format...) LOG_RAW(stdout, "[!] " format)
-#define LOG_SUCCESS(format...) LOG_RAW(stdout, "[+] " format)
-#define LOG_ERROR(format...) LOG_RAW(stderr, "[-] ERROR: " format); exit(ERROR)
-#define LOG_WARN(format...) LOG_RAW(stderr, "[-] WARNING: " format)
-#define LOG_OFFSET(desc_format, value) \
-  if (quiet_mode) { \
-    LOG_RAW(stdout, "0x%x", value); \
-  } else LOG_RAW(stdout, desc_format, value)
 
 /**
  * function prototypes
@@ -186,7 +173,6 @@ _u8 dissect(int argc, char** argv) {
   ElfW(Phdr) *pheaders = NULL;
   ElfW(Shdr) *sections = NULL;
   elf_object input;
-  _u32 i;
   int opt;
 
   input.fname = NULL;
@@ -234,47 +220,13 @@ _u8 dissect(int argc, char** argv) {
   pheaders = (ElfW(Phdr)*) (input.mem + header->e_phoff);
   sections = (ElfW(Shdr)*) (input.mem + header->e_shoff);
 
-  SAY("\t\t\t\tELF HEADER\n");
-  SAY("-------------------------------------------------------------------------------\n");
-  SAY("\tstruct member\tDescription\t\t\tValue\n");
-  SAY("\te_type\t\tObject type\t\t\t");
-  if (header->e_type == ET_LOPROC || header->e_type == ET_HIPROC) {
-    SAY("Processor-specific\n");
-  } else {
-    if (header->e_type < N_OBJTYPES) {
-      SAY("%s\n", object_types[header->e_type].desc);
-    }
-  }
-
-  SAY("\te_machine\tMachine\t\t\t\t");
-  if (header->e_machine >= 8) {
-    SAY("Unknown machine\n");
-  } else {
-    SAY("%s\n", elf_machine[header->e_machine].desc);
-  }
-
-  SAY("\te_version\tVersion\t\t\t\t%d\n", header->e_version);
-  SAY("\te_entry\t\tEntry point:\t\t\t0x%x\n", header->e_entry);
-  SAY("\te_phoff\t\tPHT offset\t\t\t0x%x\n", header->e_phoff);
-  SAY("\te_shoff\t\tSHT offset\t\t\t0x%x\n", header->e_shoff);
-  SAY("\te_ehsize\tELF Header size (bytes)\t\t%d\n", header->e_ehsize);
-  SAY("\te_phentsize\tSize of PHT entries\t\t%d\n", header->e_phentsize);
-  SAY("\te_phnum\t\tNumber of entries in PHT\t%d\n", header->e_phnum);
-  SAY("\te_shentsize\tSize of one entry in SHT\t%d\n", header->e_shentsize);
-  SAY("\te_shnum\t\tNumber of sections:\t\t%d\n", header->e_shnum);
-  SAY("\te_shstrndx\tSHT index of the section name\t%d\n", header->e_shstrndx);
-
-    SAY("-------------------------------------------------------------------------------\n");
-  SAY("|     Headers     |\n");
-  for (i = 0; i < header->e_phnum; ++i) {
-    printf("| Offset: 0x%x\n", ((ElfW(Phdr)*)(pheaders + i))->p_offset);
-  }
-
-  printf("SECTIONS: \n");
-
-  for (i = 0; i < header->e_shnum; ++i) {
-    printf("[%d] Offset: 0x%x, name = %s\n", i, ((ElfW(Shdr)*)(sections + i))->sh_addr, input.mem + sections[header->e_shstrndx].sh_offset + sections[i].sh_name);
-  }
+  pretty_print_elf_header(header);
+  
+  SAY("\n");
+  pretty_print_pht(header, pheaders);
+  SAY("\n");
+  
+  pretty_print_sht(&input, header, sections);
   
   return SUCCESS;
 }
@@ -296,7 +248,7 @@ int main(int argc, char **argv) {
 }
 
 void read_file(elf_object* elf) {
-  elf->fd = open(elf->fname, O_RDWR);
+  elf->fd = open(elf->fname, O_RDONLY);
 
   if (elf->fd == -1) {
     LOG_ERROR("Erro ao abrir arquivo!\n");

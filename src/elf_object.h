@@ -24,10 +24,15 @@ typedef struct {
 
 #define N_OBJTYPES 5
 #define N_MACHINES 8
+#define N_SHTYPES 12
 
 extern elf_attr object_types[N_OBJTYPES];
 extern elf_attr elf_machine[N_MACHINES];
+extern elf_attr elf_shtypes[N_SHTYPES];
 
 extern void init_elf_object(elf_object*);
 extern _u8 copy_elf_object(elf_object*, elf_object*);
+extern void pretty_print_elf_header(ElfW(Ehdr)*);
+extern void pretty_print_pht(ElfW(Ehdr)*, ElfW(Phdr)*);
+extern void pretty_print_sht(elf_object*,ElfW(Ehdr)*, ElfW(Shdr)*);
 #endif

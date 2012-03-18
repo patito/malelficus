@@ -43,8 +43,8 @@ main.o: main.c /usr/include/stdio.h /usr/include/features.h \
  /usr/include/link.h /usr/include/dlfcn.h \
  /usr/include/i386-linux-gnu/bits/dlfcn.h \
  /usr/include/i386-linux-gnu/bits/elfclass.h \
- /usr/include/i386-linux-gnu/bits/link.h defines.h types.h elf_object.h \
- malelficus_banner.h
+ /usr/include/i386-linux-gnu/bits/link.h defines.h util.h types.h \
+ elf_object.h malelficus_banner.h
 
 /usr/include/stdio.h:
 
@@ -171,6 +171,8 @@ main.o: main.c /usr/include/stdio.h /usr/include/features.h \
 /usr/include/i386-linux-gnu/bits/link.h:
 
 defines.h:
+
+util.h:
 
 types.h:
 

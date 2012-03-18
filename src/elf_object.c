@@ -24,7 +24,9 @@
 */
 
 #include "defines.h"
+#include "util.h"
 #include "elf_object.h"
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
@@ -55,6 +57,21 @@ elf_attr elf_machine[N_MACHINES] = {
   { "EM_MIPS", EM_MIPS, "MIPS RS3000"}
 };
 
+elf_attr elf_shtypes[N_SHTYPES] = {
+  {"SHT_NULL", SHT_NULL, ""},
+  {"SHT_PROGBITS", SHT_PROGBITS, ""},
+  {"SHT_SYMTAB", SHT_SYMTAB, ""},
+  {"SHT_STRTAB", SHT_STRTAB, ""},
+  {"SHT_RELA", SHT_RELA, ""},
+  {"SHT_HASH", SHT_HASH, ""},
+  {"SHT_DYNAMIC", SHT_DYNAMIC, ""},
+  {"SHT_NOTE", SHT_NOTE, ""},
+  {"SHT_NOBITS", SHT_NOBITS, ""},
+  {"SHT_REL", SHT_REL, ""},
+  {"SHT_SHLIB", SHT_SHLIB, ""},
+  {"SHT_DYNSYM", SHT_DYNSYM, ""}
+};
+
 
 void init_elf_object(elf_object* obj) {
   elf_object obj2;
@@ -76,4 +93,79 @@ _u8 copy_elf_object(elf_object* out, elf_object *in) {
   memcpy(out->mem, in->mem, in->st_info.st_size);
 
   return SUCCESS;
+}
+
+void pretty_print_elf_header(ElfW(Ehdr)* header) {
+
+  assert(header != NULL);
+  SAY("--------------------------------------------------------------------------------\n");
+  SAY("\t\t\t\tELF HEADER\n");
+  SAY("--------------------------------------------------------------------------------\n");
+  SAY("\tstruct member\tDescription\t\t\tValue\n");
+  SAY("\te_type\t\tObject type\t\t\t");
+  if (header->e_type == ET_LOPROC || header->e_type == ET_HIPROC) {
+    SAY("Processor-specific\n");
+  } else {
+    if (header->e_type < N_OBJTYPES) {
+      SAY("%s\n", object_types[header->e_type].desc);
+    }
+  }
+
+  SAY("\te_machine\tMachine\t\t\t\t");
+  if (header->e_machine >= 8) {
+    SAY("Unknown machine\n");
+  } else {
+    SAY("%s\n", elf_machine[header->e_machine].desc);
+  }
+
+  SAY("\te_version\tVersion\t\t\t\t%d\n", header->e_version);
+  SAY("\te_entry\t\tEntry point:\t\t\t0x%x\n", header->e_entry);
+  SAY("\te_phoff\t\tPHT offset\t\t\t0x%x\n", header->e_phoff);
+  SAY("\te_shoff\t\tSHT offset\t\t\t0x%x\n", header->e_shoff);
+  SAY("\te_ehsize\tELF Header size (bytes)\t\t%d\n", header->e_ehsize);
+  SAY("\te_phentsize\tSize of PHT entries\t\t%d\n", header->e_phentsize);
+  SAY("\te_phnum\t\tNumber of entries in PHT\t%d\n", header->e_phnum);
+  SAY("\te_shentsize\tSize of one entry in SHT\t%d\n", header->e_shentsize);
+  SAY("\te_shnum\t\tNumber of sections:\t\t%d\n", header->e_shnum);
+  SAY("\te_shstrndx\tSHT index of the section name\t%d\n", header->e_shstrndx);
+
+  SAY("-------------------------------------------------------------------------------\n");
+}
+
+void pretty_print_pht(ElfW(Ehdr)* header, ElfW(Phdr)* pheaders) {
+  int i;
+  assert(pheaders != NULL);
+  
+  SAY("-------------------------\n");
+  SAY("|  Program Header Table |\n");
+  SAY("-------------------------\n");
+  SAY("| N |      Offset\t|\n");
+  SAY("-------------------------\n");
+  
+  for (i = 0; i < header->e_phnum; ++i) {
+    ElfW(Phdr)* h = (ElfW(Phdr)*)(pheaders + i);
+    printf("| %d |\t0x%08x\t|\n", i, h->p_offset);
+  }
+
+  SAY("-------------------------\n");
+}
+
+void pretty_print_sht(elf_object* elf, ElfW(Ehdr)* header, ElfW(Shdr)* sections) {
+  int i;
+
+  assert(header != NULL);
+  assert(sections != NULL);
+  SAY("--------------------------------------------------------------------------------\n");
+  SAY("|\t\t\t\tSection Header Table\t\t\t\t|\n");
+  SAY("--------------------------------------------------------------------------------\n");
+  SAY("| N |\tAddr\t\t|\tOffset\t|\tName\t\t|    Type\t|\n");
+  SAY("--------------------------------------------------------------------------------\n");
+  for (i = 0; i < header->e_shnum; ++i) {
+    ElfW(Shdr) *sect = (ElfW(Shdr)*)(sections + i);
+    char sect_name[12];
+    strncpy(sect_name, (char*) elf->mem + sections[header->e_shstrndx].sh_offset + sections[i].sh_name, 12);
+    
+    _u8 sht_type = sect->sh_type;
+    SAY("| %d |\t0x%08x\t|\t0x%04x\t| %s%s|  %s\t|\n", i, sect->sh_addr, sect->sh_offset, sect_name, strlen(sect_name) > 5 ? "\t\t" : "\t\t\t", sht_type >= N_SHTYPES-1 ? "UNKNOWN" : elf_shtypes[sht_type].name);
+  }
 }
