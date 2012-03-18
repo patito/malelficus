@@ -64,7 +64,7 @@ int quiet_mode = 0, verbose_mode = 0;
  * The main goal of malELFicus is help in the process of virus development,
  * for this purpose we need split the software in tasks. Each task have
  * your own options and parameters so that I've decided to propagate the
- * arguments of user to functions callback that handle each task.
+ * arguments of user to function callback that handle each task.
  */
 
 /**
