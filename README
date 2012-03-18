@@ -1,0 +1,35 @@
+          |\     /( ;\_.;  `./|  __.'
+          ' `.  _|_\/_;-'_ .' '||
+           \ _/`       `.-\_ / ||      _
+       , _ _`; ,--.   ,--. ;'_ _|,     |
+       '`''\| /  ,-\ | _,-\ |/''`'  _  |
+        \ .-- \__\_/ /` )_/ --. /   |  |       _
+        /    .         -'  .    \ --|--|--.  .' \
+       |     /             \     |  |  |   \ |---'
+    .   .  -' `-..____...-' `-  .   |  |    |\  _
+ .'`'.__ `._      `-..-''    _.'|   |  | _  | `-'      _
+  \ .--.`.  `-..__    _,..-'   L|   |    |             |
+   '    \ \      _,| |,_      /_7)  |    |   _       _ |  _
+         \ \    /       \ _.-'/||        | .' \     _| |  |
+          \ \  /.'|   |`.__.'` ||     .--| |--- _   /| |  |
+           \ `//_/     \       ||    /   | \  _ \  / | |  |
+            `/ \|       |      ||   |    |  `-'  \/  | '--|      _
+             `"`'.  _  .'      ||    `--'|                |   .--/
+                  \ | /        ||                         '--'
+                   |'|  mx     'J        Do not be evil ;)
+                .-.|||.-.
+               '----"----'
+
+=== Malelficus :: Malware ELF Tool ===
+
+Malelficus is a malefic tool to dissect and infect ELF binaries,
+it was created to help in process of malware development and
+malware analysis of ELF binaries on Linux.
+
+With malELFicus you could modify a ELF binary, infecting a specific
+segment or append your own segment to the end of the binary!
+
+This tool is in early development stage, if you have any question or
+want help in coding feel free to contact me at tiago4orion [at] gmail.
+
+
