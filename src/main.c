@@ -3,11 +3,11 @@
   --------
 
   MalELFicus is a malefic tool for dissect and infect ELF binaries.
-  Please do not be malefic to use this tool.
+  Please do not be malefic to use this tool. ;)
 
   Author: Tiago Natel de Moura <tiago4orion@gmail.com>
 
-  Copyright 2010, 2011 by Tiago Natel de Moura. All Rights Reserved.
+  Copyright 2012 by Tiago Natel de Moura. All Rights Reserved.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -41,10 +41,6 @@
 #include "types.h"
 #include "elf_object.h"
 
-#define E_ENTRY 0x01
-#define E_HEADERS 0x02
-#define E_SECTIONS 0x04
-
 /**
  * Macros
  */
@@ -75,6 +71,10 @@ _u8 pht(int argc, char** argv);
  */
 int quiet_mode = 0, verbose_mode = 0;
 
+/**
+ * Object file types
+ * see ELF Format Specification for more details
+ */
 object_ftype object_types[5] = {
   {"ET_NONE", ET_NONE, "No file type"},
   {"ET_REL", ET_REL, "Relocatable file"},
@@ -82,6 +82,15 @@ object_ftype object_types[5] = {
   {"ET_DYN", ET_DYN, "Shared Object file"},
   {"ET_CORE", ET_CORE, "Core file"}
 };
+
+/**
+ * Software design
+ *
+ * The main goal of malELFicus is help in the process of virus development,
+ * for this purpose we need split the software in tasks. Each task have
+ * your own options and parameters so that I've decided to propagate the
+ * arguments of user to functions callback that handle each task.
+ */
 
 /**
  * Handle entry point
@@ -380,44 +389,3 @@ void help_dissect() {
   exit(SUCCESS);
 }
 
-
-#if 0
-void elf_dissect(const char* elf_file, unsigned int elf_option) {
-  ElfW(Ehdr) *header;
-  ElfW(Phdr) *pheaders;
-  ElfW(Shdr) *sections;
-  int i;
-  	
-  header = (ElfW(Ehdr*) mem;
-
-  /* Checa a assinatura do ELF */
-  if (memcmp(header->e_ident, ELFMAG, SELFMAG) != 0) {
-    printf("Não possui a assinatura de um ELF!\n");
-    exit(1);
-  }
-
-  pheaders = (ElfW(Phdr*) (mem + header->e_phoff);
-  sections = (ElfW(Shdr*) (mem + header->e_shoff);
-
-  printf("ident: %c%c%c\n", header->e_ident[1],header->e_ident[2],header->e_ident[3]);
-
-  
-  printf("Entry point: 0x%x\n", header->e_entry);
-  printf("Número de seções: %hd\n", header->e_shnum);
-    
-  printf("HEADERS:\n");
-  for (i = 0; i < header->e_phnum; ++i) {
-    printf("Offset: 0x%x\n", ((ElfW(Phdr*)(pheaders + i))->p_offset);
-  }
-
-  printf("SECTIONS: \n");
-
-  for (i = 0; i < header->e_shnum; ++i) {
-    printf("[%d] Offset: 0x%x, name = %s\n", i, ((ElfW(Shdr)*)(sections + i))->sh_addr, mem + sections[header->e_shstrndx].sh_offset + sections[i].sh_name);
-  }
-	
-  munmap(mem, st.st_size);
-  close(fd);
-}
-
-#endif
