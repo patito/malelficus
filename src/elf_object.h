@@ -16,6 +16,18 @@ typedef struct {
   ElfW(Shdr) *elfs;       /* pointer to section header table */
 } elf_object;
 
+typedef struct {
+  char* name;
+  _u16 val;
+  char* desc;
+} elf_attr;
+
+#define N_OBJTYPES 5
+#define N_MACHINES 8
+
+extern elf_attr object_types[N_OBJTYPES];
+extern elf_attr elf_machine[N_MACHINES];
+
 extern void init_elf_object(elf_object*);
 extern _u8 copy_elf_object(elf_object*, elf_object*);
 #endif

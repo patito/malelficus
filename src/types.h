@@ -8,10 +8,4 @@ typedef int8_t _i8;
 typedef int16_t _i16;
 typedef int32_t _i32;
 
-typedef struct {
-  char* name;
-  _u16 val;
-  char* desc;
-} object_ftype;
-
 #endif

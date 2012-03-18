@@ -72,18 +72,6 @@ _u8 pht(int argc, char** argv);
 int quiet_mode = 0, verbose_mode = 0;
 
 /**
- * Object file types
- * see ELF Format Specification for more details
- */
-object_ftype object_types[5] = {
-  {"ET_NONE", ET_NONE, "No file type"},
-  {"ET_REL", ET_REL, "Relocatable file"},
-  {"ET_EXEC", ET_EXEC, "Executable file"},
-  {"ET_DYN", ET_DYN, "Shared Object file"},
-  {"ET_CORE", ET_CORE, "Core file"}
-};
-
-/**
  * Software design
  *
  * The main goal of malELFicus is help in the process of virus development,
@@ -246,19 +234,37 @@ _u8 dissect(int argc, char** argv) {
   pheaders = (ElfW(Phdr)*) (input.mem + header->e_phoff);
   sections = (ElfW(Shdr)*) (input.mem + header->e_shoff);
 
-  SAY(" Object type: \t\t\t");
+  SAY("\t\t\t\tELF HEADER\n");
+  SAY("-------------------------------------------------------------------------------\n");
+  SAY("\tstruct member\tDescription\t\t\tValue\n");
+  SAY("\te_type\t\tObject type\t\t\t");
   if (header->e_type == ET_LOPROC || header->e_type == ET_HIPROC) {
-    SAY("Processor-specific");
+    SAY("Processor-specific\n");
   } else {
-    if (header->e_type < 5) {
+    if (header->e_type < N_OBJTYPES) {
       SAY("%s\n", object_types[header->e_type].desc);
     }
   }
 
-  printf("Entry point: 0x%x\n", header->e_entry);
-  printf("Number of sections: %hd\n", header->e_shnum);
+  SAY("\te_machine\tMachine\t\t\t\t");
+  if (header->e_machine >= 8) {
+    SAY("Unknown machine\n");
+  } else {
+    SAY("%s\n", elf_machine[header->e_machine].desc);
+  }
 
-  SAY("-------------------\n");
+  SAY("\te_version\tVersion\t\t\t\t%d\n", header->e_version);
+  SAY("\te_entry\t\tEntry point:\t\t\t0x%x\n", header->e_entry);
+  SAY("\te_phoff\t\tPHT offset\t\t\t0x%x\n", header->e_phoff);
+  SAY("\te_shoff\t\tSHT offset\t\t\t0x%x\n", header->e_shoff);
+  SAY("\te_ehsize\tELF Header size (bytes)\t\t%d\n", header->e_ehsize);
+  SAY("\te_phentsize\tSize of PHT entries\t\t%d\n", header->e_phentsize);
+  SAY("\te_phnum\t\tNumber of entries in PHT\t%d\n", header->e_phnum);
+  SAY("\te_shentsize\tSize of one entry in SHT\t%d\n", header->e_shentsize);
+  SAY("\te_shnum\t\tNumber of sections:\t\t%d\n", header->e_shnum);
+  SAY("\te_shstrndx\tSHT index of the section name\t%d\n", header->e_shstrndx);
+
+    SAY("-------------------------------------------------------------------------------\n");
   SAY("|     Headers     |\n");
   for (i = 0; i < header->e_phnum; ++i) {
     printf("| Offset: 0x%x\n", ((ElfW(Phdr)*)(pheaders + i))->p_offset);

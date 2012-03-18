@@ -29,6 +29,33 @@
 #include <string.h>
 #include <assert.h>
 
+/**
+ * Object file types
+ * see ELF Format Specification for more details
+ */
+elf_attr object_types[N_OBJTYPES] = {
+  {"ET_NONE", ET_NONE, "No file type"},
+  {"ET_REL", ET_REL, "Relocatable file"},
+  {"ET_EXEC", ET_EXEC, "Executable file"},
+  {"ET_DYN", ET_DYN, "Shared Object file"},
+  {"ET_CORE", ET_CORE, "Core file"}
+};
+
+/**
+ * Possible target machines
+ */
+elf_attr elf_machine[N_MACHINES] = {
+  { "EM_NONE", EM_NONE, "No machine"},
+  { "EM_M32", EM_M32, "AT&T WE 32100"},
+  { "EM_SPARC", EM_SPARC, "SPARC"},
+  { "EM_386", EM_386, "Intel 80386"},
+  { "EM_68K", EM_68K, "Motorola 68000"},
+  { "EM_88K", EM_88K, "Motorola 88000"},
+  { "EM_860", EM_860, "Intel 80860"},
+  { "EM_MIPS", EM_MIPS, "MIPS RS3000"}
+};
+
+
 void init_elf_object(elf_object* obj) {
   elf_object obj2;
 
