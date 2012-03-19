@@ -98,12 +98,12 @@ _u8 copy_elf_object(elf_object* out, elf_object *in) {
 }
 
 #define SET_COLNAME(col, str) strncpy(col.name, str, 80); col.size = 0
-#define HTOA(dest, src) snprintf(dest, 80, "0x%x", src)
+#define ITOA(dest, src) snprintf(dest, sizeof(dest), "%d", src)
+#define HTOA(dest, src) snprintf(dest, sizeof(dest), "0x%08x", src)
 
-void pretty_print_elf_header2(ElfW(Ehdr)* header) {
+void pretty_print_elf_header(ElfW(Ehdr)* header) {
   tb_header h;
   tb_line line;
-  /* tb_column e_machine_c1, e_machine_c2, e_machine_c3; */
   tb_column cols[3];
   char tmp_str[80];
   
@@ -147,21 +147,60 @@ void pretty_print_elf_header2(ElfW(Ehdr)* header) {
   SET_COLNAME(cols[2], tmp_str);
 
   print_table_line(&line, 0, 80);
+
+  SET_COLNAME(cols[0], "e_phoff");
+  SET_COLNAME(cols[1], "PHT Offset");
+  HTOA(tmp_str, header->e_phoff);
+  SET_COLNAME(cols[2], tmp_str);
+
+  print_table_line(&line, 0, 80);
+
+  SET_COLNAME(cols[0], "e_shoff");
+  SET_COLNAME(cols[1], "SHT Offset");
+  HTOA(tmp_str, header->e_shoff);
+  SET_COLNAME(cols[2], tmp_str);
+  print_table_line(&line, 0, 80);
+
+  SET_COLNAME(cols[0], "e_ehsize");
+  SET_COLNAME(cols[1], "ELF Header size");
+  snprintf(tmp_str, 80, "%d", header->e_ehsize);
+  SET_COLNAME(cols[2], tmp_str);
+  print_table_line(&line, 0, 80);
+
+  SET_COLNAME(cols[0], "e_phentsize");
+  SET_COLNAME(cols[1], "Size of PHT entries");
+  ITOA(tmp_str, header->e_phentsize);
+  SET_COLNAME(cols[2], tmp_str);
+  print_table_line(&line, 0, 80);
+
+  SET_COLNAME(cols[0], "e_phnum");
+  SET_COLNAME(cols[1], "Number of entries in PHT");
+  ITOA(tmp_str, header->e_phnum);
+  SET_COLNAME(cols[2], tmp_str);
+  print_table_line(&line, 0, 80);
+
+  SET_COLNAME(cols[0], "e_shentsize");
+  SET_COLNAME(cols[1], "Size of one entry in SHT");
+  ITOA(tmp_str, header->e_shentsize);
+  SET_COLNAME(cols[2], tmp_str);
+  print_table_line(&line, 0, 80);
+
+  SET_COLNAME(cols[0], "e_shnum");
+  SET_COLNAME(cols[1], "Number of sections");
+  ITOA(tmp_str, header->e_shnum);
+  SET_COLNAME(cols[2], tmp_str);
+  print_table_line(&line, 0, 80);
+
+  SET_COLNAME(cols[0], "e_shstrndx");
+  SET_COLNAME(cols[1], "SHT symbol index");
+  ITOA(tmp_str, header->e_shstrndx);
+  SET_COLNAME(cols[2], tmp_str);
+  print_table_line(&line, 0, 80);
   
-  /* SAY("\te_version\tVersion\t\t\t\t%d\n", header->e_version); */
-  /* SAY("\te_entry\t\tEntry point:\t\t\t0x%x\n", header->e_entry); */
-  /* SAY("\te_phoff\t\tPHT offset\t\t\t0x%x\n", header->e_phoff); */
-  /* SAY("\te_shoff\t\tSHT offset\t\t\t0x%x\n", header->e_shoff); */
-  /* SAY("\te_ehsize\tELF Header size (bytes)\t\t%d\n", header->e_ehsize); */
-  /* SAY("\te_phentsize\tSize of PHT entries\t\t%d\n", header->e_phentsize); */
-  /* SAY("\te_phnum\t\tNumber of entries in PHT\t%d\n", header->e_phnum); */
-  /* SAY("\te_shentsize\tSize of one entry in SHT\t%d\n", header->e_shentsize); */
-  /* SAY("\te_shnum\t\tNumber of sections:\t\t%d\n", header->e_shnum); */
-  /* SAY("\te_shstrndx\tSHT index of the section strtab\t%d\n", header->e_shstrndx); */
-  
+  print_table_header_art(80, 0);
 }
 
-void pretty_print_elf_header(ElfW(Ehdr)* header) {
+void pretty_print_elf_header2(ElfW(Ehdr)* header) {
 
   assert(header != NULL);
   SAY("--------------------------------------------------------------------------------\n");
