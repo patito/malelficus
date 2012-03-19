@@ -237,6 +237,45 @@ void pretty_print_elf_header2(ElfW(Ehdr)* header) {
   SAY("-------------------------------------------------------------------------------\n");
 }
 
+void pretty_print_pht2(ElfW(Ehdr)* header, ElfW(Phdr)* pheaders) {
+  int i;
+  tb_header tb_main_header, tb_header;
+  tb_line line;
+  tb_column tb_main_col[1], tb_cols[2];
+  char tmp_str[80];
+
+  assert(header != NULL);
+  assert(pheaders != NULL);
+
+  bzero(tmp_str, sizeof(tmp_str));
+
+  SET_COLNAME(tb_main_col[0], "Program Header Table (PHT)");
+  tb_main_header.n_col = 1;
+  tb_main_header.col = tb_main_col;
+  print_table_header(&tb_main_header, 50, 80);
+
+  SET_COLNAME(tb_cols[0], "N");
+  SET_COLNAME(tb_cols[1], "Offset");
+  tb_header.n_col = 2;
+  tb_header.col = tb_cols;
+  print_table_header(&tb_header, 50, 80);
+
+  line.n_col = 2;
+  line.col = tb_cols;
+  
+  for (i = 0; i < header->e_phnum; ++i) {
+    ElfW(Phdr)* h = (ElfW(Phdr)*)(pheaders + i);
+    ITOA(tmp_str, i);
+    SET_COLNAME(tb_cols[0], tmp_str);
+    HTOA(tmp_str, h->p_offset);
+    SET_COLNAME(tb_cols[1], tmp_str);
+    print_table_line(&line, 50, 80);
+  }
+
+  print_table_header_art(50, 15);
+  
+}
+
 void pretty_print_pht(ElfW(Ehdr)* header, ElfW(Phdr)* pheaders) {
   int i;
   assert(pheaders != NULL);

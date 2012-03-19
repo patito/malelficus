@@ -35,6 +35,7 @@ extern _u8 copy_elf_object(elf_object*, elf_object*);
 extern void pretty_print_elf_header2(ElfW(Ehdr)*) __attribute__((deprecated));
 extern void pretty_print_elf_header(ElfW(Ehdr)*);
 extern void pretty_print_pht(ElfW(Ehdr)*, ElfW(Phdr)*);
+extern void pretty_print_pht2(ElfW(Ehdr)*, ElfW(Phdr)*);
 extern void pretty_print_sht(elf_object*,ElfW(Ehdr)*, ElfW(Shdr)*);
 extern void pretty_print_strtab(elf_object*,ElfW(Ehdr)*, ElfW(Shdr)*);
 #endif

@@ -246,7 +246,7 @@ _u8 dissect(int argc, char** argv) {
   }
 
   if ((option & DISPLAY_PHT) == DISPLAY_PHT) {
-    pretty_print_pht(header, pheaders);
+    pretty_print_pht2(header, pheaders);
     SAY("\n");
   }
 
