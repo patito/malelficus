@@ -97,10 +97,6 @@ _u8 copy_elf_object(elf_object* out, elf_object *in) {
   return SUCCESS;
 }
 
-#define SET_COLNAME(col, str) strncpy(col.name, str, 80); col.size = 0
-#define ITOA(dest, src) snprintf(dest, sizeof(dest), "%d", src)
-#define HTOA(dest, src) snprintf(dest, sizeof(dest), "0x%08x", src)
-
 void pretty_print_elf_header(ElfW(Ehdr)* header) {
   tb_header h;
   tb_line line;

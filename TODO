@@ -1,0 +1,12 @@
+TODO List:
+
+* Terminate the dissect command.
+   This command does not have much importance. If you need addionally
+   details about ELF binary use the readelf unix tool.
+
+* infect
+   Add the infect command. This command will help in the process of
+   malware development, updating e_entry, p_filesz, p_memsz, etc,
+   conforming to the virus atached.
+   Example usage: ./malelficus infect -v my_virus.bin -i target_binary
+   -o result_infected_binary -t silvio_cesare_standard

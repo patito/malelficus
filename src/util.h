@@ -15,5 +15,8 @@
     LOG_RAW(stdout, "0x%x", value); \
   } else LOG_RAW(stdout, desc_format, value)
 
+#define ITOA(dest, src) snprintf(dest, sizeof(dest), "%d", src)
+#define HTOA(dest, src) snprintf(dest, sizeof(dest), "0x%08x", src)
+
 
 #endif
