@@ -23,13 +23,15 @@
 
 */
 
-#include "defines.h"
-#include "util.h"
-#include "elf_object.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
+
+#include "defines.h"
+#include "util.h"
+#include "elf_object.h"
+#include "print_table.h"
 
 /**
  * Object file types
@@ -93,6 +95,70 @@ _u8 copy_elf_object(elf_object* out, elf_object *in) {
   memcpy(out->mem, in->mem, in->st_info.st_size);
 
   return SUCCESS;
+}
+
+#define SET_COLNAME(col, str) strncpy(col.name, str, 80); col.size = 0
+#define HTOA(dest, src) snprintf(dest, 80, "0x%x", src)
+
+void pretty_print_elf_header2(ElfW(Ehdr)* header) {
+  tb_header h;
+  tb_line line;
+  /* tb_column e_machine_c1, e_machine_c2, e_machine_c3; */
+  tb_column cols[3];
+  char tmp_str[80];
+  
+  assert(header != NULL);
+  bzero(tmp_str, 80);
+
+  SET_COLNAME(cols[0], "Structure Member");
+  SET_COLNAME(cols[1], "Description");
+  SET_COLNAME(cols[2], "Value");
+
+  h.col = cols;
+  h.n_col = 3;
+  
+  print_table_header(&h, 0, 80);
+
+  SET_COLNAME(cols[0], "e_type");
+  SET_COLNAME(cols[1], "Object Type");
+
+  if (header->e_type == ET_LOPROC || header->e_type == ET_HIPROC || header->e_type >= N_OBJTYPES) {
+    SET_COLNAME(cols[2], "Processor specific");
+  } else {
+    SET_COLNAME(cols[2], object_types[header->e_type].desc);
+  }
+
+  line.col = cols;
+  line.n_col = 3;
+
+  print_table_line(&line, 0, 80);
+
+  SET_COLNAME(cols[0], "e_version");
+  SET_COLNAME(cols[1], "Version");
+  snprintf(tmp_str, 80, "%d", header->e_version);
+  SET_COLNAME(cols[2], tmp_str);
+
+  print_table_line(&line, 0, 80);
+
+  SET_COLNAME(cols[0], "e_entry");
+  SET_COLNAME(cols[1], "Entry Point");
+
+  HTOA(tmp_str, header->e_entry);
+  SET_COLNAME(cols[2], tmp_str);
+
+  print_table_line(&line, 0, 80);
+  
+  /* SAY("\te_version\tVersion\t\t\t\t%d\n", header->e_version); */
+  /* SAY("\te_entry\t\tEntry point:\t\t\t0x%x\n", header->e_entry); */
+  /* SAY("\te_phoff\t\tPHT offset\t\t\t0x%x\n", header->e_phoff); */
+  /* SAY("\te_shoff\t\tSHT offset\t\t\t0x%x\n", header->e_shoff); */
+  /* SAY("\te_ehsize\tELF Header size (bytes)\t\t%d\n", header->e_ehsize); */
+  /* SAY("\te_phentsize\tSize of PHT entries\t\t%d\n", header->e_phentsize); */
+  /* SAY("\te_phnum\t\tNumber of entries in PHT\t%d\n", header->e_phnum); */
+  /* SAY("\te_shentsize\tSize of one entry in SHT\t%d\n", header->e_shentsize); */
+  /* SAY("\te_shnum\t\tNumber of sections:\t\t%d\n", header->e_shnum); */
+  /* SAY("\te_shstrndx\tSHT index of the section strtab\t%d\n", header->e_shstrndx); */
+  
 }
 
 void pretty_print_elf_header(ElfW(Ehdr)* header) {
