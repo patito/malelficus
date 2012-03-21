@@ -1,0 +1,1368 @@
+#include <elf.h>
+
+Elf32_Ehdr elf_header = {
+/* 000000 */	"\x7f\x45\x4c\x46\x1\x1\x1\x0\x0\x0\x0\x0\x0\x0\x0\x0",
+/* 000010 */	2,	/* Executable file  */
+/* 000012 */	3,	/* EM_386 */
+/* 000014 */	1,	/* CURRENT VERSION */
+/* 000018 */	0x8048580,	/* Entry point */
+/* 00001c */	0x34,	/* Program Header Table file offset */
+/* 000020 */	0x12b8,	/* Section Header Table file offset */
+/* 000024 */	0,	/* Processor Spacefic-Flags */
+/* 000028 */	52,	/* ELF Header size in bytes */
+/* 00002a */	32,	/* Program Header Table entry size */
+/* 00002c */	9,	/* Program Header Table entry count */
+/* 00002e */	40,	/* Section Header Table entry size */
+/* 000030 */	30,	/* Section Header Table entry size */
+/* 000032 */	27	/* Section Header string table index */
+};
+
+Elf32_Phdr pht = {
+{
+/* 000034 */	0x6,	/* PT_PHDR */
+/* 000038 */	0x34,	/* Segment file offset  */
+/* 00003c */	0x8048034,	/* Segment virtual address */
+/* 000040 */	0x8048034,	/* Segment physical address  */
+/* 000044 */	288,	/* Segment size in file */
+/* 000048 */	288,	/* Segment size in memory */
+/* 00004c */	5,	/* Segment flags */
+/* 000050 */	4,	/* Segment alignment */
+},
+{
+/* 000054 */	0x3,	/* PT_INTERP */
+/* 000058 */	0x154,	/* Segment file offset  */
+/* 00005c */	0x8048154,	/* Segment virtual address */
+/* 000060 */	0x8048154,	/* Segment physical address  */
+/* 000064 */	19,	/* Segment size in file */
+/* 000068 */	19,	/* Segment size in memory */
+/* 00006c */	4,	/* Segment flags */
+/* 000070 */	1,	/* Segment alignment */
+},
+{
+/* 000074 */	0x1,	/* PT_LOAD */
+/* 000078 */	0x0,	/* Segment file offset  */
+/* 00007c */	0x8048000,	/* Segment virtual address */
+/* 000080 */	0x8048000,	/* Segment physical address  */
+/* 000084 */	3740,	/* Segment size in file */
+/* 000088 */	3740,	/* Segment size in memory */
+/* 00008c */	5,	/* Segment flags */
+/* 000090 */	4096,	/* Segment alignment */
+},
+{
+/* 000094 */	0x1,	/* PT_LOAD */
+/* 000098 */	0xf14,	/* Segment file offset  */
+/* 00009c */	0x8049f14,	/* Segment virtual address */
+/* 0000a0 */	0x8049f14,	/* Segment physical address  */
+/* 0000a4 */	636,	/* Segment size in file */
+/* 0000a8 */	648,	/* Segment size in memory */
+/* 0000ac */	6,	/* Segment flags */
+/* 0000b0 */	4096,	/* Segment alignment */
+},
+{
+/* 0000b4 */	0x2,	/* PT_DYNAMIC */
+/* 0000b8 */	0xf28,	/* Segment file offset  */
+/* 0000bc */	0x8049f28,	/* Segment virtual address */
+/* 0000c0 */	0x8049f28,	/* Segment physical address  */
+/* 0000c4 */	200,	/* Segment size in file */
+/* 0000c8 */	200,	/* Segment size in memory */
+/* 0000cc */	6,	/* Segment flags */
+/* 0000d0 */	4,	/* Segment alignment */
+},
+{
+/* 0000d4 */	0x4,	/* PT_NOTE */
+/* 0000d8 */	0x168,	/* Segment file offset  */
+/* 0000dc */	0x8048168,	/* Segment virtual address */
+/* 0000e0 */	0x8048168,	/* Segment physical address  */
+/* 0000e4 */	68,	/* Segment size in file */
+/* 0000e8 */	68,	/* Segment size in memory */
+/* 0000ec */	4,	/* Segment flags */
+/* 0000f0 */	4,	/* Segment alignment */
+},
+{
+/* 0000f4 */	0x6474e550,	/* PT_GNU_EH_FRAME */
+/* 0000f8 */	0xd04,	/* Segment file offset  */
+/* 0000fc */	0x8048d04,	/* Segment virtual address */
+/* 000100 */	0x8048d04,	/* Segment physical address  */
+/* 000104 */	84,	/* Segment size in file */
+/* 000108 */	84,	/* Segment size in memory */
+/* 00010c */	4,	/* Segment flags */
+/* 000110 */	4,	/* Segment alignment */
+},
+{
+/* 000114 */	0x6474e551,	/* PT_GNU_STACK */
+/* 000118 */	0x0,	/* Segment file offset  */
+/* 00011c */	0x0,	/* Segment virtual address */
+/* 000120 */	0x0,	/* Segment physical address  */
+/* 000124 */	0,	/* Segment size in file */
+/* 000128 */	0,	/* Segment size in memory */
+/* 00012c */	6,	/* Segment flags */
+/* 000130 */	4,	/* Segment alignment */
+},
+{
+/* 000134 */	0x6474e552,	/* PT_GNU_RELRO */
+/* 000138 */	0xf14,	/* Segment file offset  */
+/* 00013c */	0x8049f14,	/* Segment virtual address */
+/* 000140 */	0x8049f14,	/* Segment physical address  */
+/* 000144 */	236,	/* Segment size in file */
+/* 000148 */	236,	/* Segment size in memory */
+/* 00014c */	4,	/* Segment flags */
+/* 000150 */	1,	/* Segment alignment */
+}
+
+/* Dump of section: .interp */
+const unsigned char* segments = 
+/* 154 */	"\x2f\x6c\x69\x62\x2f\x6c\x64\x2d\x6c\x69"
+/* 15e */	"\x6e\x75\x78\x2e\x73\x6f\x2e\x32\x00"
+
+Error: section offset mismatch
+sh_offset: 168
+file_addr: 167
+
+/* Dump of section: .note.ABI-tag */
+const unsigned char* segments = 
+/* 167 */	"\x04\x00\x00\x00\x10\x00\x00\x00\x01\x00"
+/* 171 */	"\x00\x00\x47\x4e\x55\x00\x00\x00\x00\x00"
+/* 17b */	"\x02\x00\x00\x00\x06\x00\x00\x00\x0f\x00"
+/* 185 */	"\x00\x00"
+
+Error: section offset mismatch
+sh_offset: 188
+file_addr: 187
+
+/* Dump of section: .note.gnu.build-id */
+const unsigned char* segments = 
+/* 187 */	"\x04\x00\x00\x00\x14\x00\x00\x00\x03\x00"
+/* 191 */	"\x00\x00\x47\x4e\x55\x00\x51\xffffffc4\x52\xffffffdc"
+/* 19b */	"\xffffff8c\xfffffff4\xffffffeb\x32\xffffffc7\xffffffe6\xffffffbe\x18\xffffffd9\xffffffda"
+/* 1a5 */	"\x23\x39\x29\x4a\xffffffa6\x3a"
+
+Error: section offset mismatch
+sh_offset: 1ac
+file_addr: 1ab
+
+/* Dump of section: .gnu.hash */
+const unsigned char* segments = 
+/* 1ab */	"\x02\x00\x00\x00\x0f\x00\x00\x00\x01\x00"
+/* 1b5 */	"\x00\x00\x05\x00\x00\x00\x00\x20\x02\x22"
+/* 1bf */	"\x00\x00\x00\x00\x0f\x00\x00\x00\x38\xfffffff2"
+/* 1c9 */	"\xffffff8b\x1c\xffffffad\x4b\xffffffe3\xffffffc0"
+
+Error: section offset mismatch
+sh_offset: 1d0
+file_addr: 1cf
+
+/* Dump of section: .dynsym */
+const unsigned char* segments = 
+/* 1cf */	"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+/* 1d9 */	"\x00\x00\x00\x00\x00\x00\x53\x00\x00\x00"
+/* 1e3 */	"\x00\x00\x00\x00\x00\x00\x00\x00\x12\x00"
+/* 1ed */	"\x00\x00\x6c\x00\x00\x00\x00\x00\x00\x00"
+/* 1f7 */	"\x00\x00\x00\x00\x12\x00\x00\x00\xffffff85\x00"
+/* 201 */	"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+/* 20b */	"\x12\x00\x00\x00\x3a\x00\x00\x00\x00\x00"
+/* 215 */	"\x00\x00\x00\x00\x00\x00\x12\x00\x00\x00"
+/* 21f */	"\xffffff8a\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+/* 229 */	"\x00\x00\x12\x00\x00\x00\x2e\x00\x00\x00"
+/* 233 */	"\x00\x00\x00\x00\x00\x00\x00\x00\x12\x00"
+/* 23d */	"\x00\x00\x58\x00\x00\x00\x00\x00\x00\x00"
+/* 247 */	"\x00\x00\x00\x00\x12\x00\x00\x00\x35\x00"
+/* 251 */	"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+/* 25b */	"\x12\x00\x00\x00\x01\x00\x00\x00\x00\x00"
+/* 265 */	"\x00\x00\x00\x00\x00\x00\x20\x00\x00\x00"
+/* 26f */	"\x29\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+/* 279 */	"\x00\x00\x12\x00\x00\x00\x66\x00\x00\x00"
+/* 283 */	"\x00\x00\x00\x00\x00\x00\x00\x00\x12\x00"
+/* 28d */	"\x00\x00\x73\x00\x00\x00\x00\x00\x00\x00"
+/* 297 */	"\x00\x00\x00\x00\x12\x00\x00\x00\x6b\x00"
+/* 2a1 */	"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+/* 2ab */	"\x12\x00\x00\x00\x4b\x00\x00\x00\x00\x00"
+/* 2b5 */	"\x00\x00\x00\x00\x00\x00\x12\x00\x00\x00"
+/* 2bf */	"\x5f\x00\x00\x00\xffffff90\xffffffa1\x04\x08\x04\x00"
+/* 2c9 */	"\x00\x00\x11\x00\x19\x00\x1a\x00\x00\x00"
+/* 2d3 */	"\xffffffac\xffffff8a\x04\x08\x04\x00\x00\x00\x11\x00"
+/* 2dd */	"\x0f\x00"
+
+Error: section offset mismatch
+sh_offset: 2e0
+file_addr: 2df
+
+/* Dump of section: .dynstr */
+const unsigned char* segments = 
+/* 2df */	"\x00\x5f\x5f\x67\x6d\x6f\x6e\x5f\x73\x74"
+/* 2e9 */	"\x61\x72\x74\x5f\x5f\x00\x6c\x69\x62\x63"
+/* 2f3 */	"\x2e\x73\x6f\x2e\x36\x00\x5f\x49\x4f\x5f"
+/* 2fd */	"\x73\x74\x64\x69\x6e\x5f\x75\x73\x65\x64"
+/* 307 */	"\x00\x65\x78\x69\x74\x00\x70\x65\x72\x72"
+/* 311 */	"\x6f\x72\x00\x70\x75\x74\x73\x00\x5f\x5f"
+/* 31b */	"\x73\x74\x61\x63\x6b\x5f\x63\x68\x6b\x5f"
+/* 325 */	"\x66\x61\x69\x6c\x00\x70\x75\x74\x63\x68"
+/* 32f */	"\x61\x72\x00\x72\x65\x61\x64\x00\x6d\x61"
+/* 339 */	"\x6c\x6c\x6f\x63\x00\x73\x74\x64\x65\x72"
+/* 343 */	"\x72\x00\x6f\x70\x65\x6e\x00\x66\x70\x72"
+/* 34d */	"\x69\x6e\x74\x66\x00\x5f\x5f\x6c\x69\x62"
+/* 357 */	"\x63\x5f\x73\x74\x61\x72\x74\x5f\x6d\x61"
+/* 361 */	"\x69\x6e\x00\x66\x72\x65\x65\x00\x5f\x5f"
+/* 36b */	"\x78\x73\x74\x61\x74\x00\x47\x4c\x49\x42"
+/* 375 */	"\x43\x5f\x32\x2e\x34\x00\x47\x4c\x49\x42"
+/* 37f */	"\x43\x5f\x32\x2e\x30\x00"
+
+Error: section offset mismatch
+sh_offset: 386
+file_addr: 385
+
+/* Dump of section: .gnu.version */
+const unsigned char* segments = 
+/* 385 */	"\x00\x00\x02\x00\x02\x00\x02\x00\x03\x00"
+/* 38f */	"\x02\x00\x02\x00\x02\x00\x02\x00\x00\x00"
+/* 399 */	"\x02\x00\x02\x00\x02\x00\x02\x00\x02\x00"
+/* 3a3 */	"\x02\x00\x01\x00"
+
+Error: section offset mismatch
+sh_offset: 3a8
+file_addr: 3a7
+
+/* Dump of section: .gnu.version_r */
+const unsigned char* segments = 
+/* 3a7 */	"\x01\x00\x02\x00\x10\x00\x00\x00\x10\x00"
+/* 3b1 */	"\x00\x00\x00\x00\x00\x00\x14\x69\x69\x0d"
+/* 3bb */	"\x00\x00\x03\x00\xffffff92\x00\x00\x00\x10\x00"
+/* 3c5 */	"\x00\x00\x10\x69\x69\x0d\x00\x00\x02\x00"
+/* 3cf */	"\xffffff9c\x00\x00\x00\x00\x00\x00\x00"
+
+Error: section offset mismatch
+sh_offset: 3d8
+file_addr: 3d7
+
+/* Dump of section: .rel.dyn */
+const unsigned char* segments = 
+/* 3d7 */	"\xfffffff0\xffffff9f\x04\x08\x06\x09\x00\x00\xffffff90\xffffffa1"
+/* 3e1 */	"\x04\x08\x05\x0f\x00\x00"
+
+Error: section offset mismatch
+sh_offset: 3e8
+file_addr: 3e7
+
+/* Dump of section: .rel.plt */
+const unsigned char* segments = 
+/* 3e7 */	"\x00\xffffffa0\x04\x08\x07\x01\x00\x00\x04\xffffffa0"
+/* 3f1 */	"\x04\x08\x07\x02\x00\x00\x08\xffffffa0\x04\x08"
+/* 3fb */	"\x07\x03\x00\x00\x0c\xffffffa0\x04\x08\x07\x04"
+/* 405 */	"\x00\x00\x10\xffffffa0\x04\x08\x07\x05\x00\x00"
+/* 40f */	"\x14\xffffffa0\x04\x08\x07\x06\x00\x00\x18\xffffffa0"
+/* 419 */	"\x04\x08\x07\x07\x00\x00\x1c\xffffffa0\x04\x08"
+/* 423 */	"\x07\x08\x00\x00\x20\xffffffa0\x04\x08\x07\x09"
+/* 42d */	"\x00\x00\x24\xffffffa0\x04\x08\x07\x0a\x00\x00"
+/* 437 */	"\x28\xffffffa0\x04\x08\x07\x0b\x00\x00\x2c\xffffffa0"
+/* 441 */	"\x04\x08\x07\x0c\x00\x00\x30\xffffffa0\x04\x08"
+/* 44b */	"\x07\x0d\x00\x00\x34\xffffffa0\x04\x08\x07\x0e"
+/* 455 */	"\x00\x00"
+
+Error: section offset mismatch
+sh_offset: 458
+file_addr: 457
+
+/* Dump of section: .init */
+const unsigned char* segments = 
+/* 457 */	"\x53\xffffff83\xffffffec\x08\xffffffe8\x00\x00\x00\x00\x5b"
+/* 461 */	"\xffffff81\xffffffc3\xffffff93\x1b\x00\x00\xffffff8b\xffffff83\xfffffffc\xffffffff"
+/* 46b */	"\xffffffff\xffffffff\xffffff85\xffffffc0\x74\x05\xffffffe8\xffffffa9\x00\x00"
+/* 475 */	"\x00\xffffffe8\xffffff94\x01\x00\x00\xffffffe8\xffffffdf\x05\x00"
+/* 47f */	"\x00\xffffff83\xffffffc4\x08\x5b\xffffffc3"
+
+Error: section offset mismatch
+sh_offset: 490
+file_addr: 485
+
+/* Dump of section: .plt */
+const unsigned char* segments = 
+/* 485 */	"\xffffffff\x35\xfffffff8\xffffff9f\x04\x08\xffffffff\x25\xfffffffc\xffffff9f"
+/* 48f */	"\x04\x08\x00\x00\x00\x00\xffffffff\x25\x00\xffffffa0"
+/* 499 */	"\x04\x08\x68\x00\x00\x00\x00\xffffffe9\xffffffe0\xffffffff"
+/* 4a3 */	"\xffffffff\xffffffff\xffffffff\x25\x04\xffffffa0\x04\x08\x68\x08"
+/* 4ad */	"\x00\x00\x00\xffffffe9\xffffffd0\xffffffff\xffffffff\xffffffff\xffffffff\x25"
+/* 4b7 */	"\x08\xffffffa0\x04\x08\x68\x10\x00\x00\x00\xffffffe9"
+/* 4c1 */	"\xffffffc0\xffffffff\xffffffff\xffffffff\xffffffff\x25\x0c\xffffffa0\x04\x08"
+/* 4cb */	"\x68\x18\x00\x00\x00\xffffffe9\xffffffb0\xffffffff\xffffffff\xffffffff"
+/* 4d5 */	"\xffffffff\x25\x10\xffffffa0\x04\x08\x68\x20\x00\x00"
+/* 4df */	"\x00\xffffffe9\xffffffa0\xffffffff\xffffffff\xffffffff\xffffffff\x25\x14\xffffffa0"
+/* 4e9 */	"\x04\x08\x68\x28\x00\x00\x00\xffffffe9\xffffff90\xffffffff"
+/* 4f3 */	"\xffffffff\xffffffff\xffffffff\x25\x18\xffffffa0\x04\x08\x68\x30"
+/* 4fd */	"\x00\x00\x00\xffffffe9\xffffff80\xffffffff\xffffffff\xffffffff\xffffffff\x25"
+/* 507 */	"\x1c\xffffffa0\x04\x08\x68\x38\x00\x00\x00\xffffffe9"
+/* 511 */	"\x70\xffffffff\xffffffff\xffffffff\xffffffff\x25\x20\xffffffa0\x04\x08"
+/* 51b */	"\x68\x40\x00\x00\x00\xffffffe9\x60\xffffffff\xffffffff\xffffffff"
+/* 525 */	"\xffffffff\x25\x24\xffffffa0\x04\x08\x68\x48\x00\x00"
+/* 52f */	"\x00\xffffffe9\x50\xffffffff\xffffffff\xffffffff\xffffffff\x25\x28\xffffffa0"
+/* 539 */	"\x04\x08\x68\x50\x00\x00\x00\xffffffe9\x40\xffffffff"
+/* 543 */	"\xffffffff\xffffffff\xffffffff\x25\x2c\xffffffa0\x04\x08\x68\x58"
+/* 54d */	"\x00\x00\x00\xffffffe9\x30\xffffffff\xffffffff\xffffffff\xffffffff\x25"
+/* 557 */	"\x30\xffffffa0\x04\x08\x68\x60\x00\x00\x00\xffffffe9"
+/* 561 */	"\x20\xffffffff\xffffffff\xffffffff\xffffffff\x25\x34\xffffffa0\x04\x08"
+/* 56b */	"\x68\x68\x00\x00\x00\xffffffe9\x10\xffffffff\xffffffff\xffffffff"
+"
+
+Error: section offset mismatch
+sh_offset: 580
+file_addr: 575
+
+/* Dump of section: .text */
+const unsigned char* segments = 
+/* 575 */	"\x31\xffffffed\x5e\xffffff89\xffffffe1\xffffff83\xffffffe4\xfffffff0\x50\x54"
+/* 57f */	"\x52\x68\x20\xffffff8a\x04\x08\x68\xffffffb0\xffffff89\x04"
+/* 589 */	"\x08\x51\x56\x68\x54\xffffff88\x04\x08\xffffffe8\xffffffaf"
+/* 593 */	"\xffffffff\xffffffff\xffffffff\xfffffff4\xffffff90\xffffff90\xffffff90\xffffff90\xffffff90\xffffff90"
+/* 59d */	"\xffffff90\xffffff90\xffffff90\xffffff90\xffffff90\xffffff90\xffffff90\xffffff90\x55\xffffff89"
+/* 5a7 */	"\xffffffe5\x53\xffffff83\xffffffec\x04\xffffff80\x3d\xffffff94\xffffffa1\x04"
+/* 5b1 */	"\x08\x00\x75\x3f\xffffffa1\xffffff98\xffffffa1\x04\x08\xffffffbb"
+/* 5bb */	"\x20\xffffff9f\x04\x08\xffffff81\xffffffeb\x1c\xffffff9f\x04\x08"
+/* 5c5 */	"\xffffffc1\xfffffffb\x02\xffffff83\xffffffeb\x01\x39\xffffffd8\x73\x1e"
+/* 5cf */	"\xffffff8d\xffffffb6\x00\x00\x00\x00\xffffff83\xffffffc0\x01\xffffffa3"
+/* 5d9 */	"\xffffff98\xffffffa1\x04\x08\xffffffff\x14\xffffff85\x1c\xffffff9f\x04"
+/* 5e3 */	"\x08\xffffffa1\xffffff98\xffffffa1\x04\x08\x39\xffffffd8\x72\xffffffe8"
+/* 5ed */	"\xffffffc6\x05\xffffff94\xffffffa1\x04\x08\x01\xffffff83\xffffffc4\x04"
+/* 5f7 */	"\x5b\x5d\xffffffc3\xffffff8d\x74\x26\x00\xffffff8d\xffffffbc\x27"
+/* 601 */	"\x00\x00\x00\x00\x55\xffffff89\xffffffe5\xffffff83\xffffffec\x18"
+/* 60b */	"\xffffffa1\x24\xffffff9f\x04\x08\xffffff85\xffffffc0\x74\x12\xffffffb8"
+/* 615 */	"\x00\x00\x00\x00\xffffff85\xffffffc0\x74\x09\xffffffc7\x04"
+/* 61f */	"\x24\x24\xffffff9f\x04\x08\xffffffff\xffffffd0\xffffffc9\xffffffc3\xffffff90"
+/* 629 */	"\x55\xffffff89\xffffffe5\xffffff83\xffffffec\x28\xffffffc7\x04\x24\x22"
+/* 633 */	"\x00\x00\x00\xffffffe8\x2a\xffffffff\xffffffff\xffffffff\xffffffc7\x45"
+/* 63d */	"\xfffffff4\x00\x00\x00\x00\xffffffeb\x21\xffffff8b\x45\xfffffff4"
+/* 647 */	"\x03\x45\x08\x0f\xffffffb6\x00\x0f\xffffffb6\xffffffd0\xffffffb8"
+/* 651 */	"\x3a\xffffff8c\x04\x08\xffffff89\x54\x24\x04\xffffff89\x04"
+/* 65b */	"\x24\xffffffe8\x44\xfffffffe\xffffffff\xffffffff\xffffff83\x45\xfffffff4\x01"
+/* 665 */	"\xffffff8b\x45\xfffffff4\x3b\x45\x0c\x7c\xffffffd7\xffffffc7\x04"
+/* 66f */	"\x24\x22\x00\x00\x00\xffffffe8\xffffffec\xfffffffe\xffffffff\xffffffff"
+/* 679 */	"\xffffffc9\xffffffc3\x55\xffffff89\xffffffe5\xffffff83\xffffffec\x28\xffffffc7\x45"
+/* 683 */	"\xfffffff4\x00\x00\x00\x00\xffffffc7\x04\x24\x3f\xffffff8c"
+/* 68d */	"\x04\x08\xffffffe8\x71\xfffffffe\xffffffff\xffffffff\xffffffb8\x59\xffffff8c"
+/* 697 */	"\x04\x08\xffffff8b\x55\xfffffff4\xffffff89\x54\x24\x04\xffffff89"
+/* 6a1 */	"\x04\x24\xffffffe8\xfffffffd\xfffffffd\xffffffff\xffffffff\xffffffc7\x45\xfffffff0"
+/* 6ab */	"\x00\x00\x00\x00\xffffffeb\x23\xffffff8b\x55\x08\xffffff8b"
+/* 6b5 */	"\x45\xfffffff0\x01\xffffffd0\x0f\xffffffb6\x00\x0f\xffffffb6\xffffffd0"
+/* 6bf */	"\xffffffb8\x3a\xffffff8c\x04\x08\xffffff89\x54\x24\x04\xffffff89"
+/* 6c9 */	"\x04\x24\xffffffe8\xffffffd5\xfffffffd\xffffffff\xffffffff\xffffff83\x45\xfffffff0"
+/* 6d3 */	"\x01\xffffff83\x7d\xfffffff0\x0f\x7e\xffffffd7\xffffffc7\x04\x24"
+/* 6dd */	"\x66\xffffff8c\x04\x08\xffffffe8\x1f\xfffffffe\xffffffff\xffffffff\xffffff8b"
+/* 6e7 */	"\x45\xfffffff4\xffffff83\xffffffc0\x10\xffffff89\x45\xfffffff4\xffffff8b\x45"
+/* 6f1 */	"\x08\x0f\xffffffb7\x40\x10\x66\xffffff83\xfffffff8\x04\x77"
+/* 6fb */	"\x1c\xffffff8b\x45\x08\x0f\xffffffb7\x40\x10\x0f\xffffffb7"
+/* 705 */	"\xffffffd0\xffffff89\xffffffd0\x01\xffffffc0\x01\xffffffd0\xffffffc1\xffffffe0\x02"
+/* 70f */	"\x05\x60\xffffffa0\x04\x08\xffffff8b\x00\xffffffeb\x05\xffffffb8"
+/* 719 */	"\x69\xffffff8c\x04\x08\xffffff8b\x55\x08\x0f\xffffffb7\x52"
+/* 723 */	"\x10\x0f\xffffffb7\xffffffca\xffffffba\x76\xffffff8c\x04\x08\xffffff89"
+/* 72d */	"\x44\x24\x0c\xffffff89\x4c\x24\x08\xffffff8b\x45\xfffffff4"
+/* 737 */	"\xffffff89\x44\x24\x04\xffffff89\x14\x24\xffffffe8\x62\xfffffffd"
+/* 741 */	"\xffffffff\xffffffff\xffffff8b\x45\xfffffff4\xffffff83\xffffffc0\x02\xffffff89\x45"
+/* 74b */	"\xfffffff4\xffffff8b\x45\x08\x0f\xffffffb7\x40\x12\x66\xffffff83"
+/* 755 */	"\xfffffff8\x07\x77\x1c\xffffff8b\x45\x08\x0f\xffffffb7\x40"
+/* 75f */	"\x12\x0f\xffffffb7\xffffffd0\xffffff89\xffffffd0\x01\xffffffc0\x01\xffffffd0"
+/* 769 */	"\xffffffc1\xffffffe0\x02\x05\xffffffa0\xffffffa0\x04\x08\xffffff8b\x00"
+/* 773 */	"\xffffffeb\x05\xffffffb8\xffffff8f\xffffff8c\x04\x08\xffffff8b\x55\x08"
+/* 77d */	"\x0f\xffffffb7\x52\x12\x0f\xffffffb7\xffffffca\xffffffba\x76\xffffff8c"
+/* 787 */	"\x04\x08\xffffff89\x44\x24\x0c\xffffff89\x4c\x24\x08"
+/* 791 */	"\xffffff8b\x45\xfffffff4\xffffff89\x44\x24\x04\xffffff89\x14\x24"
+/* 79b */	"\xffffffe8\x05\xfffffffd\xffffffff\xffffffff\xffffffc9\xffffffc3\x55\xffffff89\xffffffe5"
+/* 7a5 */	"\xffffff83\xffffffec\x58\x65\xffffffa1\x14\x00\x00\x00\xffffff89"
+/* 7af */	"\x45\xfffffff4\x31\xffffffc0\xffffffc7\x45\xffffffc0\x31\x32\x33"
+/* 7b9 */	"\x34\xffffffc7\x45\xffffffc4\x35\x36\x37\x38\xffffffc7\x45"
+/* 7c3 */	"\xffffffc8\x39\x30\x31\x32\xffffffc7\x45\xffffffcc\x33\x34"
+/* 7cd */	"\x35\x36\x66\xffffffc7\x45\xffffffd0\x01\x00\x66\xffffffc7"
+/* 7d7 */	"\x45\xffffffd2\x01\x00\xffffffc7\x45\xffffffd4\x01\x00\x00"
+/* 7e1 */	"\x00\xffffffc7\x45\xffffffd8\x20\x30\xffffff80\x00\xffffffc7\x45"
+/* 7eb */	"\xffffffdc\x50\x00\x00\x00\xffffffc7\x45\xffffffe0\x70\x00"
+/* 7f5 */	"\x00\x00\xffffffc7\x45\xffffffe4\x01\x00\x00\x00\x66"
+/* 7ff */	"\xffffffc7\x45\xffffffe8\x1e\x00\x66\xffffffc7\x45\xffffffea\x32"
+/* 809 */	"\x00\x66\xffffffc7\x45\xffffffec\x64\x00\x66\xffffffc7\x45"
+/* 813 */	"\xffffffee\x01\x00\x66\xffffffc7\x45\xfffffff0\x02\x00\x66"
+/* 81d */	"\xffffffc7\x45\xfffffff2\x03\x00\xffffff8b\x55\xffffffd8\xffffffb8\xffffff9f"
+/* 827 */	"\xffffff8c\x04\x08\xffffff89\x54\x24\x04\xffffff89\x04\x24"
+/* 831 */	"\xffffffe8\x6f\xfffffffc\xffffffff\xffffffff\xffffff8b\x45\xfffffff4\x65\x33"
+/* 83b */	"\x05\x14\x00\x00\x00\x74\x05\xffffffe8\x7e\xfffffffc"
+/* 845 */	"\xffffffff\xffffffff\xffffffc9\xffffffc3\x55\xffffff89\xffffffe5\xffffff83\xffffffe4\xfffffff0"
+/* 84f */	"\xffffff83\xffffffc4\xffffff80\xffffff83\x7d\x08\x01\x7f\x0c\xffffffc7"
+/* 859 */	"\x04\x24\x01\x00\x00\x00\xffffffe8\xffffffc1\xfffffffc\xffffffff"
+/* 863 */	"\xffffffff\xffffff8b\x45\x0c\xffffff83\xffffffc0\x04\xffffff8b\x00\xffffffc7"
+/* 86d */	"\x44\x24\x04\x00\x00\x00\x00\xffffff89\x04\x24"
+/* 877 */	"\xffffffe8\xffffffb9\xfffffffc\xffffffff\xffffffff\xffffff89\x44\x24\x70\xffffff83"
+/* 881 */	"\x7c\x24\x70\xffffffff\x75\x22\xffffff8b\x45\x0c\xffffff83"
+/* 88b */	"\xffffffc0\x04\xffffff8b\x08\xffffffba\xffffffa3\xffffff8c\x04\x08\xffffffa1"
+/* 895 */	"\xffffff90\xffffffa1\x04\x08\xffffff89\x4c\x24\x08\xffffff89\x54"
+/* 89f */	"\x24\x04\xffffff89\x04\x24\xffffffe8\xffffffac\xfffffffc\xffffffff\xffffffff"
+/* 8a9 */	"\xffffff8b\x45\x0c\xffffff83\xffffffc0\x04\xffffff8b\x00\xffffff8d\x54"
+/* 8b3 */	"\x24\x18\xffffff89\x54\x24\x04\xffffff89\x04\x24\xffffffe8"
+/* 8bd */	"\x64\x01\x00\x00\xffffff83\xfffffff8\xffffffff\x75\x2e\xffffff8b"
+/* 8c7 */	"\x45\x0c\xffffff83\xffffffc0\x04\xffffff8b\x08\xffffffba\xffffffbb\xffffff8c"
+/* 8d1 */	"\x04\x08\xffffffa1\xffffff90\xffffffa1\x04\x08\xffffff89\x4c\x24"
+/* 8db */	"\x08\xffffff89\x54\x24\x04\xffffff89\x04\x24\xffffffe8\x6d"
+/* 8e5 */	"\xfffffffc\xffffffff\xffffffff\xffffffc7\x04\x24\x01\x00\x00\x00"
+/* 8ef */	"\xffffffe8\x31\xfffffffc\xffffffff\xffffffff\xffffff8b\x44\x24\x44\xffffffc1"
+/* 8f9 */	"\xffffffe0\x02\xffffff89\x04\x24\xffffffe8\xfffffff2\xfffffffb\xffffffff\xffffffff"
+/* 903 */	"\xffffff89\x44\x24\x74\xffffff8b\x44\x24\x44\xffffff89\x44"
+/* 90d */	"\x24\x08\xffffff8b\x44\x24\x74\xffffff89\x44\x24\x04"
+/* 917 */	"\xffffff8b\x44\x24\x70\xffffff89\x04\x24\xffffffe8\x72\xfffffffb"
+/* 921 */	"\xffffffff\xffffffff\xffffff89\x44\x24\x78\xffffff8b\x44\x24\x44"
+/* 92b */	"\x39\x44\x24\x78\x74\x3e\xffffff8b\x4c\x24\x44"
+/* 935 */	"\xffffffba\xffffffd4\xffffff8c\x04\x08\xffffffa1\xffffff90\xffffffa1\x04\x08"
+/* 93f */	"\xffffff89\x4c\x24\x0c\xffffff8b\x4c\x24\x78\xffffff89\x4c"
+/* 949 */	"\x24\x08\xffffff89\x54\x24\x04\xffffff89\x04\x24\xffffffe8"
+/* 953 */	"\xfffffffe\xfffffffb\xffffffff\xffffffff\xffffffc7\x04\x24\xffffffff\xffffff8c\x04"
+/* 95d */	"\x08\xffffffe8\xffffff82\xfffffffb\xffffffff\xffffffff\xffffffc7\x04\x24\x01"
+/* 967 */	"\x00\x00\x00\xffffffe8\xffffffb6\xfffffffb\xffffffff\xffffffff\xffffff8b\x44"
+/* 971 */	"\x24\x74\xffffff89\x44\x24\x7c\xffffff8b\x44\x24\x7c"
+/* 97b */	"\xffffff89\x04\x24\xffffffe8\xfffffff8\xfffffffc\xffffffff\xffffffff\xffffff8b\x44"
+/* 985 */	"\x24\x74\xffffff89\x04\x24\xffffffe8\x26\xfffffffb\xffffffff\xffffffff"
+/* 98f */	"\xffffffb8\x00\x00\x00\x00\xffffffc9\xffffffc3\xffffff90\xffffff90\xffffff90"
+/* 999 */	"\xffffff90\xffffff90\xffffff90\xffffff90\xffffff90\xffffff90\xffffff90\xffffff90\xffffff90\xffffff90"
+/* 9a3 */	"\xffffff90\xffffff90\x55\x57\x56\x53\xffffffe8\x69\x00\x00"
+/* 9ad */	"\x00\xffffff81\xffffffc3\x3b\x16\x00\x00\xffffff83\xffffffec\x1c"
+/* 9b7 */	"\xffffff8b\x6c\x24\x30\xffffff8d\xffffffbb\x20\xffffffff\xffffffff\xffffffff"
+/* 9c1 */	"\xffffffe8\xffffff87\xfffffffa\xffffffff\xffffffff\xffffff8d\xffffff83\x20\xffffffff\xffffffff"
+/* 9cb */	"\xffffffff\x29\xffffffc7\xffffffc1\xffffffff\x02\xffffff85\xffffffff\x74\x29"
+/* 9d5 */	"\x31\xfffffff6\xffffff8d\xffffffb6\x00\x00\x00\x00\xffffff8b\x44"
+/* 9df */	"\x24\x38\xffffff89\x2c\x24\xffffff89\x44\x24\x08\xffffff8b"
+/* 9e9 */	"\x44\x24\x34\xffffff89\x44\x24\x04\xffffffff\xffffff94\xffffffb3"
+/* 9f3 */	"\x20\xffffffff\xffffffff\xffffffff\xffffff83\xffffffc6\x01\x39\xfffffffe\x75"
+/* 9fd */	"\xffffffdf\xffffff83\xffffffc4\x1c\x5b\x5e\x5f\x5d\xffffffc3\xffffffeb"
+/* a07 */	"\x0d\xffffff90\xffffff90\xffffff90\xffffff90\xffffff90\xffffff90\xffffff90\xffffff90\xffffff90"
+/* a11 */	"\xffffff90\xffffff90\xffffff90\xffffff90\xfffffff3\xffffffc3\xffffff8b\x1c\x24\xffffffc3"
+/* a1b */	"\xffffff90\xffffff90\xffffff90\xffffff90\xffffff90\xffffff90\xffffff90\xffffff90\xffffff90\xffffff90"
+/* a25 */	"\x53\xffffff83\xffffffec\x0c\xffffff8b\x44\x24\x18\xffffffe8\xffffffe5"
+/* a2f */	"\xffffffff\xffffffff\xffffffff\xffffff81\xffffffc3\xffffffb7\x15\x00\x00\xffffffc7"
+/* a39 */	"\x04\x24\x03\x00\x00\x00\xffffff89\x44\x24\x08"
+/* a43 */	"\xffffff8b\x44\x24\x14\xffffff89\x44\x24\x04\xffffffe8\xffffff85"
+/* a4d */	"\xfffffffa\xffffffff\xffffffff\xffffff83\xffffffc4\x0c\x5b\xffffffc3\x55\xffffff89"
+/* a57 */	"\xffffffe5\x53\xffffff83\xffffffec\x04\xffffffa1\x14\xffffff9f\x04\x08"
+/* a61 */	"\xffffff83\xfffffff8\xffffffff\x74\x13\xffffffbb\x14\xffffff9f\x04\x08"
+/* a6b */	"\x66\xffffff90\xffffff83\xffffffeb\x04\xffffffff\xffffffd0\xffffff8b\x03\xffffff83"
+/* a75 */	"\xfffffff8\xffffffff\x75\xfffffff4\xffffff83\xffffffc4\x04\x5b\x5d\xffffffc3"
+/* a7f */	"\xffffff90\xffffff90"
+
+Error: section offset mismatch
+sh_offset: a8c
+file_addr: a81
+
+/* Dump of section: .fini */
+const unsigned char* segments = 
+/* a81 */	"\x53\xffffff83\xffffffec\x08\xffffffe8\x00\x00\x00\x00\x5b"
+/* a8b */	"\xffffff81\xffffffc3\x5f\x15\x00\x00\xffffffe8\x0f\xfffffffb\xffffffff"
+/* a95 */	"\xffffffff\xffffff83\xffffffc4\x08\x5b\xffffffc3"
+
+Error: section offset mismatch
+sh_offset: aa8
+file_addr: a9b
+
+/* Dump of section: .rodata */
+const unsigned char* segments = 
+/* a9b */	"\x03\x00\x00\x00\x01\x00\x02\x00\x45\x54"
+/* aa5 */	"\x5f\x4e\x4f\x4e\x45\x00\x4e\x6f\x20\x66"
+/* aaf */	"\x69\x6c\x65\x20\x74\x79\x70\x65\x00\x45"
+/* ab9 */	"\x54\x5f\x52\x45\x4c\x00\x52\x65\x6c\x6f"
+/* ac3 */	"\x63\x61\x74\x61\x62\x6c\x65\x20\x66\x69"
+/* acd */	"\x6c\x65\x00\x45\x54\x5f\x45\x58\x45\x43"
+/* ad7 */	"\x00\x45\x78\x65\x63\x75\x74\x61\x62\x6c"
+/* ae1 */	"\x65\x20\x66\x69\x6c\x65\x00\x45\x54\x5f"
+/* aeb */	"\x44\x59\x4e\x00\x53\x68\x61\x72\x65\x64"
+/* af5 */	"\x20\x4f\x62\x6a\x65\x63\x74\x20\x66\x69"
+/* aff */	"\x6c\x65\x00\x45\x54\x5f\x43\x4f\x52\x45"
+/* b09 */	"\x00\x43\x6f\x72\x65\x20\x66\x69\x6c\x65"
+/* b13 */	"\x00\x45\x4d\x5f\x4e\x4f\x4e\x45\x00\x4e"
+/* b1d */	"\x6f\x20\x6d\x61\x63\x68\x69\x6e\x65\x00"
+/* b27 */	"\x45\x4d\x5f\x4d\x33\x32\x00\x41\x54\x26"
+/* b31 */	"\x54\x20\x57\x45\x20\x33\x32\x31\x30\x30"
+/* b3b */	"\x00\x45\x4d\x5f\x53\x50\x41\x52\x43\x00"
+/* b45 */	"\x53\x50\x41\x52\x43\x00\x45\x4d\x5f\x33"
+/* b4f */	"\x38\x36\x00\x49\x6e\x74\x65\x6c\x20\x38"
+/* b59 */	"\x30\x33\x38\x36\x00\x45\x4d\x5f\x36\x38"
+/* b63 */	"\x4b\x00\x4d\x6f\x74\x6f\x72\x6f\x6c\x61"
+/* b6d */	"\x20\x36\x38\x30\x30\x30\x00\x45\x4d\x5f"
+/* b77 */	"\x38\x38\x4b\x00\x4d\x6f\x74\x6f\x72\x6f"
+/* b81 */	"\x6c\x61\x20\x38\x38\x30\x30\x30\x00\x45"
+/* b8b */	"\x4d\x5f\x38\x36\x30\x00\x49\x6e\x74\x65"
+/* b95 */	"\x6c\x20\x38\x30\x38\x36\x30\x00\x45\x4d"
+/* b9f */	"\x5f\x4d\x49\x50\x53\x00\x4d\x49\x50\x53"
+/* ba9 */	"\x20\x52\x53\x33\x30\x30\x30\x00\x53\x48"
+/* bb3 */	"\x54\x5f\x4e\x55\x4c\x4c\x00\x00\x53\x48"
+/* bbd */	"\x54\x5f\x50\x52\x4f\x47\x42\x49\x54\x53"
+/* bc7 */	"\x00\x53\x48\x54\x5f\x53\x59\x4d\x54\x41"
+/* bd1 */	"\x42\x00\x53\x48\x54\x5f\x53\x54\x52\x54"
+/* bdb */	"\x41\x42\x00\x53\x48\x54\x5f\x52\x45\x4c"
+/* be5 */	"\x41\x00\x53\x48\x54\x5f\x48\x41\x53\x48"
+/* bef */	"\x00\x53\x48\x54\x5f\x44\x59\x4e\x41\x4d"
+/* bf9 */	"\x49\x43\x00\x53\x48\x54\x5f\x4e\x4f\x54"
+/* c03 */	"\x45\x00\x53\x48\x54\x5f\x4e\x4f\x42\x49"
+/* c0d */	"\x54\x53\x00\x53\x48\x54\x5f\x52\x45\x4c"
+/* c17 */	"\x00\x53\x48\x54\x5f\x53\x48\x4c\x49\x42"
+/* c21 */	"\x00\x53\x48\x54\x5f\x44\x59\x4e\x53\x59"
+/* c2b */	"\x4d\x00\x5c\x78\x25\x78\x00\x45\x6c\x66"
+/* c35 */	"\x33\x32\x5f\x45\x68\x64\x72\x20\x65\x6c"
+/* c3f */	"\x66\x5f\x68\x65\x61\x64\x65\x72\x20\x3d"
+/* c49 */	"\x20\x7b\x00\x2f\x2a\x20\x25\x30\x36\x78"
+/* c53 */	"\x20\x2a\x2f\x09\x22\x00\x22\x2c\x00\x55"
+/* c5d */	"\x4e\x4b\x4e\x4f\x57\x4e\x20\x54\x59\x50"
+/* c67 */	"\x45\x00\x2f\x2a\x20\x25\x30\x36\x78\x20"
+/* c71 */	"\x2a\x2f\x09\x25\x64\x2c\x09\x2f\x2a\x20"
+/* c7b */	"\x25\x73\x20\x2a\x2f\x0a\x00\x55\x4e\x4b"
+/* c85 */	"\x4e\x4f\x57\x4e\x20\x4d\x41\x43\x48\x49"
+/* c8f */	"\x4e\x45\x00\x25\x64\x0a\x00\x66\x61\x69"
+/* c99 */	"\x6c\x65\x64\x20\x74\x6f\x20\x6f\x70\x65"
+/* ca3 */	"\x6e\x20\x66\x69\x6c\x65\x20\x25\x73\x0a"
+/* cad */	"\x00\x66\x61\x69\x6c\x65\x64\x20\x74\x6f"
+/* cb7 */	"\x20\x73\x74\x61\x74\x20\x66\x69\x6c\x65"
+/* cc1 */	"\x20\x25\x73\x0a\x00\x00\x66\x61\x69\x6c"
+/* ccb */	"\x65\x64\x20\x74\x6f\x20\x72\x65\x61\x64"
+/* cd5 */	"\x20\x65\x6e\x74\x69\x72\x65\x20\x66\x69"
+/* cdf */	"\x6c\x65\x3a\x20\x25\x64\x2c\x20\x73\x69"
+/* ce9 */	"\x7a\x65\x20\x3d\x20\x25\x64\x0a\x00\x3a"
+/* cf3 */	"\x00"
+
+Error: section offset mismatch
+sh_offset: d04
+file_addr: cf4
+
+/* Dump of section: .eh_frame_hdr */
+const unsigned char* segments = 
+/* cf4 */	"\x01\x1b\x03\x3b\x50\x00\x00\x00\x09\x00"
+/* cfe */	"\x00\x00\xffffff8c\xfffffff7\xffffffff\xffffffff\x6c\x00\x00\x00"
+/* d08 */	"\x30\xfffffff9\xffffffff\xffffffff\xffffff90\x00\x00\x00\xffffff82\xfffffff9"
+/* d12 */	"\xffffffff\xffffffff\xffffffb0\x00\x00\x00\xffffffa9\xfffffffa\xffffffff\xffffffff"
+/* d1c */	"\xffffffd0\x00\x00\x00\x50\xfffffffb\xffffffff\xffffffff\xfffffff0\x00"
+/* d26 */	"\x00\x00\xffffffac\xfffffffc\xffffffff\xffffffff\x10\x01\x00\x00"
+/* d30 */	"\x1c\xfffffffd\xffffffff\xffffffff\x4c\x01\x00\x00\x1e\xfffffffd"
+/* d3a */	"\xffffffff\xffffffff\x60\x01\x00\x00\x2c\xfffffffd\xffffffff\xffffffff"
+/* d44 */	"\x74\x01\x00\x00"
+
+Error: section offset mismatch
+sh_offset: d58
+file_addr: d48
+
+/* Dump of section: .eh_frame */
+const unsigned char* segments = 
+/* d48 */	"\x14\x00\x00\x00\x00\x00\x00\x00\x01\x7a"
+/* d52 */	"\x52\x00\x01\x7c\x08\x01\x1b\x0c\x04\x04"
+/* d5c */	"\xffffff88\x01\x00\x00\x20\x00\x00\x00\x1c\x00"
+/* d66 */	"\x00\x00\x18\xfffffff7\xffffffff\xffffffff\xfffffff0\x00\x00\x00"
+/* d70 */	"\x00\x0e\x08\x46\x0e\x0c\x4a\x0f\x0b\x74"
+/* d7a */	"\x04\x78\x00\x3f\x1a\x3b\x2a\x32\x24\x22"
+/* d84 */	"\x1c\x00\x00\x00\x40\x00\x00\x00\xffffff98\xfffffff8"
+/* d8e */	"\xffffffff\xffffffff\x52\x00\x00\x00\x00\x41\x0e\x08"
+/* d98 */	"\xffffff85\x02\x42\x0d\x05\x02\x4e\xffffffc5\x0c\x04"
+/* da2 */	"\x04\x00\x1c\x00\x00\x00\x60\x00\x00\x00"
+/* dac */	"\xffffffca\xfffffff8\xffffffff\xffffffff\x27\x01\x00\x00\x00\x41"
+/* db6 */	"\x0e\x08\xffffff85\x02\x42\x0d\x05\x03\x23\x01"
+/* dc0 */	"\xffffffc5\x0c\x04\x04\x1c\x00\x00\x00\xffffff80\x00"
+/* dca */	"\x00\x00\xffffffd1\xfffffff9\xffffffff\xffffffff\xffffffa7\x00\x00\x00"
+/* dd4 */	"\x00\x41\x0e\x08\xffffff85\x02\x42\x0d\x05\x02"
+/* dde */	"\xffffffa3\xffffffc5\x0c\x04\x04\x00\x1c\x00\x00\x00"
+/* de8 */	"\xffffffa0\x00\x00\x00\x58\xfffffffa\xffffffff\xffffffff\x4d\x01"
+/* df2 */	"\x00\x00\x00\x41\x0e\x08\xffffff85\x02\x42\x0d"
+/* dfc */	"\x05\x03\x49\x01\xffffffc5\x0c\x04\x04\x38\x00"
+/* e06 */	"\x00\x00\xffffffc0\x00\x00\x00\xffffff94\xfffffffb\xffffffff\xffffffff"
+/* e10 */	"\x61\x00\x00\x00\x00\x41\x0e\x08\xffffff85\x02"
+/* e1a */	"\x41\x0e\x0c\xffffff87\x03\x41\x0e\x10\xffffff86\x04"
+/* e24 */	"\x41\x0e\x14\xffffff83\x05\x4e\x0e\x30\x02\x4a"
+/* e2e */	"\x0e\x14\x41\x0e\x10\xffffffc3\x41\x0e\x0c\xffffffc6"
+/* e38 */	"\x41\x0e\x08\xffffffc7\x41\x0e\x04\xffffffc5\x10\x00"
+/* e42 */	"\x00\x00\xfffffffc\x00\x00\x00\xffffffc8\xfffffffb\xffffffff\xffffffff"
+/* e4c */	"\x02\x00\x00\x00\x00\x00\x00\x00\x10\x00"
+/* e56 */	"\x00\x00\x10\x01\x00\x00\xffffffb6\xfffffffb\xffffffff\xffffffff"
+/* e60 */	"\x04\x00\x00\x00\x00\x00\x00\x00\x1c\x00"
+/* e6a */	"\x00\x00\x24\x01\x00\x00\xffffffb0\xfffffffb\xffffffff\xffffffff"
+/* e74 */	"\x30\x00\x00\x00\x00\x41\x0e\x08\xffffff83\x02"
+/* e7e */	"\x43\x0e\x14\x6a\x0e\x08\x41\x0e\x04\xffffffc3"
+/* e88 */	"\x00\x00\x00\x00"
+
+Error: section offset mismatch
+sh_offset: f14
+file_addr: e8c
+
+/* Dump of section: .ctors */
+const unsigned char* segments = 
+/* e8c */	"\xffffffff\xffffffff\xffffffff\xffffffff\x00\x00\x00\x00"
+
+Error: section offset mismatch
+sh_offset: f1c
+file_addr: e94
+
+/* Dump of section: .dtors */
+const unsigned char* segments = 
+/* e94 */	"\xffffffff\xffffffff\xffffffff\xffffffff\x00\x00\x00\x00"
+
+Error: section offset mismatch
+sh_offset: f24
+file_addr: e9c
+
+/* Dump of section: .jcr */
+const unsigned char* segments = 
+/* e9c */	"\x00\x00\x00\x00"
+
+Error: section offset mismatch
+sh_offset: f28
+file_addr: ea0
+
+/* Dump of section: .dynamic */
+const unsigned char* segments = 
+/* ea0 */	"\x01\x00\x00\x00\x10\x00\x00\x00\x0c\x00"
+/* eaa */	"\x00\x00\x58\xffffff84\x04\x08\x0d\x00\x00\x00"
+/* eb4 */	"\xffffff8c\xffffff8a\x04\x08\xfffffff5\xfffffffe\xffffffff\x6f\xffffffac\xffffff81"
+/* ebe */	"\x04\x08\x05\x00\x00\x00\xffffffe0\xffffff82\x04\x08"
+/* ec8 */	"\x06\x00\x00\x00\xffffffd0\xffffff81\x04\x08\x0a\x00"
+/* ed2 */	"\x00\x00\xffffffa6\x00\x00\x00\x0b\x00\x00\x00"
+/* edc */	"\x10\x00\x00\x00\x15\x00\x00\x00\x00\x00"
+/* ee6 */	"\x00\x00\x03\x00\x00\x00\xfffffff4\xffffff9f\x04\x08"
+/* ef0 */	"\x02\x00\x00\x00\x70\x00\x00\x00\x14\x00"
+/* efa */	"\x00\x00\x11\x00\x00\x00\x17\x00\x00\x00"
+/* f04 */	"\xffffffe8\xffffff83\x04\x08\x11\x00\x00\x00\xffffffd8\xffffff83"
+/* f0e */	"\x04\x08\x12\x00\x00\x00\x10\x00\x00\x00"
+/* f18 */	"\x13\x00\x00\x00\x08\x00\x00\x00\xfffffffe\xffffffff"
+/* f22 */	"\xffffffff\x6f\xffffffa8\xffffff83\x04\x08\xffffffff\xffffffff\xffffffff\x6f"
+/* f2c */	"\x01\x00\x00\x00\xfffffff0\xffffffff\xffffffff\x6f\xffffff86\xffffff83"
+/* f36 */	"\x04\x08\x00\x00\x00\x00\x00\x00\x00\x00"
+/* f40 */	"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+/* f4a */	"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+/* f54 */	"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+/* f5e */	"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+"
+
+Error: section offset mismatch
+sh_offset: ff0
+file_addr: f68
+
+/* Dump of section: .got */
+const unsigned char* segments = 
+/* f68 */	"\x00\x00\x00\x00"
+
+Error: section offset mismatch
+sh_offset: ff4
+file_addr: f6c
+
+/* Dump of section: .got.plt */
+const unsigned char* segments = 
+/* f6c */	"\x28\xffffff9f\x04\x08\x00\x00\x00\x00\x00\x00"
+/* f76 */	"\x00\x00\xffffffa6\xffffff84\x04\x08\xffffffb6\xffffff84\x04\x08"
+/* f80 */	"\xffffffc6\xffffff84\x04\x08\xffffffd6\xffffff84\x04\x08\xffffffe6\xffffff84"
+/* f8a */	"\x04\x08\xfffffff6\xffffff84\x04\x08\x06\xffffff85\x04\x08"
+/* f94 */	"\x16\xffffff85\x04\x08\x26\xffffff85\x04\x08\x36\xffffff85"
+/* f9e */	"\x04\x08\x46\xffffff85\x04\x08\x56\xffffff85\x04\x08"
+/* fa8 */	"\x66\xffffff85\x04\x08\x76\xffffff85\x04\x08"
+
+Error: section offset mismatch
+sh_offset: 1040
+file_addr: fb0
+
+/* Dump of section: .data */
+const unsigned char* segments = 
+/* fb0 */	"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+/* fba */	"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+/* fc4 */	"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+/* fce */	"\x00\x00\xffffffb0\xffffff8a\x04\x08\x00\x00\x00\x00"
+/* fd8 */	"\xffffffb8\xffffff8a\x04\x08\xffffffc5\xffffff8a\x04\x08\x01\x00"
+/* fe2 */	"\x00\x00\xffffffcc\xffffff8a\x04\x08\xffffffdd\xffffff8a\x04\x08"
+/* fec */	"\x02\x00\x00\x00\xffffffe5\xffffff8a\x04\x08\xfffffff5\xffffff8a"
+/* ff6 */	"\x04\x08\x03\x00\x00\x00\xfffffffc\xffffff8a\x04\x08"
+/* 1000 */	"\x0f\xffffff8b\x04\x08\x04\x00\x00\x00\x17\xffffff8b"
+/* 100a */	"\x04\x08\x00\x00\x00\x00\x21\xffffff8b\x04\x08"
+/* 1014 */	"\x00\x00\x00\x00\x29\xffffff8b\x04\x08\x34\xffffff8b"
+/* 101e */	"\x04\x08\x01\x00\x00\x00\x3b\xffffff8b\x04\x08"
+/* 1028 */	"\x49\xffffff8b\x04\x08\x02\x00\x00\x00\x52\xffffff8b"
+/* 1032 */	"\x04\x08\x58\xffffff8b\x04\x08\x03\x00\x00\x00"
+/* 103c */	"\x5f\xffffff8b\x04\x08\x6b\xffffff8b\x04\x08\x04\x00"
+/* 1046 */	"\x00\x00\x72\xffffff8b\x04\x08\xffffff81\xffffff8b\x04\x08"
+/* 1050 */	"\x05\x00\x00\x00\xffffff88\xffffff8b\x04\x08\xffffff97\xffffff8b"
+/* 105a */	"\x04\x08\x07\x00\x00\x00\xffffff9e\xffffff8b\x04\x08"
+/* 1064 */	"\xffffffaa\xffffff8b\x04\x08\x08\x00\x00\x00\xffffffb2\xffffff8b"
+/* 106e */	"\x04\x08\xffffffbe\xffffff8b\x04\x08\x00\x00\x00\x00"
+/* 1078 */	"\xffffffc7\xffffff8b\x04\x08\xffffffc8\xffffff8b\x04\x08\x01\x00"
+/* 1082 */	"\x00\x00\xffffffc7\xffffff8b\x04\x08\xffffffd5\xffffff8b\x04\x08"
+/* 108c */	"\x02\x00\x00\x00\xffffffc7\xffffff8b\x04\x08\xffffffe0\xffffff8b"
+/* 1096 */	"\x04\x08\x03\x00\x00\x00\xffffffc7\xffffff8b\x04\x08"
+/* 10a0 */	"\xffffffeb\xffffff8b\x04\x08\x04\x00\x00\x00\xffffffc7\xffffff8b"
+/* 10aa */	"\x04\x08\xfffffff4\xffffff8b\x04\x08\x05\x00\x00\x00"
+/* 10b4 */	"\xffffffc7\xffffff8b\x04\x08\xfffffffd\xffffff8b\x04\x08\x06\x00"
+/* 10be */	"\x00\x00\xffffffc7\xffffff8b\x04\x08\x09\xffffff8c\x04\x08"
+/* 10c8 */	"\x07\x00\x00\x00\xffffffc7\xffffff8b\x04\x08\x12\xffffff8c"
+/* 10d2 */	"\x04\x08\x08\x00\x00\x00\xffffffc7\xffffff8b\x04\x08"
+/* 10dc */	"\x1d\xffffff8c\x04\x08\x09\x00\x00\x00\xffffffc7\xffffff8b"
+/* 10e6 */	"\x04\x08\x25\xffffff8c\x04\x08\x0a\x00\x00\x00"
+/* 10f0 */	"\xffffffc7\xffffff8b\x04\x08\x2f\xffffff8c\x04\x08\x0b\x00"
+/* 10fa */	"\x00\x00\xffffffc7\xffffff8b\x04\x08"
+
+Error: section offset mismatch
+sh_offset: 1190
+file_addr: 1100
+
+/* Dump of section: .bss */
+const unsigned char* segments = 
+/* 1100 */	"\x47\x43\x43\x3a\x20\x28\x55\x62\x75\x6e"
+/* 110a */	"\x74\x75"
+
+Error: section offset mismatch
+sh_offset: 1190
+file_addr: 110c
+
+/* Dump of section: .comment */
+const unsigned char* segments = 
+/* 110c */	"\x47\x43\x43\x3a\x20\x28\x55\x62\x75\x6e"
+/* 1116 */	"\x74\x75\x2f\x4c\x69\x6e\x61\x72\x6f\x20"
+/* 1120 */	"\x34\x2e\x36\x2e\x31\x2d\x39\x75\x62\x75"
+/* 112a */	"\x6e\x74\x75\x33\x29\x20\x34\x2e\x36\x2e"
+/* 1134 */	"\x31\x00"
+
+Error: section offset mismatch
+sh_offset: 11ba
+file_addr: 1136
+
+/* Dump of section: .shstrtab */
+const unsigned char* segments = 
+/* 1136 */	"\x00\x2e\x73\x79\x6d\x74\x61\x62\x00\x2e"
+/* 1140 */	"\x73\x74\x72\x74\x61\x62\x00\x2e\x73\x68"
+/* 114a */	"\x73\x74\x72\x74\x61\x62\x00\x2e\x69\x6e"
+/* 1154 */	"\x74\x65\x72\x70\x00\x2e\x6e\x6f\x74\x65"
+/* 115e */	"\x2e\x41\x42\x49\x2d\x74\x61\x67\x00\x2e"
+/* 1168 */	"\x6e\x6f\x74\x65\x2e\x67\x6e\x75\x2e\x62"
+/* 1172 */	"\x75\x69\x6c\x64\x2d\x69\x64\x00\x2e\x67"
+/* 117c */	"\x6e\x75\x2e\x68\x61\x73\x68\x00\x2e\x64"
+/* 1186 */	"\x79\x6e\x73\x79\x6d\x00\x2e\x64\x79\x6e"
+/* 1190 */	"\x73\x74\x72\x00\x2e\x67\x6e\x75\x2e\x76"
+/* 119a */	"\x65\x72\x73\x69\x6f\x6e\x00\x2e\x67\x6e"
+/* 11a4 */	"\x75\x2e\x76\x65\x72\x73\x69\x6f\x6e\x5f"
+/* 11ae */	"\x72\x00\x2e\x72\x65\x6c\x2e\x64\x79\x6e"
+/* 11b8 */	"\x00\x2e\x72\x65\x6c\x2e\x70\x6c\x74\x00"
+/* 11c2 */	"\x2e\x69\x6e\x69\x74\x00\x2e\x74\x65\x78"
+/* 11cc */	"\x74\x00\x2e\x66\x69\x6e\x69\x00\x2e\x72"
+/* 11d6 */	"\x6f\x64\x61\x74\x61\x00\x2e\x65\x68\x5f"
+/* 11e0 */	"\x66\x72\x61\x6d\x65\x5f\x68\x64\x72\x00"
+/* 11ea */	"\x2e\x65\x68\x5f\x66\x72\x61\x6d\x65\x00"
+/* 11f4 */	"\x2e\x63\x74\x6f\x72\x73\x00\x2e\x64\x74"
+/* 11fe */	"\x6f\x72\x73\x00\x2e\x6a\x63\x72\x00\x2e"
+/* 1208 */	"\x64\x79\x6e\x61\x6d\x69\x63\x00\x2e\x67"
+/* 1212 */	"\x6f\x74\x00\x2e\x67\x6f\x74\x2e\x70\x6c"
+/* 121c */	"\x74\x00\x2e\x64\x61\x74\x61\x00\x2e\x62"
+/* 1226 */	"\x73\x73\x00\x2e\x63\x6f\x6d\x6d\x65\x6e"
+/* 1230 */	"\x74\x00"
+
+Error: section offset mismatch
+sh_offset: 1768
+file_addr: 1232
+
+/* Dump of section: .symtab */
+const unsigned char* segments = 
+/* 1232 */	"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+/* 123c */	"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+/* 1246 */	"\x54\xffffff81\x04\x08\x00\x00\x00\x00\x03\x00"
+/* 1250 */	"\x01\x00\x00\x00\x00\x00\x68\xffffff81\x04\x08"
+/* 125a */	"\x00\x00\x00\x00\x03\x00\x02\x00\x00\x00"
+/* 1264 */	"\x00\x00\xffffff88\xffffff81\x04\x08\x00\x00\x00\x00"
+/* 126e */	"\x03\x00\x03\x00\x00\x00\x00\x00\xffffffac\xffffff81"
+/* 1278 */	"\x04\x08\x00\x00\x00\x00\x03\x00\x04\x00"
+/* 1282 */	"\x00\x00\x00\x00\xffffffd0\xffffff81\x04\x08\x00\x00"
+/* 128c */	"\x00\x00\x03\x00\x05\x00\x00\x00\x00\x00"
+/* 1296 */	"\xffffffe0\xffffff82\x04\x08\x00\x00\x00\x00\x03\x00"
+/* 12a0 */	"\x06\x00\x00\x00\x00\x00\xffffff86\xffffff83\x04\x08"
+/* 12aa */	"\x00\x00\x00\x00\x03\x00\x07\x00\x00\x00"
+/* 12b4 */	"\x00\x00\xffffffa8\xffffff83\x04\x08\x00\x00\x00\x00"
+/* 12be */	"\x03\x00\x08\x00\x00\x00\x00\x00\xffffffd8\xffffff83"
+/* 12c8 */	"\x04\x08\x00\x00\x00\x00\x03\x00\x09\x00"
+/* 12d2 */	"\x00\x00\x00\x00\xffffffe8\xffffff83\x04\x08\x00\x00"
+/* 12dc */	"\x00\x00\x03\x00\x0a\x00\x00\x00\x00\x00"
+/* 12e6 */	"\x58\xffffff84\x04\x08\x00\x00\x00\x00\x03\x00"
+/* 12f0 */	"\x0b\x00\x00\x00\x00\x00\xffffff90\xffffff84\x04\x08"
+/* 12fa */	"\x00\x00\x00\x00\x03\x00\x0c\x00\x00\x00"
+/* 1304 */	"\x00\x00\xffffff80\xffffff85\x04\x08\x00\x00\x00\x00"
+/* 130e */	"\x03\x00\x0d\x00\x00\x00\x00\x00\xffffff8c\xffffff8a"
+/* 1318 */	"\x04\x08\x00\x00\x00\x00\x03\x00\x0e\x00"
+/* 1322 */	"\x00\x00\x00\x00\xffffffa8\xffffff8a\x04\x08\x00\x00"
+/* 132c */	"\x00\x00\x03\x00\x0f\x00\x00\x00\x00\x00"
+/* 1336 */	"\x04\xffffff8d\x04\x08\x00\x00\x00\x00\x03\x00"
+/* 1340 */	"\x10\x00\x00\x00\x00\x00\x58\xffffff8d\x04\x08"
+/* 134a */	"\x00\x00\x00\x00\x03\x00\x11\x00\x00\x00"
+/* 1354 */	"\x00\x00\x14\xffffff9f\x04\x08\x00\x00\x00\x00"
+/* 135e */	"\x03\x00\x12\x00\x00\x00\x00\x00\x1c\xffffff9f"
+/* 1368 */	"\x04\x08\x00\x00\x00\x00\x03\x00\x13\x00"
+/* 1372 */	"\x00\x00\x00\x00\x24\xffffff9f\x04\x08\x00\x00"
+/* 137c */	"\x00\x00\x03\x00\x14\x00\x00\x00\x00\x00"
+/* 1386 */	"\x28\xffffff9f\x04\x08\x00\x00\x00\x00\x03\x00"
+/* 1390 */	"\x15\x00\x00\x00\x00\x00\xfffffff0\xffffff9f\x04\x08"
+/* 139a */	"\x00\x00\x00\x00\x03\x00\x16\x00\x00\x00"
+/* 13a4 */	"\x00\x00\xfffffff4\xffffff9f\x04\x08\x00\x00\x00\x00"
+/* 13ae */	"\x03\x00\x17\x00\x00\x00\x00\x00\x40\xffffffa0"
+/* 13b8 */	"\x04\x08\x00\x00\x00\x00\x03\x00\x18\x00"
+/* 13c2 */	"\x00\x00\x00\x00\xffffff90\xffffffa1\x04\x08\x00\x00"
+/* 13cc */	"\x00\x00\x03\x00\x19\x00\x00\x00\x00\x00"
+/* 13d6 */	"\x00\x00\x00\x00\x00\x00\x00\x00\x03\x00"
+/* 13e0 */	"\x1a\x00\x01\x00\x00\x00\x00\x00\x00\x00"
+/* 13ea */	"\x00\x00\x00\x00\x04\x00\xfffffff1\xffffffff\x0c\x00"
+/* 13f4 */	"\x00\x00\x14\xffffff9f\x04\x08\x00\x00\x00\x00"
+/* 13fe */	"\x01\x00\x12\x00\x1a\x00\x00\x00\x1c\xffffff9f"
+/* 1408 */	"\x04\x08\x00\x00\x00\x00\x01\x00\x13\x00"
+/* 1412 */	"\x28\x00\x00\x00\x24\xffffff9f\x04\x08\x00\x00"
+/* 141c */	"\x00\x00\x01\x00\x14\x00\x35\x00\x00\x00"
+/* 1426 */	"\xffffffb0\xffffff85\x04\x08\x00\x00\x00\x00\x02\x00"
+/* 1430 */	"\x0d\x00\x4b\x00\x00\x00\xffffff94\xffffffa1\x04\x08"
+/* 143a */	"\x01\x00\x00\x00\x01\x00\x19\x00\x5a\x00"
+/* 1444 */	"\x00\x00\xffffff98\xffffffa1\x04\x08\x04\x00\x00\x00"
+/* 144e */	"\x01\x00\x19\x00\x68\x00\x00\x00\x10\xffffff86"
+/* 1458 */	"\x04\x08\x00\x00\x00\x00\x02\x00\x0d\x00"
+/* 1462 */	"\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+/* 146c */	"\x00\x00\x04\x00\xfffffff1\xffffffff\x74\x00\x00\x00"
+/* 1476 */	"\x18\xffffff9f\x04\x08\x00\x00\x00\x00\x01\x00"
+/* 1480 */	"\x12\x00\xffffff81\x00\x00\x00\xffffff98\xffffff8e\x04\x08"
+/* 148a */	"\x00\x00\x00\x00\x01\x00\x11\x00\xffffff8f\x00"
+/* 1494 */	"\x00\x00\x24\xffffff9f\x04\x08\x00\x00\x00\x00"
+/* 149e */	"\x01\x00\x14\x00\xffffff9b\x00\x00\x00\x60\xffffff8a"
+/* 14a8 */	"\x04\x08\x00\x00\x00\x00\x02\x00\x0d\x00"
+/* 14b2 */	"\xffffffb1\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+/* 14bc */	"\x00\x00\x04\x00\xfffffff1\xffffffff\xffffffc1\x00\x00\x00"
+/* 14c6 */	"\x14\xffffff9f\x04\x08\x00\x00\x00\x00\x00\x00"
+/* 14d0 */	"\x12\x00\xffffffd2\x00\x00\x00\x28\xffffff9f\x04\x08"
+/* 14da */	"\x00\x00\x00\x00\x01\x00\x15\x00\xffffffdb\x00"
+/* 14e4 */	"\x00\x00\x14\xffffff9f\x04\x08\x00\x00\x00\x00"
+/* 14ee */	"\x00\x00\x12\x00\xffffffee\x00\x00\x00\xfffffff4\xffffff9f"
+/* 14f8 */	"\x04\x08\x00\x00\x00\x00\x01\x00\x17\x00"
+/* 1502 */	"\x04\x01\x00\x00\x20\xffffff8a\x04\x08\x02\x00"
+/* 150c */	"\x00\x00\x12\x00\x0d\x00\x14\x01\x00\x00"
+/* 1516 */	"\x30\xffffff8a\x04\x08\x30\x00\x00\x00\x12\x02"
+/* 1520 */	"\x0d\x00\x1b\x01\x00\x00\x22\xffffff8a\x04\x08"
+/* 152a */	"\x00\x00\x00\x00\x12\x02\x0d\x00\x32\x01"
+/* 1534 */	"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+/* 153e */	"\x12\x00\x00\x00\x42\x01\x00\x00\x40\xffffffa0"
+/* 1548 */	"\x04\x08\x00\x00\x00\x00\x20\x00\x18\x00"
+/* 1552 */	"\x4d\x01\x00\x00\x00\x00\x00\x00\x00\x00"
+/* 155c */	"\x00\x00\x12\x00\x00\x00\x5f\x01\x00\x00"
+/* 1566 */	"\xffffff90\xffffffa1\x04\x08\x04\x00\x00\x00\x11\x00"
+/* 1570 */	"\x19\x00\x71\x01\x00\x00\x00\x00\x00\x00"
+/* 157a */	"\x00\x00\x00\x00\x12\x00\x00\x00\xffffff81\x01"
+/* 1584 */	"\x00\x00\x30\xffffff8a\x04\x08\x30\x00\x00\x00"
+/* 158e */	"\x22\x02\x0d\x00\xffffff86\x01\x00\x00\xffffff90\xffffffa1"
+/* 1598 */	"\x04\x08\x00\x00\x00\x00\x10\x00\xfffffff1\xffffffff"
+/* 15a2 */	"\xffffff8d\x01\x00\x00\xffffff8c\xffffff8a\x04\x08\x00\x00"
+/* 15ac */	"\x00\x00\x12\x00\x0e\x00\xffffff93\x01\x00\x00"
+/* 15b6 */	"\x00\x00\x00\x00\x00\x00\x00\x00\x12\x00"
+/* 15c0 */	"\x00\x00\xffffffaf\x01\x00\x00\x00\x00\x00\x00"
+/* 15ca */	"\x00\x00\x00\x00\x12\x00\x00\x00\xffffffc2\x01"
+/* 15d4 */	"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+/* 15de */	"\x12\x00\x00\x00\xffffffd4\x01\x00\x00\x20\xffffff9f"
+/* 15e8 */	"\x04\x08\x00\x00\x00\x00\x11\x02\x13\x00"
+/* 15f2 */	"\xffffffe1\x01\x00\x00\x60\xffffffa0\x04\x08\x3c\x00"
+/* 15fc */	"\x00\x00\x11\x00\x18\x00\xffffffee\x01\x00\x00"
+/* 1606 */	"\x00\x00\x00\x00\x00\x00\x00\x00\x12\x00"
+/* 1610 */	"\x00\x00\x00\x02\x00\x00\x40\xffffffa0\x04\x08"
+/* 161a */	"\x00\x00\x00\x00\x10\x00\x18\x00\x0d\x02"
+/* 1624 */	"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+/* 162e */	"\x12\x00\x00\x00\x1d\x02\x00\x00\x00\x00"
+/* 1638 */	"\x00\x00\x00\x00\x00\x00\x20\x00\x00\x00"
+/* 1642 */	"\x2c\x02\x00\x00\x00\x00\x00\x00\x00\x00"
+/* 164c */	"\x00\x00\x12\x00\x00\x00\x3c\x02\x00\x00"
+/* 1656 */	"\x44\xffffffa0\x04\x08\x00\x00\x00\x00\x11\x02"
+/* 1660 */	"\x18\x00\x49\x02\x00\x00\x00\x00\x00\x00"
+/* 166a */	"\x00\x00\x00\x00\x12\x00\x00\x00\x59\x02"
+/* 1674 */	"\x00\x00\xffffffac\xffffff8a\x04\x08\x04\x00\x00\x00"
+/* 167e */	"\x11\x00\x0f\x00\x68\x02\x00\x00\x34\xffffff86"
+/* 1688 */	"\x04\x08\x52\x00\x00\x00\x12\x00\x0d\x00"
+/* 1692 */	"\x79\x02\x00\x00\x00\x00\x00\x00\x00\x00"
+/* 169c */	"\x00\x00\x12\x00\x00\x00\xffffff96\x02\x00\x00"
+/* 16a6 */	"\x00\x00\x00\x00\x00\x00\x00\x00\x12\x00"
+/* 16b0 */	"\x00\x00\xffffffa9\x02\x00\x00\xffffffb0\xffffff89\x04\x08"
+/* 16ba */	"\x61\x00\x00\x00\x12\x00\x0d\x00\xffffffb9\x02"
+/* 16c4 */	"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+/* 16ce */	"\x12\x00\x00\x00\xffffffcc\x02\x00\x00\xffffff9c\xffffffa1"
+/* 16d8 */	"\x04\x08\x00\x00\x00\x00\x10\x00\xfffffff1\xffffffff"
+/* 16e2 */	"\xffffffd1\x02\x00\x00\xffffff80\xffffff85\x04\x08\x00\x00"
+/* 16ec */	"\x00\x00\x12\x00\x0d\x00\xffffffd8\x02\x00\x00"
+/* 16f6 */	"\xffffffa8\xffffff8a\x04\x08\x04\x00\x00\x00\x11\x00"
+/* 1700 */	"\x0f\x00\xffffffdf\x02\x00\x00\xffffff90\xffffffa1\x04\x08"
+/* 170a */	"\x00\x00\x00\x00\x10\x00\xfffffff1\xffffffff\xffffffeb\x02"
+/* 1714 */	"\x00\x00\x54\xffffff88\x04\x08\x4d\x01\x00\x00"
+/* 171e */	"\x12\x00\x0d\x00\xfffffff0\x02\x00\x00\xffffff86\xffffff86"
+/* 1728 */	"\x04\x08\x27\x01\x00\x00\x12\x00\x0d\x00"
+/* 1732 */	"\x01\x03\x00\x00\x00\xffffffa1\x04\x08\xffffff90\x00"
+/* 173c */	"\x00\x00\x11\x00\x18\x00\x0d\x03\x00\x00"
+/* 1746 */	"\x00\x00\x00\x00\x00\x00\x00\x00\x20\x00"
+/* 1750 */	"\x00\x00\x21\x03\x00\x00\xffffffa0\xffffffa0\x04\x08"
+/* 175a */	"\x60\x00\x00\x00\x11\x00\x18\x00\x2d\x03"
+/* 1764 */	"\x00\x00\x58\xffffff84\x04\x08\x00\x00\x00\x00"
+/* 176e */	"\x12\x00\x0b\x00\x33\x03\x00\x00\xffffffad\xffffff87"
+/* 1778 */	"\x04\x08\xffffffa7\x00\x00\x00\x12\x00\x0d\x00"
+"
+
+Error: section offset mismatch
+sh_offset: 1cb8
+file_addr: 1782
+
+/* Dump of section: .strtab */
+const unsigned char* segments = 
+/* 1782 */	"\x00\x63\x72\x74\x73\x74\x75\x66\x66\x2e"
+/* 178c */	"\x63\x00\x5f\x5f\x43\x54\x4f\x52\x5f\x4c"
+/* 1796 */	"\x49\x53\x54\x5f\x5f\x00\x5f\x5f\x44\x54"
+/* 17a0 */	"\x4f\x52\x5f\x4c\x49\x53\x54\x5f\x5f\x00"
+/* 17aa */	"\x5f\x5f\x4a\x43\x52\x5f\x4c\x49\x53\x54"
+/* 17b4 */	"\x5f\x5f\x00\x5f\x5f\x64\x6f\x5f\x67\x6c"
+/* 17be */	"\x6f\x62\x61\x6c\x5f\x64\x74\x6f\x72\x73"
+/* 17c8 */	"\x5f\x61\x75\x78\x00\x63\x6f\x6d\x70\x6c"
+/* 17d2 */	"\x65\x74\x65\x64\x2e\x36\x30\x38\x36\x00"
+/* 17dc */	"\x64\x74\x6f\x72\x5f\x69\x64\x78\x2e\x36"
+/* 17e6 */	"\x30\x38\x38\x00\x66\x72\x61\x6d\x65\x5f"
+/* 17f0 */	"\x64\x75\x6d\x6d\x79\x00\x5f\x5f\x43\x54"
+/* 17fa */	"\x4f\x52\x5f\x45\x4e\x44\x5f\x5f\x00\x5f"
+/* 1804 */	"\x5f\x46\x52\x41\x4d\x45\x5f\x45\x4e\x44"
+/* 180e */	"\x5f\x5f\x00\x5f\x5f\x4a\x43\x52\x5f\x45"
+/* 1818 */	"\x4e\x44\x5f\x5f\x00\x5f\x5f\x64\x6f\x5f"
+/* 1822 */	"\x67\x6c\x6f\x62\x61\x6c\x5f\x63\x74\x6f"
+/* 182c */	"\x72\x73\x5f\x61\x75\x78\x00\x62\x69\x6e"
+/* 1836 */	"\x61\x72\x79\x32\x73\x6f\x75\x72\x63\x65"
+/* 1840 */	"\x2e\x63\x00\x5f\x5f\x69\x6e\x69\x74\x5f"
+/* 184a */	"\x61\x72\x72\x61\x79\x5f\x65\x6e\x64\x00"
+/* 1854 */	"\x5f\x44\x59\x4e\x41\x4d\x49\x43\x00\x5f"
+/* 185e */	"\x5f\x69\x6e\x69\x74\x5f\x61\x72\x72\x61"
+/* 1868 */	"\x79\x5f\x73\x74\x61\x72\x74\x00\x5f\x47"
+/* 1872 */	"\x4c\x4f\x42\x41\x4c\x5f\x4f\x46\x46\x53"
+/* 187c */	"\x45\x54\x5f\x54\x41\x42\x4c\x45\x5f\x00"
+/* 1886 */	"\x5f\x5f\x6c\x69\x62\x63\x5f\x63\x73\x75"
+/* 1890 */	"\x5f\x66\x69\x6e\x69\x00\x5f\x5f\x73\x74"
+/* 189a */	"\x61\x74\x00\x5f\x5f\x69\x36\x38\x36\x2e"
+/* 18a4 */	"\x67\x65\x74\x5f\x70\x63\x5f\x74\x68\x75"
+/* 18ae */	"\x6e\x6b\x2e\x62\x78\x00\x72\x65\x61\x64"
+/* 18b8 */	"\x40\x40\x47\x4c\x49\x42\x43\x5f\x32\x2e"
+/* 18c2 */	"\x30\x00\x64\x61\x74\x61\x5f\x73\x74\x61"
+/* 18cc */	"\x72\x74\x00\x70\x72\x69\x6e\x74\x66\x40"
+/* 18d6 */	"\x40\x47\x4c\x49\x42\x43\x5f\x32\x2e\x30"
+/* 18e0 */	"\x00\x73\x74\x64\x65\x72\x72\x40\x40\x47"
+/* 18ea */	"\x4c\x49\x42\x43\x5f\x32\x2e\x30\x00\x66"
+/* 18f4 */	"\x72\x65\x65\x40\x40\x47\x4c\x49\x42\x43"
+/* 18fe */	"\x5f\x32\x2e\x30\x00\x73\x74\x61\x74\x00"
+/* 1908 */	"\x5f\x65\x64\x61\x74\x61\x00\x5f\x66\x69"
+/* 1912 */	"\x6e\x69\x00\x5f\x5f\x73\x74\x61\x63\x6b"
+/* 191c */	"\x5f\x63\x68\x6b\x5f\x66\x61\x69\x6c\x40"
+/* 1926 */	"\x40\x47\x4c\x49\x42\x43\x5f\x32\x2e\x34"
+/* 1930 */	"\x00\x5f\x5f\x78\x73\x74\x61\x74\x40\x40"
+/* 193a */	"\x47\x4c\x49\x42\x43\x5f\x32\x2e\x30\x00"
+/* 1944 */	"\x70\x65\x72\x72\x6f\x72\x40\x40\x47\x4c"
+/* 194e */	"\x49\x42\x43\x5f\x32\x2e\x30\x00\x5f\x5f"
+/* 1958 */	"\x44\x54\x4f\x52\x5f\x45\x4e\x44\x5f\x5f"
+/* 1962 */	"\x00\x6f\x62\x6a\x65\x63\x74\x5f\x74\x79"
+/* 196c */	"\x70\x65\x73\x00\x6d\x61\x6c\x6c\x6f\x63"
+/* 1976 */	"\x40\x40\x47\x4c\x49\x42\x43\x5f\x32\x2e"
+/* 1980 */	"\x30\x00\x5f\x5f\x64\x61\x74\x61\x5f\x73"
+/* 198a */	"\x74\x61\x72\x74\x00\x70\x75\x74\x73\x40"
+/* 1994 */	"\x40\x47\x4c\x49\x42\x43\x5f\x32\x2e\x30"
+/* 199e */	"\x00\x5f\x5f\x67\x6d\x6f\x6e\x5f\x73\x74"
+/* 19a8 */	"\x61\x72\x74\x5f\x5f\x00\x65\x78\x69\x74"
+/* 19b2 */	"\x40\x40\x47\x4c\x49\x42\x43\x5f\x32\x2e"
+/* 19bc */	"\x30\x00\x5f\x5f\x64\x73\x6f\x5f\x68\x61"
+/* 19c6 */	"\x6e\x64\x6c\x65\x00\x6f\x70\x65\x6e\x40"
+/* 19d0 */	"\x40\x47\x4c\x49\x42\x43\x5f\x32\x2e\x30"
+/* 19da */	"\x00\x5f\x49\x4f\x5f\x73\x74\x64\x69\x6e"
+/* 19e4 */	"\x5f\x75\x73\x65\x64\x00\x70\x72\x69\x6e"
+/* 19ee */	"\x74\x5f\x62\x69\x6e\x61\x72\x79\x32\x73"
+/* 19f8 */	"\x72\x63\x00\x5f\x5f\x6c\x69\x62\x63\x5f"
+/* 1a02 */	"\x73\x74\x61\x72\x74\x5f\x6d\x61\x69\x6e"
+/* 1a0c */	"\x40\x40\x47\x4c\x49\x42\x43\x5f\x32\x2e"
+/* 1a16 */	"\x30\x00\x66\x70\x72\x69\x6e\x74\x66\x40"
+/* 1a20 */	"\x40\x47\x4c\x49\x42\x43\x5f\x32\x2e\x30"
+/* 1a2a */	"\x00\x5f\x5f\x6c\x69\x62\x63\x5f\x63\x73"
+/* 1a34 */	"\x75\x5f\x69\x6e\x69\x74\x00\x70\x75\x74"
+/* 1a3e */	"\x63\x68\x61\x72\x40\x40\x47\x4c\x49\x42"
+/* 1a48 */	"\x43\x5f\x32\x2e\x30\x00\x5f\x65\x6e\x64"
+/* 1a52 */	"\x00\x5f\x73\x74\x61\x72\x74\x00\x5f\x66"
+/* 1a5c */	"\x70\x5f\x68\x77\x00\x5f\x5f\x62\x73\x73"
+/* 1a66 */	"\x5f\x73\x74\x61\x72\x74\x00\x6d\x61\x69"
+/* 1a70 */	"\x6e\x00\x70\x72\x69\x6e\x74\x5f\x65\x6c"
+/* 1a7a */	"\x66\x5f\x68\x65\x61\x64\x65\x72\x00\x65"
+/* 1a84 */	"\x6c\x66\x5f\x73\x68\x74\x79\x70\x65\x73"
+/* 1a8e */	"\x00\x5f\x4a\x76\x5f\x52\x65\x67\x69\x73"
+/* 1a98 */	"\x74\x65\x72\x43\x6c\x61\x73\x73\x65\x73"
+/* 1aa2 */	"\x00\x65\x6c\x66\x5f\x6d\x61\x63\x68\x69"
+/* 1aac */	"\x6e\x65\x00\x5f\x69\x6e\x69\x74\x00\x74"
+/* 1ab6 */	"\x65\x73\x74\x00"
+
+Elf32_Shdr sht = {
+{
+/* Section:  */
+/* 001aba */	0,	/* Section name (string tbl index) */
+/* 001abe */	0x0,	/* SHT_NULL */
+/* 001ac2 */	0x0,	/* Section flags */
+/* 001ac6 */	0x0,	/* Section virtual addr at execution */
+/* 001aca */	0x0,	/* Section file offset */
+/* 001ace */	0,	/* Section size in bytes */
+/* 001ad2 */	0,	/* Link to another section */
+/* 001ad6 */	0,	/* Additional section information */
+/* 001ada */	0,	/* Section alignment  */
+/* 001ade */	0,	/* Entry size if section holds table */
+}
+{
+/* Section: .interp */
+/* 001ae2 */	27,	/* Section name (string tbl index) */
+/* 001ae6 */	0x1,	/* SHT_PROGBITS */
+/* 001aea */	0x2,	/* Section flags */
+/* 001aee */	0x8048154,	/* Section virtual addr at execution */
+/* 001af2 */	0x154,	/* Section file offset */
+/* 001af6 */	19,	/* Section size in bytes */
+/* 001afa */	0,	/* Link to another section */
+/* 001afe */	0,	/* Additional section information */
+/* 001b02 */	1,	/* Section alignment  */
+/* 001b06 */	0,	/* Entry size if section holds table */
+}
+{
+/* Section: .note.ABI-tag */
+/* 001b0a */	35,	/* Section name (string tbl index) */
+/* 001b0e */	0x7,	/* SHT_NOTE */
+/* 001b12 */	0x2,	/* Section flags */
+/* 001b16 */	0x8048168,	/* Section virtual addr at execution */
+/* 001b1a */	0x168,	/* Section file offset */
+/* 001b1e */	32,	/* Section size in bytes */
+/* 001b22 */	0,	/* Link to another section */
+/* 001b26 */	0,	/* Additional section information */
+/* 001b2a */	4,	/* Section alignment  */
+/* 001b2e */	0,	/* Entry size if section holds table */
+}
+{
+/* Section: .note.gnu.build-id */
+/* 001b32 */	49,	/* Section name (string tbl index) */
+/* 001b36 */	0x7,	/* SHT_NOTE */
+/* 001b3a */	0x2,	/* Section flags */
+/* 001b3e */	0x8048188,	/* Section virtual addr at execution */
+/* 001b42 */	0x188,	/* Section file offset */
+/* 001b46 */	36,	/* Section size in bytes */
+/* 001b4a */	0,	/* Link to another section */
+/* 001b4e */	0,	/* Additional section information */
+/* 001b52 */	4,	/* Section alignment  */
+/* 001b56 */	0,	/* Entry size if section holds table */
+}
+{
+/* Section: .gnu.hash */
+/* 001b5a */	68,	/* Section name (string tbl index) */
+/* 001b5e */	0x6ffffff6,	/* UNKNOWN */
+/* 001b62 */	0x2,	/* Section flags */
+/* 001b66 */	0x80481ac,	/* Section virtual addr at execution */
+/* 001b6a */	0x1ac,	/* Section file offset */
+/* 001b6e */	36,	/* Section size in bytes */
+/* 001b72 */	5,	/* Link to another section */
+/* 001b76 */	0,	/* Additional section information */
+/* 001b7a */	4,	/* Section alignment  */
+/* 001b7e */	4,	/* Entry size if section holds table */
+}
+{
+/* Section: .dynsym */
+/* 001b82 */	78,	/* Section name (string tbl index) */
+/* 001b86 */	0xb,	/* SHT_DYNSYM */
+/* 001b8a */	0x2,	/* Section flags */
+/* 001b8e */	0x80481d0,	/* Section virtual addr at execution */
+/* 001b92 */	0x1d0,	/* Section file offset */
+/* 001b96 */	272,	/* Section size in bytes */
+/* 001b9a */	6,	/* Link to another section */
+/* 001b9e */	1,	/* Additional section information */
+/* 001ba2 */	4,	/* Section alignment  */
+/* 001ba6 */	16,	/* Entry size if section holds table */
+}
+{
+/* Section: .dynstr */
+/* 001baa */	86,	/* Section name (string tbl index) */
+/* 001bae */	0x3,	/* SHT_STRTAB */
+/* 001bb2 */	0x2,	/* Section flags */
+/* 001bb6 */	0x80482e0,	/* Section virtual addr at execution */
+/* 001bba */	0x2e0,	/* Section file offset */
+/* 001bbe */	166,	/* Section size in bytes */
+/* 001bc2 */	0,	/* Link to another section */
+/* 001bc6 */	0,	/* Additional section information */
+/* 001bca */	1,	/* Section alignment  */
+/* 001bce */	0,	/* Entry size if section holds table */
+}
+{
+/* Section: .gnu.version */
+/* 001bd2 */	94,	/* Section name (string tbl index) */
+/* 001bd6 */	0x6fffffff,	/* UNKNOWN */
+/* 001bda */	0x2,	/* Section flags */
+/* 001bde */	0x8048386,	/* Section virtual addr at execution */
+/* 001be2 */	0x386,	/* Section file offset */
+/* 001be6 */	34,	/* Section size in bytes */
+/* 001bea */	5,	/* Link to another section */
+/* 001bee */	0,	/* Additional section information */
+/* 001bf2 */	2,	/* Section alignment  */
+/* 001bf6 */	2,	/* Entry size if section holds table */
+}
+{
+/* Section: .gnu.version_r */
+/* 001bfa */	107,	/* Section name (string tbl index) */
+/* 001bfe */	0x6ffffffe,	/* UNKNOWN */
+/* 001c02 */	0x2,	/* Section flags */
+/* 001c06 */	0x80483a8,	/* Section virtual addr at execution */
+/* 001c0a */	0x3a8,	/* Section file offset */
+/* 001c0e */	48,	/* Section size in bytes */
+/* 001c12 */	6,	/* Link to another section */
+/* 001c16 */	1,	/* Additional section information */
+/* 001c1a */	4,	/* Section alignment  */
+/* 001c1e */	0,	/* Entry size if section holds table */
+}
+{
+/* Section: .rel.dyn */
+/* 001c22 */	122,	/* Section name (string tbl index) */
+/* 001c26 */	0x9,	/* SHT_REL */
+/* 001c2a */	0x2,	/* Section flags */
+/* 001c2e */	0x80483d8,	/* Section virtual addr at execution */
+/* 001c32 */	0x3d8,	/* Section file offset */
+/* 001c36 */	16,	/* Section size in bytes */
+/* 001c3a */	5,	/* Link to another section */
+/* 001c3e */	0,	/* Additional section information */
+/* 001c42 */	4,	/* Section alignment  */
+/* 001c46 */	8,	/* Entry size if section holds table */
+}
+{
+/* Section: .rel.plt */
+/* 001c4a */	131,	/* Section name (string tbl index) */
+/* 001c4e */	0x9,	/* SHT_REL */
+/* 001c52 */	0x2,	/* Section flags */
+/* 001c56 */	0x80483e8,	/* Section virtual addr at execution */
+/* 001c5a */	0x3e8,	/* Section file offset */
+/* 001c5e */	112,	/* Section size in bytes */
+/* 001c62 */	5,	/* Link to another section */
+/* 001c66 */	12,	/* Additional section information */
+/* 001c6a */	4,	/* Section alignment  */
+/* 001c6e */	8,	/* Entry size if section holds table */
+}
+{
+/* Section: .init */
+/* 001c72 */	140,	/* Section name (string tbl index) */
+/* 001c76 */	0x1,	/* SHT_PROGBITS */
+/* 001c7a */	0x6,	/* Section flags */
+/* 001c7e */	0x8048458,	/* Section virtual addr at execution */
+/* 001c82 */	0x458,	/* Section file offset */
+/* 001c86 */	46,	/* Section size in bytes */
+/* 001c8a */	0,	/* Link to another section */
+/* 001c8e */	0,	/* Additional section information */
+/* 001c92 */	4,	/* Section alignment  */
+/* 001c96 */	0,	/* Entry size if section holds table */
+}
+{
+/* Section: .plt */
+/* 001c9a */	135,	/* Section name (string tbl index) */
+/* 001c9e */	0x1,	/* SHT_PROGBITS */
+/* 001ca2 */	0x6,	/* Section flags */
+/* 001ca6 */	0x8048490,	/* Section virtual addr at execution */
+/* 001caa */	0x490,	/* Section file offset */
+/* 001cae */	240,	/* Section size in bytes */
+/* 001cb2 */	0,	/* Link to another section */
+/* 001cb6 */	0,	/* Additional section information */
+/* 001cba */	16,	/* Section alignment  */
+/* 001cbe */	4,	/* Entry size if section holds table */
+}
+{
+/* Section: .text */
+/* 001cc2 */	146,	/* Section name (string tbl index) */
+/* 001cc6 */	0x1,	/* SHT_PROGBITS */
+/* 001cca */	0x6,	/* Section flags */
+/* 001cce */	0x8048580,	/* Section virtual addr at execution */
+/* 001cd2 */	0x580,	/* Section file offset */
+/* 001cd6 */	1292,	/* Section size in bytes */
+/* 001cda */	0,	/* Link to another section */
+/* 001cde */	0,	/* Additional section information */
+/* 001ce2 */	16,	/* Section alignment  */
+/* 001ce6 */	0,	/* Entry size if section holds table */
+}
+{
+/* Section: .fini */
+/* 001cea */	152,	/* Section name (string tbl index) */
+/* 001cee */	0x1,	/* SHT_PROGBITS */
+/* 001cf2 */	0x6,	/* Section flags */
+/* 001cf6 */	0x8048a8c,	/* Section virtual addr at execution */
+/* 001cfa */	0xa8c,	/* Section file offset */
+/* 001cfe */	26,	/* Section size in bytes */
+/* 001d02 */	0,	/* Link to another section */
+/* 001d06 */	0,	/* Additional section information */
+/* 001d0a */	4,	/* Section alignment  */
+/* 001d0e */	0,	/* Entry size if section holds table */
+}
+{
+/* Section: .rodata */
+/* 001d12 */	158,	/* Section name (string tbl index) */
+/* 001d16 */	0x1,	/* SHT_PROGBITS */
+/* 001d1a */	0x2,	/* Section flags */
+/* 001d1e */	0x8048aa8,	/* Section virtual addr at execution */
+/* 001d22 */	0xaa8,	/* Section file offset */
+/* 001d26 */	601,	/* Section size in bytes */
+/* 001d2a */	0,	/* Link to another section */
+/* 001d2e */	0,	/* Additional section information */
+/* 001d32 */	4,	/* Section alignment  */
+/* 001d36 */	0,	/* Entry size if section holds table */
+}
+{
+/* Section: .eh_frame_hdr */
+/* 001d3a */	166,	/* Section name (string tbl index) */
+/* 001d3e */	0x1,	/* SHT_PROGBITS */
+/* 001d42 */	0x2,	/* Section flags */
+/* 001d46 */	0x8048d04,	/* Section virtual addr at execution */
+/* 001d4a */	0xd04,	/* Section file offset */
+/* 001d4e */	84,	/* Section size in bytes */
+/* 001d52 */	0,	/* Link to another section */
+/* 001d56 */	0,	/* Additional section information */
+/* 001d5a */	4,	/* Section alignment  */
+/* 001d5e */	0,	/* Entry size if section holds table */
+}
+{
+/* Section: .eh_frame */
+/* 001d62 */	180,	/* Section name (string tbl index) */
+/* 001d66 */	0x1,	/* SHT_PROGBITS */
+/* 001d6a */	0x2,	/* Section flags */
+/* 001d6e */	0x8048d58,	/* Section virtual addr at execution */
+/* 001d72 */	0xd58,	/* Section file offset */
+/* 001d76 */	324,	/* Section size in bytes */
+/* 001d7a */	0,	/* Link to another section */
+/* 001d7e */	0,	/* Additional section information */
+/* 001d82 */	4,	/* Section alignment  */
+/* 001d86 */	0,	/* Entry size if section holds table */
+}
+{
+/* Section: .ctors */
+/* 001d8a */	190,	/* Section name (string tbl index) */
+/* 001d8e */	0x1,	/* SHT_PROGBITS */
+/* 001d92 */	0x3,	/* Section flags */
+/* 001d96 */	0x8049f14,	/* Section virtual addr at execution */
+/* 001d9a */	0xf14,	/* Section file offset */
+/* 001d9e */	8,	/* Section size in bytes */
+/* 001da2 */	0,	/* Link to another section */
+/* 001da6 */	0,	/* Additional section information */
+/* 001daa */	4,	/* Section alignment  */
+/* 001dae */	0,	/* Entry size if section holds table */
+}
+{
+/* Section: .dtors */
+/* 001db2 */	197,	/* Section name (string tbl index) */
+/* 001db6 */	0x1,	/* SHT_PROGBITS */
+/* 001dba */	0x3,	/* Section flags */
+/* 001dbe */	0x8049f1c,	/* Section virtual addr at execution */
+/* 001dc2 */	0xf1c,	/* Section file offset */
+/* 001dc6 */	8,	/* Section size in bytes */
+/* 001dca */	0,	/* Link to another section */
+/* 001dce */	0,	/* Additional section information */
+/* 001dd2 */	4,	/* Section alignment  */
+/* 001dd6 */	0,	/* Entry size if section holds table */
+}
+{
+/* Section: .jcr */
+/* 001dda */	204,	/* Section name (string tbl index) */
+/* 001dde */	0x1,	/* SHT_PROGBITS */
+/* 001de2 */	0x3,	/* Section flags */
+/* 001de6 */	0x8049f24,	/* Section virtual addr at execution */
+/* 001dea */	0xf24,	/* Section file offset */
+/* 001dee */	4,	/* Section size in bytes */
+/* 001df2 */	0,	/* Link to another section */
+/* 001df6 */	0,	/* Additional section information */
+/* 001dfa */	4,	/* Section alignment  */
+/* 001dfe */	0,	/* Entry size if section holds table */
+}
+{
+/* Section: .dynamic */
+/* 001e02 */	209,	/* Section name (string tbl index) */
+/* 001e06 */	0x6,	/* SHT_DYNAMIC */
+/* 001e0a */	0x3,	/* Section flags */
+/* 001e0e */	0x8049f28,	/* Section virtual addr at execution */
+/* 001e12 */	0xf28,	/* Section file offset */
+/* 001e16 */	200,	/* Section size in bytes */
+/* 001e1a */	6,	/* Link to another section */
+/* 001e1e */	0,	/* Additional section information */
+/* 001e22 */	4,	/* Section alignment  */
+/* 001e26 */	8,	/* Entry size if section holds table */
+}
+{
+/* Section: .got */
+/* 001e2a */	218,	/* Section name (string tbl index) */
+/* 001e2e */	0x1,	/* SHT_PROGBITS */
+/* 001e32 */	0x3,	/* Section flags */
+/* 001e36 */	0x8049ff0,	/* Section virtual addr at execution */
+/* 001e3a */	0xff0,	/* Section file offset */
+/* 001e3e */	4,	/* Section size in bytes */
+/* 001e42 */	0,	/* Link to another section */
+/* 001e46 */	0,	/* Additional section information */
+/* 001e4a */	4,	/* Section alignment  */
+/* 001e4e */	4,	/* Entry size if section holds table */
+}
+{
+/* Section: .got.plt */
+/* 001e52 */	223,	/* Section name (string tbl index) */
+/* 001e56 */	0x1,	/* SHT_PROGBITS */
+/* 001e5a */	0x3,	/* Section flags */
+/* 001e5e */	0x8049ff4,	/* Section virtual addr at execution */
+/* 001e62 */	0xff4,	/* Section file offset */
+/* 001e66 */	68,	/* Section size in bytes */
+/* 001e6a */	0,	/* Link to another section */
+/* 001e6e */	0,	/* Additional section information */
+/* 001e72 */	4,	/* Section alignment  */
+/* 001e76 */	4,	/* Entry size if section holds table */
+}
+{
+/* Section: .data */
+/* 001e7a */	232,	/* Section name (string tbl index) */
+/* 001e7e */	0x1,	/* SHT_PROGBITS */
+/* 001e82 */	0x3,	/* Section flags */
+/* 001e86 */	0x804a040,	/* Section virtual addr at execution */
+/* 001e8a */	0x1040,	/* Section file offset */
+/* 001e8e */	336,	/* Section size in bytes */
+/* 001e92 */	0,	/* Link to another section */
+/* 001e96 */	0,	/* Additional section information */
+/* 001e9a */	32,	/* Section alignment  */
+/* 001e9e */	0,	/* Entry size if section holds table */
+}
+{
+/* Section: .bss */
+/* 001ea2 */	238,	/* Section name (string tbl index) */
+/* 001ea6 */	0x8,	/* SHT_NOBITS */
+/* 001eaa */	0x3,	/* Section flags */
+/* 001eae */	0x804a190,	/* Section virtual addr at execution */
+/* 001eb2 */	0x1190,	/* Section file offset */
+/* 001eb6 */	12,	/* Section size in bytes */
+/* 001eba */	0,	/* Link to another section */
+/* 001ebe */	0,	/* Additional section information */
+/* 001ec2 */	4,	/* Section alignment  */
+/* 001ec6 */	0,	/* Entry size if section holds table */
+}
+{
+/* Section: .comment */
+/* 001eca */	243,	/* Section name (string tbl index) */
+/* 001ece */	0x1,	/* SHT_PROGBITS */
+/* 001ed2 */	0x30,	/* Section flags */
+/* 001ed6 */	0x0,	/* Section virtual addr at execution */
+/* 001eda */	0x1190,	/* Section file offset */
+/* 001ede */	42,	/* Section size in bytes */
+/* 001ee2 */	0,	/* Link to another section */
+/* 001ee6 */	0,	/* Additional section information */
+/* 001eea */	1,	/* Section alignment  */
+/* 001eee */	1,	/* Entry size if section holds table */
+}
+{
+/* Section: .shstrtab */
+/* 001ef2 */	17,	/* Section name (string tbl index) */
+/* 001ef6 */	0x3,	/* SHT_STRTAB */
+/* 001efa */	0x0,	/* Section flags */
+/* 001efe */	0x0,	/* Section virtual addr at execution */
+/* 001f02 */	0x11ba,	/* Section file offset */
+/* 001f06 */	252,	/* Section size in bytes */
+/* 001f0a */	0,	/* Link to another section */
+/* 001f0e */	0,	/* Additional section information */
+/* 001f12 */	1,	/* Section alignment  */
+/* 001f16 */	0,	/* Entry size if section holds table */
+}
+{
+/* Section: .symtab */
+/* 001f1a */	1,	/* Section name (string tbl index) */
+/* 001f1e */	0x2,	/* SHT_SYMTAB */
+/* 001f22 */	0x0,	/* Section flags */
+/* 001f26 */	0x0,	/* Section virtual addr at execution */
+/* 001f2a */	0x1768,	/* Section file offset */
+/* 001f2e */	1360,	/* Section size in bytes */
+/* 001f32 */	29,	/* Link to another section */
+/* 001f36 */	45,	/* Additional section information */
+/* 001f3a */	4,	/* Section alignment  */
+/* 001f3e */	16,	/* Entry size if section holds table */
+}
+{
+/* Section: .strtab */
+/* 001f42 */	9,	/* Section name (string tbl index) */
+/* 001f46 */	0x3,	/* SHT_STRTAB */
+/* 001f4a */	0x0,	/* Section flags */
+/* 001f4e */	0x0,	/* Section virtual addr at execution */
+/* 001f52 */	0x1cb8,	/* Section file offset */
+/* 001f56 */	824,	/* Section size in bytes */
+/* 001f5a */	0,	/* Link to another section */
+/* 001f5e */	0,	/* Additional section information */
+/* 001f62 */	1,	/* Section alignment  */
+/* 001f66 */	0,	/* Entry size if section holds table */
+},

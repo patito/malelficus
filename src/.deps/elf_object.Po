@@ -35,7 +35,9 @@ elf_object.o: elf_object.c /usr/include/stdio.h /usr/include/features.h \
  /usr/include/i386-linux-gnu/bits/elfclass.h \
  /usr/include/i386-linux-gnu/bits/link.h \
  /usr/include/i386-linux-gnu/sys/stat.h \
- /usr/include/i386-linux-gnu/bits/stat.h types.h print_table.h
+ /usr/include/i386-linux-gnu/bits/stat.h types.h print_table.h \
+ header_types.inc machines.inc section_types.inc segment_types.inc \
+ segment_flags.inc
 
 /usr/include/stdio.h:
 
@@ -148,3 +150,13 @@ elf_object.h:
 types.h:
 
 print_table.h:
+
+header_types.inc:
+
+machines.inc:
+
+section_types.inc:
+
+segment_types.inc:
+
+segment_flags.inc:

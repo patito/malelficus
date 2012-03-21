@@ -41,11 +41,12 @@
 #include "util.h"
 #include "types.h"
 #include "elf_object.h"
+#include "reverse_elf.h"
 
 /**
  * function prototypes
  */
-void help(), help_entry_point(), help_dissect();
+void help(), help_entry_point(), help_dissect(), help_reverse_elf();
 void read_file(elf_object*);
 _u8 check_elf();
 _u8 saveFile(const char*, _u8*, off_t);
@@ -263,6 +264,68 @@ _u8 dissect(int argc, char** argv) {
   return SUCCESS;
 }
 
+void reverse_elf(int argc, char** argv) {
+  ElfW(Ehdr) *header = NULL;
+  ElfW(Phdr) *pheaders = NULL;
+  ElfW(Shdr) *sections = NULL;
+  elf_object input;
+  _u16 option = 0;
+  int opt;
+  FILE* fd = NULL;
+  char* c_filename = NULL;
+
+  init_elf_object(&input);
+
+  while((opt = getopt(argc, argv, "hi:o:")) != -1) {
+    switch(opt) {
+    case 'h':
+      help_reverse_elf();
+      break;
+    case 'i':
+      input.fname = optarg;
+      break;
+    case 'o':
+      c_filename = optarg;
+      break;
+    case ':':
+      LOG_WARN("malelficus: Error - Option `%c' needs a value\n\n", optopt);
+      help();
+      break;
+    case '?':
+      LOG_WARN("malelficus: Error - No such option: `%c'\n\n", optopt);
+      help_dissect();
+    }
+  }
+
+  if (input.fname == NULL) {
+    help_reverse_elf();
+    exit(0);
+  }
+  
+  if (c_filename == NULL) {
+    fd = stdout;
+  } else {
+    fd = fopen(c_filename, "w");
+    if (!fd) {
+      perror("Error when open file for write...");
+      exit(1);
+    }
+  }
+
+  read_file(&input);
+
+  reverse_elf2c(&input, fd);
+
+  if (fd) {
+    fclose(fd);
+  }
+  
+  if (input.mem != NULL) {
+    munmap(input.mem, input.st_info.st_size);
+  }
+  
+}
+
 int main(int argc, char **argv) {
   if(argc == 1) {
     LOG_WARN("This program needs arguments....\n\n");
@@ -275,6 +338,8 @@ int main(int argc, char **argv) {
     dissect(argc, argv);
   } else if (!strcmp("entry_point", argv[1])) {
     entry_point(argc, argv);
+  } else if (!strcmp("reverse_elf", argv[1])) {
+    reverse_elf(argc, argv);
   } else help();
 
   return 0;
@@ -346,6 +411,7 @@ void help() {
 
   SAY(" Commands:\n");
   SAY(" \tdissect\n");
+  SAY(" \treverse_elf\n");
   SAY(" \tentry_point\n");
   SAY(" \tinfect\n");
   
@@ -382,6 +448,17 @@ void help_dissect() {
   SAY(" -p\tDisplay Program Header Table\n");
   SAY(" -s\tDisplay Section Header Table\n");
   SAY(" -S\tDisplay Symbol Table\n");
+  exit(SUCCESS);
+}
+
+void help_reverse_elf() {
+  SAY("Reverse ELF binary\n");
+  SAY("./malelficus reverse_elf [-h] -i <input file> [,-o <output-file>]\n");
+  SAY("\tThis command reverse the ELF binary image in the C structs representation.\n");
+  SAY("\tIt will provide the chance of manual edit the binary image.\n");
+  SAY(" -h\treverse_elf help\n");
+  SAY(" -i <file>\tInput binary file\n");
+  SAY(" -o <file>\tOutput C source file\n");
   exit(SUCCESS);
 }
 

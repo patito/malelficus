@@ -18,20 +18,27 @@ typedef struct {
 
 typedef struct {
   char* name;
-  _u16 val;
+  _u32 val;
   char* desc;
 } elf_attr;
 
-#define N_OBJTYPES 5
-#define N_MACHINES 8
-#define N_SHTYPES 12
-
-extern elf_attr object_types[N_OBJTYPES];
-extern elf_attr elf_machine[N_MACHINES];
-extern elf_attr elf_shtypes[N_SHTYPES];
+extern elf_attr elf_object_types[];
+extern elf_attr elf_machine[];
+extern elf_attr elf_section_types[];
+extern elf_attr elf_segment_types[];
+extern elf_attr elf_segment_flags[];
 
 extern void init_elf_object(elf_object*);
 extern _u8 copy_elf_object(elf_object*, elf_object*);
+
+extern elf_attr* get_header_type(ElfW(Half) etype);
+extern elf_attr* get_section_type(ElfW(Half) stype);
+extern elf_attr* get_machine(ElfW(Half) emach);
+extern elf_attr* get_segment_type(ElfW(Word) seg);
+
+#define GET_ATTR_NAME(attr) attr != NULL ? (attr->name) : "UNKNOWN"
+#define GET_ATTR_DESC(attr) attr != NULL ? (attr->desc) : "UNKNOWN"
+
 extern void pretty_print_elf_header2(ElfW(Ehdr)*) __attribute__((deprecated));
 extern void pretty_print_elf_header(ElfW(Ehdr)*);
 extern void pretty_print_pht(ElfW(Ehdr)*, ElfW(Phdr)*);

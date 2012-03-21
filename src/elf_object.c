@@ -37,43 +37,85 @@
  * Object file types
  * see ELF Format Specification for more details
  */
-elf_attr object_types[N_OBJTYPES] = {
-  {"ET_NONE", ET_NONE, "No file type"},
-  {"ET_REL", ET_REL, "Relocatable file"},
-  {"ET_EXEC", ET_EXEC, "Executable file"},
-  {"ET_DYN", ET_DYN, "Shared Object file"},
-  {"ET_CORE", ET_CORE, "Core file"}
+elf_attr elf_object_types[] = {
+#include "header_types.inc"
 };
 
 /**
  * Possible target machines
  */
-elf_attr elf_machine[N_MACHINES] = {
-  { "EM_NONE", EM_NONE, "No machine"},
-  { "EM_M32", EM_M32, "AT&T WE 32100"},
-  { "EM_SPARC", EM_SPARC, "SPARC"},
-  { "EM_386", EM_386, "Intel 80386"},
-  { "EM_68K", EM_68K, "Motorola 68000"},
-  { "EM_88K", EM_88K, "Motorola 88000"},
-  { "EM_860", EM_860, "Intel 80860"},
-  { "EM_MIPS", EM_MIPS, "MIPS RS3000"}
+elf_attr elf_machine[] = {
+#include "machines.inc"
 };
 
-elf_attr elf_shtypes[N_SHTYPES] = {
-  {"SHT_NULL", SHT_NULL, ""},
-  {"SHT_PROGBITS", SHT_PROGBITS, ""},
-  {"SHT_SYMTAB", SHT_SYMTAB, ""},
-  {"SHT_STRTAB", SHT_STRTAB, ""},
-  {"SHT_RELA", SHT_RELA, ""},
-  {"SHT_HASH", SHT_HASH, ""},
-  {"SHT_DYNAMIC", SHT_DYNAMIC, ""},
-  {"SHT_NOTE", SHT_NOTE, ""},
-  {"SHT_NOBITS", SHT_NOBITS, ""},
-  {"SHT_REL", SHT_REL, ""},
-  {"SHT_SHLIB", SHT_SHLIB, ""},
-  {"SHT_DYNSYM", SHT_DYNSYM, ""}
+/**
+ * Possible section types
+ */
+elf_attr elf_section_types[] = {
+#include "section_types.inc"
 };
 
+/**
+ * Possible segment types
+ */
+elf_attr elf_segment_types[] = {
+#include "segment_types.inc"
+};
+
+/**
+ * Possible segment flags
+ */
+elf_attr elf_segment_flags[] = {
+#include "segment_flags.inc"
+};
+
+elf_attr* get_header_type(ElfW(Half) etype) {
+  _u8 i;
+
+  for (i = 0; i < sizeof(elf_object_types)/sizeof(elf_attr); i++) {
+    if (elf_object_types[i].val == etype) {
+      return &elf_object_types[i];
+    }
+  }
+
+  return NULL;
+}
+
+elf_attr* get_section_type(ElfW(Half) stype) {
+  _u8 i;
+
+  for (i = 0; i < sizeof(elf_section_types)/sizeof(elf_attr); i++) {
+    if (elf_section_types[i].val == stype) {
+      return  &elf_section_types[i];
+    }
+  }
+
+  return NULL;
+}
+
+elf_attr* get_machine(ElfW(Half) emach) {
+  _u8 i;
+
+  for (i = 0; i < sizeof(elf_machine)/sizeof(elf_attr); i++) {
+    if (elf_machine[i].val == emach) {
+      return &elf_machine[i];
+    }
+  }
+
+  return NULL;
+}
+
+elf_attr* get_segment_type(ElfW(Word) segtype) {
+  _u32 i;
+
+  for (i = 0; i < sizeof(elf_segment_types)/sizeof(elf_attr); i++) {
+    if (elf_segment_types[i].val == segtype) {
+      return &elf_segment_types[i];
+    }
+  }
+
+  return NULL;
+}
 
 void init_elf_object(elf_object* obj) {
   elf_object obj2;
@@ -118,12 +160,7 @@ void pretty_print_elf_header(ElfW(Ehdr)* header) {
   SET_COLNAME(cols[0], "e_type");
   SET_COLNAME(cols[1], "Object Type");
 
-  if (header->e_type == ET_LOPROC || header->e_type == ET_HIPROC || header->e_type >= N_OBJTYPES) {
-    SET_COLNAME(cols[2], "Processor specific");
-  } else {
-    SET_COLNAME(cols[2], object_types[header->e_type].desc);
-  }
-
+  SET_COLNAME(cols[2], GET_ATTR_DESC(get_header_type(header->e_type)));
   line.col = cols;
   line.n_col = 3;
 
@@ -207,9 +244,7 @@ void pretty_print_elf_header2(ElfW(Ehdr)* header) {
   if (header->e_type == ET_LOPROC || header->e_type == ET_HIPROC) {
     SAY("Processor-specific\n");
   } else {
-    if (header->e_type < N_OBJTYPES) {
-      SAY("%s\n", object_types[header->e_type].desc);
-    }
+    SAY("%s\n", GET_ATTR_NAME(get_header_type(header->e_type)));
   }
 
   SAY("\te_machine\tMachine\t\t\t\t");
@@ -306,7 +341,7 @@ void pretty_print_sht(elf_object* elf, ElfW(Ehdr)* header, ElfW(Shdr)* sections)
     strncpy(sect_name, (char*) elf->mem + sections[header->e_shstrndx].sh_offset + sections[i].sh_name, 12);
     
     _u8 sht_type = sect->sh_type;
-    SAY("| %d |\t0x%08x\t|\t0x%04x\t| %s%s|  %s\t|\n", i, sect->sh_addr, sect->sh_offset, sect_name, strlen(sect_name) > 5 ? "\t\t" : "\t\t\t", sht_type >= N_SHTYPES-1 ? "UNKNOWN" : elf_shtypes[sht_type].name);
+    SAY("| %d |\t0x%08x\t|\t0x%04x\t| %s%s|  %s\t|\n", i, sect->sh_addr, sect->sh_offset, sect_name, strlen(sect_name) > 5 ? "\t\t" : "\t\t\t", GET_ATTR_NAME(get_section_type(sht_type)));
   }
 }
 
