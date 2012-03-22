@@ -120,7 +120,7 @@ void test() {
 }
 
 int main(int argc, char** argv) {
-  int fd, n;
+  int fd, n, i;
   struct stat st;
   unsigned char *mem;
   ElfW(Ehdr)* header;
@@ -146,7 +146,30 @@ int main(int argc, char** argv) {
 
   header = (ElfW(Ehdr)*) mem;
 
-  print_elf_header(header);
+  printf("const char *c = \n");
+  for (i = 0; i < 100-2; i+=2) {
+    
+    if (i == 0) {
+      printf("\"");
+    }
+
+    if (i > 0 && (i % 16) == 0) {
+      printf("\"\n");
+    }
+    if (i > 0 && (i % 16) == 0) {
+      printf("\"");
+    }
+    
+    if ((i+1) < 100) {
+      printf("\\x%02x", (unsigned char) *(mem + i + 1));
+    }
+    
+    printf("\\x%02x", (unsigned char) *(mem + i));
+    if (i == 97 || i == 96) {
+      printf("\";\n");
+    }
+  }
+  
   
   free(mem);
   

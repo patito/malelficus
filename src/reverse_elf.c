@@ -71,13 +71,14 @@ typedef struct
 #define PRINT_ADDR(value, desc) do { PRINT_FILEADDR PRINT_C("\t0x%x,\t/* %s */\n", value, desc); file_addr += sizeof(value); } while(0)
 #define PRINT_ADDR_END(value, desc) do { PRINT_FILEADDR PRINT_C("\t0x%x\t/* %s */\n", value, desc); file_addr += sizeof(value); } while(0)
 #define PRINT_OFF(value, desc) PRINT_ADDR(value, desc)
+#define PADCHAR 0
 
 
 _u8 reverse_elf2c(elf_object* elf, FILE* fd) {
   ElfW(Ehdr)* header;
   ElfW(Phdr)* pheader;
   ElfW(Shdr)* sections;
-  unsigned int file_addr = 0, _i_, i, j;
+  unsigned int file_addr = 0, _i_, i, j, l;
 
   header = (ElfW(Ehdr)*) elf->mem;
   pheader = (ElfW(Phdr)*) (elf->mem + header->e_phoff);
@@ -126,62 +127,44 @@ _u8 reverse_elf2c(elf_object* elf, FILE* fd) {
 
   /* Dumping sections */
 
+  PRINT_C("const unsigned char* segments = \n");
+
   for (i = 0; i < header->e_shnum; i++) {
     ElfW(Shdr)* s = (ElfW(Shdr)*) (sections + i);
-    char* buf = (char*) (elf->mem + s->sh_offset);
+    unsigned char* buf = (unsigned char*) (elf->mem + s->sh_offset);
     _u8 count_str = 0;
     /* Jump SHT_NULL */
     if (s->sh_type == 0x00) {
       continue;
     }
 
-    if (file_addr != s->sh_offset) {
-      PRINT_C("Error: section offset mismatch\n");
-      PRINT_C("sh_offset: %x\n", s->sh_offset);
-      PRINT_C("file_addr: %x\n\n", file_addr);
-      
-    }
-    
+    file_addr = s->sh_offset;
+
     PRINT_C("/* Dump of section: %s */\n", (char*) elf->mem + sections[header->e_shstrndx].sh_offset + sections[i].sh_name);
-    PRINT_C("const unsigned char* segments = \n");
-    for (j = 0; j < s->sh_size; j++) {
+    for (j = 0; j < s->sh_size; j+=2) {
       if (count_str == 0) {
         PRINT_C("/* %x */\t\"", file_addr);
       }
-      
-      PRINT_C("\\x%02x", *buf);
-      if (count_str == 15) {
-        PRINT_C("\"\n");
-        count_str = 0;
-      } else if (j == (s->sh_size - 1)) {
-        PRINT_C("\"\n");
-      }else {
-        count_str++;
+
+      if ((j+1) < s->sh_size) {
+        PRINT_C("\\x%02x", *(buf+1));
+        file_addr += sizeof(*(buf+1));
       }
 
-      buf = buf+1;
+      PRINT_C("\\x%02x", *buf);
       file_addr += sizeof(*buf);
+      
+      if (j < (s->sh_size) && count_str >= 14) {
+        PRINT_C("\"\n");
+        count_str = 0;
+      } else {
+        count_str+=2;
+      }
+
+      buf = buf + 2;
     }
 
     PRINT_C("\n");
-
-    if (s->sh_addralign != 0 && s->sh_addralign != 1) {
-      if ((file_addr % 4) != 0) {
-        unsigned pad = (s->sh_addralign - (file_addr % s->sh_addralign));
-        file_addr += pad;
-        PRINT_C("padded %d bytes\n", pad);
-      }
-    } else {
-      if (file_addr % 4 != 0) {
-        file_addr += (2 - (file_addr % 2));
-      }
-    }
-    /*
-    if (s->sh_addralign != 0 && s->sh_addralign != 1) {
-      if ((file_addr % 4) != 0) {
-        file_addr += (s->sh_addralign - (file_addr % s->sh_addralign));
-      }
-      }*/
   }
 
   PRINT_C("Elf32_Shdr sht = {\n");
