@@ -103,7 +103,7 @@ _u8 reverse_elf2c(elf_object* elf, FILE* fd) {
   PRINT_WORD_END(header->e_shstrndx, "Section Header string table index");
   PRINT_C("};\n\n");
   
-  PRINT_C("Elf32_Phdr pht = {\n");
+  PRINT_C("Elf32_Phdr pht[%d] = {\n", header->e_phnum);
   for (i = 0; i < header->e_phnum; i++) {
     PRINT_C("{\n");
     ElfW(Phdr)* p = (ElfW(Phdr)*) (pheader + i);
@@ -118,6 +118,8 @@ _u8 reverse_elf2c(elf_object* elf, FILE* fd) {
     PRINT_C("}");
     if (i < (unsigned)(header->e_phnum - 1)) {
       PRINT_C(",");
+    } else {
+      PRINT_C("};");
     }
     
     PRINT_C("\n");
@@ -138,36 +140,59 @@ _u8 reverse_elf2c(elf_object* elf, FILE* fd) {
       continue;
     }
 
-    file_addr = s->sh_offset;
 
-    PRINT_C("/* Dump of section: %s */\n", (char*) elf->mem + sections[header->e_shstrndx].sh_offset + sections[i].sh_name);
-    for (j = 0; j < s->sh_size; j+=2) {
-      if (count_str == 0) {
-        PRINT_C("/* %x */\t\"", file_addr);
+    if (file_addr < s->sh_offset) {
+      PRINT_C("\n/* padding %d bytes */\n", s->sh_offset - file_addr);
+      
+      for (; file_addr < s->sh_offset; file_addr++) {
+        if (count_str == 0) {
+          PRINT_C("/* %x */\t\"", file_addr);
+        }
+
+        PRINT_C("\\x00");
+
+        if (count_str == 15) {
+          PRINT_C("\"\n");
+          count_str = 0;
+        } else {
+          count_str += 1;
+        }
       }
 
-      if ((j+1) < s->sh_size) {
-        PRINT_C("\\x%02x", *(buf+1));
-        file_addr += sizeof(*(buf+1));
+      if (count_str > 0) {
+        PRINT_C("\"\n\n");
+      }
+    }
+
+    count_str = 0;
+
+    PRINT_C("/* Dump of section: %s */\n", GET_SECTION_NAME(header, sections));
+    for (j = 0; j < s->sh_size; j++) {
+      if (count_str == 0) {
+        PRINT_C("/* %x */\t\"", file_addr);
       }
 
       PRINT_C("\\x%02x", *buf);
       file_addr += sizeof(*buf);
       
-      if (j < (s->sh_size) && count_str >= 14) {
-        PRINT_C("\"\n");
+      if (count_str == 15) {
+        PRINT_C("\"/* exit 1 */\n");
         count_str = 0;
       } else {
-        count_str+=2;
+        count_str += 1;
       }
 
-      buf = buf + 2;
+      buf = buf + 1;
     }
 
-    PRINT_C("\n");
+    if (count_str > 0) {
+      PRINT_C("\"/* exit 2*/\n");
+    }
   }
 
-  PRINT_C("Elf32_Shdr sht = {\n");
+  PRINT_C(";\n\n");
+
+  PRINT_C("Elf32_Shdr sht[%d] = {\n", header->e_shnum);
   for (i = 0; i < header->e_shnum; i++) {
     ElfW(Shdr)* s = (ElfW(Shdr)*) (sections + i);
     PRINT_C("{\n");
@@ -184,11 +209,15 @@ _u8 reverse_elf2c(elf_object* elf, FILE* fd) {
     PRINT_WORD(s->sh_addralign, "Section alignment ");
     PRINT_WORD(s->sh_entsize, "Entry size if section holds table");
     PRINT_C("}");
-    if (i == (unsigned)(header->e_shnum - 1)) {
+    if (i != (unsigned)(header->e_shnum - 1)) {
       PRINT_C(",");
+    } else {
+      PRINT_C("};\n");
     }
     PRINT_C("\n");
   }
+
+  PRINT_C(";\n\n");
 
   printf("header pointer: %p\n", header);
   printf("pht pointer: %p\n", pheader);

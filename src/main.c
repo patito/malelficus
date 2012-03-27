@@ -265,11 +265,7 @@ _u8 dissect(int argc, char** argv) {
 }
 
 void reverse_elf(int argc, char** argv) {
-  ElfW(Ehdr) *header = NULL;
-  ElfW(Phdr) *pheaders = NULL;
-  ElfW(Shdr) *sections = NULL;
   elf_object input;
-  _u16 option = 0;
   int opt;
   FILE* fd = NULL;
   char* c_filename = NULL;

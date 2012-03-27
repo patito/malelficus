@@ -33,13 +33,11 @@ extern _u8 copy_elf_object(elf_object*, elf_object*);
 
 extern elf_attr* get_header_type(ElfW(Half) etype);
 extern elf_attr* get_section_type(ElfW(Half) stype);
-extern elf_attr* get_machine(ElfW(Half) emach);
+extern elf_attr* get_machine(ElfW(Haklf) emach);
 extern elf_attr* get_segment_type(ElfW(Word) seg);
 
 #define GET_ATTR_NAME(attr) attr != NULL ? (attr->name) : "UNKNOWN"
 #define GET_ATTR_DESC(attr) attr != NULL ? (attr->desc) : "UNKNOWN"
-
-#define GET_SECTION_NAME(header, sections) (char*) (elf->mem + sections[header->e_shstrndx].sh_offset + sections[i].sh_name)
 
 extern void pretty_print_elf_header2(ElfW(Ehdr)*) __attribute__((deprecated));
 extern void pretty_print_elf_header(ElfW(Ehdr)*);
