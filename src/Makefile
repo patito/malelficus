@@ -32,7 +32,7 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
-bin_PROGRAMS = maleficus$(EXEEXT)
+bin_PROGRAMS = malelficus$(EXEEXT)
 subdir = src
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -45,10 +45,10 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
-am_maleficus_OBJECTS = main.$(OBJEXT) elf_object.$(OBJEXT) \
+am_malelficus_OBJECTS = main.$(OBJEXT) elf_object.$(OBJEXT) \
 	print_table.$(OBJEXT) reverse_elf.$(OBJEXT)
-maleficus_OBJECTS = $(am_maleficus_OBJECTS)
-maleficus_LDADD = $(LDADD)
+malelficus_OBJECTS = $(am_malelficus_OBJECTS)
+malelficus_LDADD = $(LDADD)
 DEFAULT_INCLUDES = -I. -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
@@ -57,8 +57,8 @@ COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 CCLD = $(CC)
 LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
-SOURCES = $(maleficus_SOURCES)
-DIST_SOURCES = $(maleficus_SOURCES)
+SOURCES = $(malelficus_SOURCES)
+DIST_SOURCES = $(malelficus_SOURCES)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -149,7 +149,7 @@ top_build_prefix = ../
 top_builddir = ..
 top_srcdir = ..
 AM_CFLAGS = -Wall -Wextra -O2
-maleficus_SOURCES = main.c elf_object.c print_table.c reverse_elf.c
+malelficus_SOURCES = main.c elf_object.c print_table.c reverse_elf.c
 all: all-am
 
 .SUFFIXES:
@@ -221,9 +221,9 @@ uninstall-binPROGRAMS:
 
 clean-binPROGRAMS:
 	-test -z "$(bin_PROGRAMS)" || rm -f $(bin_PROGRAMS)
-maleficus$(EXEEXT): $(maleficus_OBJECTS) $(maleficus_DEPENDENCIES) 
-	@rm -f maleficus$(EXEEXT)
-	$(LINK) $(maleficus_OBJECTS) $(maleficus_LDADD) $(LIBS)
+malelficus$(EXEEXT): $(malelficus_OBJECTS) $(malelficus_DEPENDENCIES) 
+	@rm -f malelficus$(EXEEXT)
+	$(LINK) $(malelficus_OBJECTS) $(malelficus_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
