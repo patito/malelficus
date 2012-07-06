@@ -25,7 +25,6 @@
 */
 
 #include <stdio.h>
-#include <stdint.h>
 #include <fcntl.h>
 #include <stdlib.h>
 #include <string.h>
@@ -37,17 +36,19 @@
 #include <elf.h>
 #include <link.h> /* ElfW(type) and others */
 
+#include "config.h"
 #include "defines.h"
 #include "util.h"
+#include "error.h"
 #include "types.h"
-#include "elf_object.h"
+#include "malelf_object.h"
 #include "reverse_elf.h"
+#include "infect.h"
 
 /**
  * function prototypes
  */
-void help(), help_entry_point(), help_dissect(), help_reverse_elf();
-void read_file(elf_object*);
+void help(), help_entry_point(), help_dissect(), help_reverse_elf(), help_infect(), help_copy();
 _u8 check_elf();
 _u8 saveFile(const char*, _u8*, off_t);
 _u8 entry_point(int argc, char** argv);
@@ -82,14 +83,10 @@ int quiet_mode = 0, verbose_mode = 0;
  * -o <file> output binary file
  */
 _u8 entry_point(int argc, char** argv) {
-  ElfW(Ehdr) *header = NULL;
   _u8 action = 0;
   _u32 offset_update = 0x00;
   int opt;
-  elf_object input, output;
-
-  init_elf_object(&input);
-  init_elf_object(&output);
+  malelf_object input, output;
 
 #define ACTION_GET 0x01
 #define ACTION_UPDATE 0x02
@@ -129,19 +126,14 @@ _u8 entry_point(int argc, char** argv) {
   }
 
   if (input.fname == NULL) {
-    LOG_WARN("No ELF binary file set to dissect!\n");
+    LOG_WARN("No ELF binary file set to get entry point!\n");
     help_entry_point();
   }
 
-  read_file(&input);
+  malelf_openr(&input, input.fname);
+  
   if (check_elf(input.mem) == ERROR) {
     LOG_ERROR("invalid ELF!!! aborting...\n");
-  }
-
-  header = (Elf32_Ehdr*)input.mem;
-
-  if (!header) {
-    LOG_ERROR("file not mapped to memory.\n");
   }
 
   if (action != ACTION_GET && action != ACTION_UPDATE) {
@@ -149,12 +141,11 @@ _u8 entry_point(int argc, char** argv) {
   }
 
   if (action == ACTION_GET) {
-    LOG_OFFSET("Entry point: 0x%x\n", header->e_entry);
+    LOG_OFFSET("Entry point: 0x%x\n", input.elf.elfh->e_entry);
   } else if (action == ACTION_UPDATE) {
     if (output.fname != NULL) {
-      copy_elf_object(&output, &input);
-      header = (ElfW(Ehdr*)) output.mem;
-      header->e_entry = offset_update;
+      copy_malelf_object_raw(&output, &input);
+      output.elf.elfh->e_entry = offset_update;
       saveFile(output.fname, output.mem, output.st_info.st_size);
       free(output.mem);
     } else {
@@ -169,12 +160,80 @@ _u8 entry_point(int argc, char** argv) {
   return SUCCESS;
 }
 
+_u8 copy(int argc, char** argv) {
+  malelf_object input, output;
+  char *input_filename = NULL, *output_filename = NULL;
+  int opt, copy_opt = 0;
+  malelf_add_section_t add_section;
+#define ADD_SECTION 0x01
+
+  input.fname = NULL;
+  output.fname = NULL;
+
+  while((opt = getopt(argc, argv, "han:d:i:o:")) != -1) {
+    switch(opt) {
+    case 'h':
+      help_copy();
+      break;
+    case 'a':
+      copy_opt |= ADD_SECTION;
+      break;
+    case 'n':
+      add_section.name = optarg;
+      break;
+    case 'd':
+      add_section.data_fname = optarg;
+      break;
+    case 'i':
+      input_filename = optarg;
+      break;
+    case 'o':
+      output_filename = optarg;
+      break;
+    case ':':
+      LOG_WARN("malelficus: Error - Option `%c' needs a value\n\n", optopt);
+      help();
+      break;
+    case '?':
+      LOG_WARN("malelficus: Error - No such option: `%c'\n\n", optopt);
+      help_copy();
+    }
+  }
+
+  if (input_filename == NULL) {
+    LOG_WARN("No ELF binary file set to copy. Use -i\n");
+    help_copy();
+  }
+
+  if (output_filename == NULL) {
+    LOG_WARN("No ELF binary output file. Use -o\n");
+    help_copy();
+  }
+
+  int ret = SUCCESS;
+
+  if ((ret = malelf_openr(&input, input_filename)) != SUCCESS) {
+    malelf_perror(ret);
+  }
+
+  if ((ret = malelf_openw(&output, output_filename)) != SUCCESS) {
+    malelf_perror(ret);
+  }
+
+  if ((copy_opt & ADD_SECTION) == ADD_SECTION) {
+    malelf_add_section(&input, &output, add_section);
+  }
+
+  malelf_close(&input);
+  malelf_close(&output);
+  
+  return 0;
+}
+
 _u8 dissect(int argc, char** argv) {
-  ElfW(Ehdr) *header = NULL;
-  ElfW(Phdr) *pheaders = NULL;
-  ElfW(Shdr) *sections = NULL;
-  elf_object input;
+  malelf_object input;
   _u16 option = 0;
+  char* input_filename = NULL;
   int opt;
 
 #define DISPLAY_EHT 0x01
@@ -205,7 +264,7 @@ _u8 dissect(int argc, char** argv) {
       option |= DISPLAY_STRTAB;
       break;
     case 'i':
-      input.fname = optarg;
+      input_filename = optarg;
       break;
     case ':':
       LOG_WARN("malelficus: Error - Option `%c' needs a value\n\n", optopt);
@@ -217,7 +276,7 @@ _u8 dissect(int argc, char** argv) {
     }
   }
 
-  if (input.fname == NULL) {
+  if (input_filename == NULL) {
     LOG_WARN("No ELF binary file set to dissect!\n");
     help_dissect();
   }
@@ -225,39 +284,33 @@ _u8 dissect(int argc, char** argv) {
   if (option == 0) {
     option = DISPLAY_EHT | DISPLAY_SHT | DISPLAY_PHT | DISPLAY_STRTAB;
   }
-    
 
-  read_file(&input);
-  if (check_elf(input.mem) == ERROR) {
-    LOG_ERROR("invalid ELF!!! aborting...\n");
+  int error = SUCCESS;
+
+  if ((error = malelf_openr(&input, input_filename)) != SUCCESS) {
+    malelf_perror(error);
+    malelf_fatal(error);
   }
 
-  header = (ElfW(Ehdr)*)input.mem;
-
-  if (!header) {
-    LOG_ERROR("file not mapped to memory.\n");
-  }
-
-  pheaders = (ElfW(Phdr)*) (input.mem + header->e_phoff);
-  sections = (ElfW(Shdr)*) (input.mem + header->e_shoff);
+  elf_t *elf = &input.elf;
 
   if ((option & DISPLAY_EHT) == DISPLAY_EHT) {
-    pretty_print_elf_header(header);
+    pretty_print_elf_header(elf->elfh);
     SAY("\n");
   }
 
   if ((option & DISPLAY_PHT) == DISPLAY_PHT) {
-    pretty_print_pht2(header, pheaders);
+    pretty_print_pht(elf->elfh, elf->elfp);
     SAY("\n");
   }
 
   if ((option & DISPLAY_SHT) == DISPLAY_SHT) {
-    pretty_print_sht(&input, header, sections);
+    pretty_print_sht(&input, elf->elfh, elf->elfs);
     SAY("\n");
   }
 
   if ((option & DISPLAY_STRTAB) == DISPLAY_STRTAB) {
-    pretty_print_strtab(&input, header, sections);
+    pretty_print_strtab(&input, elf->elfh, elf->elfs);
     SAY("\n");
   }
   
@@ -265,23 +318,39 @@ _u8 dissect(int argc, char** argv) {
 }
 
 void reverse_elf(int argc, char** argv) {
-  elf_object input;
-  int opt;
-  FILE* fd = NULL;
-  char* c_filename = NULL;
+  malelf_object input;
+  int opt_getopt = 0, opt = 0;
+  FILE *fd_output = NULL;
+  char* input_filename = NULL, *output_filename = NULL;
+#define REVERSE_ELF 1
+#define MOUNT_ELF 2
 
-  init_elf_object(&input);
-
-  while((opt = getopt(argc, argv, "hi:o:")) != -1) {
-    switch(opt) {
+  while((opt_getopt = getopt(argc, argv, "hmri:o:")) != -1) {
+    switch(opt_getopt) {
     case 'h':
       help_reverse_elf();
       break;
+    case 'r':
+      if (opt != 0) {
+        LOG_ERROR("-m OR -r is granted, not both.\n");
+        help_reverse_elf();
+        exit(1);
+      }
+      opt = REVERSE_ELF;
+      break;
+    case 'm':
+      if (opt != 0) {
+        LOG_ERROR("-m OR -r is granted, not both.\n");
+        help_reverse_elf();
+        exit(1);
+      }
+      opt = MOUNT_ELF;
+      break;
     case 'i':
-      input.fname = optarg;
+      input_filename = optarg;
       break;
     case 'o':
-      c_filename = optarg;
+      output_filename = optarg;
       break;
     case ':':
       LOG_WARN("malelficus: Error - Option `%c' needs a value\n\n", optopt);
@@ -293,36 +362,85 @@ void reverse_elf(int argc, char** argv) {
     }
   }
 
-  if (input.fname == NULL) {
+  if (input_filename == NULL) {
+    LOG_ERROR("-i input filename not specified.\n");
     help_reverse_elf();
-    exit(0);
+    exit(1);
   }
   
-  if (c_filename == NULL) {
-    fd = stdout;
+  if (output_filename == NULL) {
+    fd_output = stdout;
   } else {
-    fd = fopen(c_filename, "w");
-    if (!fd) {
+    fd_output = fopen(output_filename, "w");
+    if (!fd_output) {
       perror("Error when open file for write...");
       exit(1);
     }
   }
 
-  read_file(&input);
+  if (opt == REVERSE_ELF) {
+    input.fname = input_filename;
+    malelf_openr(&input, input.fname);
+    reverse_elf2c(&input, fd_output);
+  } else {
+    LOG_ERROR("-m or -r is required.\n");
+    help_reverse_elf();
+    exit(1);
+  }
 
-  reverse_elf2c(&input, fd);
-
-  if (fd) {
-    fclose(fd);
+  if (output_filename && fd_output) {
+    fclose(fd_output);
   }
   
   if (input.mem != NULL) {
     munmap(input.mem, input.st_info.st_size);
   }
-  
 }
 
-int main(int argc, char **argv) {
+void infect(int argc, char** argv) {
+  int opt;
+  malelf_object input, output;
+
+  while((opt = getopt(argc, argv, "hi:o:")) != -1) {
+    switch(opt) {
+    case 'h':
+      help_infect();
+      break;
+    case 'i':
+      input.fname = optarg;
+      break;
+    case 'o':
+      output.fname = optarg;
+      break;
+    case ':':
+      LOG_WARN("malelficus: Error - Option `%c' needs a value\n\n", optopt);
+      help_infect();
+      break;
+    case '?':
+      LOG_WARN("malelficus: Error - No such option: `%c'\n\n", optopt);
+      help_infect();
+    }
+  }
+
+  if (input.fname == NULL) {
+    help_infect();
+    exit(1);
+  }
+
+  if (output.fname == NULL) {
+    help_infect();
+    exit(1);
+  }
+
+  malelf_openr(&input, input.fname);
+  /*create_elf_file(&output);*/
+  input.is_readonly = 1;
+  malelf_infect(&input, &output);
+}
+
+int
+main(int argc, char **argv) {
+
   if(argc == 1) {
     LOG_WARN("This program needs arguments....\n\n");
     help(1);
@@ -330,69 +448,19 @@ int main(int argc, char **argv) {
 
   if (!strcmp("-h", argv[1])) {
     help();
-  } else if (!strcmp("dissect", argv[1])) {
+  }  else if (!strcmp("dissect", argv[1])) {
     dissect(argc, argv);
   } else if (!strcmp("entry_point", argv[1])) {
     entry_point(argc, argv);
   } else if (!strcmp("reverse_elf", argv[1])) {
     reverse_elf(argc, argv);
+  } else if (!strcmp("infect", argv[1])) {
+    infect(argc, argv);
+  } else if (!strcmp("copy", argv[1])) {
+    copy(argc, argv);
   } else help();
 
   return 0;
-}
-
-void read_file(elf_object* elf) {
-  elf->fd = open(elf->fname, O_RDONLY);
-
-  if (elf->fd == -1) {
-    LOG_ERROR("Erro ao abrir arquivo!\n");
-    exit(1);
-  }
-
-  fstat(elf->fd, &elf->st_info);
-
-  elf->mem = mmap(0, elf->st_info.st_size, PROT_READ, MAP_SHARED, elf->fd, 0);
-	
-  if (elf->mem == MAP_FAILED) {
-    LOG_ERROR("mmap falhou!\n");
-    exit(1);
-  }
-}
-
-_u8 saveFile(const char* fname, _u8 *mem, off_t size) {
-  int h_fd;
-
-  h_fd = open(fname, O_RDWR|O_FSYNC|O_CREAT, S_IRWXU);
-
-  if (h_fd == -1) {
-    LOG_ERROR("Failed to open file to write: %s\n", fname);
-  }
-
-  if (write(h_fd, mem, size) != size) {
-    LOG_ERROR("Failed to write the entire file...\n");
-  }
-
-  return SUCCESS;
-}
-
-
-_u8 check_elf(_u8* mem) {
-  ElfW(Ehdr) *header;
-  _u8 valid = SUCCESS;
-
-  header = (ElfW(Ehdr)*)mem;
-
-  if (!header) {
-    LOG_ERROR("file not mapped to memory.\n");
-  }
-
-  if (memcmp(header->e_ident, ELFMAG, SELFMAG) == 0) {
-    valid = SUCCESS;
-  } else {
-    valid = ERROR;
-  }
-  
-  return valid;
 }
 
 void help() {
@@ -410,6 +478,7 @@ void help() {
   SAY(" \treverse_elf\n");
   SAY(" \tentry_point\n");
   SAY(" \tinfect\n");
+  SAY(" \tcopy\n");
   
   SAY("\n");
   SAY("Use:\n \t./malelficus command -h\n to get help about the command.\n"); 
@@ -418,7 +487,6 @@ void help() {
 
   exit(SUCCESS);
 }
-
 
 void help_entry_point() {
   SAY("Entry point command\n");
@@ -453,8 +521,35 @@ void help_reverse_elf() {
   SAY("\tThis command reverse the ELF binary image in the C structs representation.\n");
   SAY("\tIt will provide the chance of manual edit the binary image.\n");
   SAY(" -h\treverse_elf help\n");
-  SAY(" -i <file>\tInput binary file\n");
-  SAY(" -o <file>\tOutput C source file\n");
+  SAY(" -i <file>\tInput binary/source file\n");
+  SAY(" -o <file>\tOutput binary/C file\n");
+  SAY(" -r Reverse the ELF binary into your C-structures.\n");
+  SAY(" -m Mount the C file representarion of the binary into binary\n");
   exit(SUCCESS);
 }
 
+void help_infect() {
+  SAY("Infect ELF binary\n");
+  SAY("./malelficus infect [-h] -m <algo> -i <input-binary> [,-o <output-infected-binary>]\n");
+  SAY("\tThis command tries to infect a binary using.\n");
+  SAY("\tthe method passed in -m\n");
+  SAY(" -h\tinfect help\n");
+  SAY(" -m\tInfect methods:\n");
+  SAY(" \t\tsilvio\t\tSilvio Cesare technique\n");
+  SAY(" -i <binary>\tInput binary file\n");
+  SAY(" -o <output-binary>\tOutput infected file\n");
+  exit(SUCCESS);
+  
+}
+
+void help_copy() {
+  SAY("Copy ELF binary\n");
+  SAY("./malelficus copy [-h] -i <input-binary> -o <output-binary>]\n");
+  SAY("\tCopy binary ELF.\n");
+  SAY("\tthe method passed in -m\n");
+  SAY(" -h\tinfect help\n");
+  SAY(" -i <binary>\tInput binary file\n");
+  SAY(" -o <output-binary>\tOutput file\n");
+  exit(SUCCESS);
+  
+}

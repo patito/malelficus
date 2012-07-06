@@ -1,9 +1,0 @@
-#!/bin/bash
-
-if [ "$1" -eq "" -o "$2" -eq "" ];
-then
-    echo "usage: ./c_define2elf_attr.sh input output"
-    exit 1
-fi    
-
-cat "$1" | sed -E "s/^#define ([A-Z0-9_]+).*[0-9]+.*\/\* ([A-Za-z0-9_\&\/\"\*\.\+' -]+)[ ]?\*\//\{\"\1\", \1, \"\2\"\},/g" > "$2"

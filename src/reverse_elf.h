@@ -1,8 +1,8 @@
 #ifndef REVERSE_ELF_H
 #define REVERSE_ELF_H
 
-#include "elf_object.h"
+#include "malelf_object.h"
 
-extern _u8 reverse_elf2c(elf_object* elf, FILE* fd);
+extern _u8 reverse_elf2c(malelf_object* elf, FILE* fd);
 
 #endif

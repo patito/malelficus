@@ -1,8 +1,14 @@
 /* config.h.  Generated from config.h.in by configure.  */
 /* config.h.in.  Generated from configure.ac by autoheader.  */
 
+/* Define to 1 if you have the <bfd.h> header file. */
+#define HAVE_BFD_H 1
+
 /* Define to 1 if you have the `bzero' function. */
 #define HAVE_BZERO 1
+
+/* Define to 1 if you have the <elf.h> header file. */
+#define HAVE_ELF_H 1
 
 /* Define to 1 if you have the <fcntl.h> header file. */
 #define HAVE_FCNTL_H 1

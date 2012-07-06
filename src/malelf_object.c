@@ -26,18 +26,25 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 #include <assert.h>
+#include <errno.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <sys/mman.h>
 
 #include "defines.h"
 #include "util.h"
-#include "elf_object.h"
+#include "error.h"
+#include "malelf_object.h"
 #include "print_table.h"
 
 /**
  * Object file types
  * see ELF Format Specification for more details
  */
-elf_attr elf_object_types[] = {
+elf_attr malelf_object_types[] = {
 #include "header_types.inc"
 };
 
@@ -69,12 +76,130 @@ elf_attr elf_segment_flags[] = {
 #include "segment_flags.inc"
 };
 
+void malelf_init_object(malelf_object* obj) {
+  obj->fname = NULL;
+  obj->is_readonly = 0;
+  obj->mem = NULL;
+  obj->elf.elfh = NULL;
+  obj->elf.elfp = NULL;
+  obj->elf.elfs = NULL;
+}
+
+_u8 check_elf(malelf_object* obj) {
+  assert(obj != NULL);
+  assert(obj->fname != NULL);
+  assert(obj->elf.elfh != NULL);
+ 
+  _u8 valid = SUCCESS;
+
+  if (memcmp(obj->elf.elfh->e_ident, ELFMAG, SELFMAG) == 0) {
+    valid = SUCCESS;
+  } else {
+    valid = ERROR;
+  }
+  
+  return valid;
+}
+
+_i32 malelf_open(malelf_object* obj, char* filename, int flags) {
+  assert(obj != NULL);
+  assert(filename != NULL);
+  _u8 is_creat = (flags & O_CREAT) == O_CREAT;
+  
+  malelf_init_object(obj);
+  obj->fname = filename;
+  if (!is_creat) {
+    obj->fd = open(filename, flags);
+  } else {
+    obj->fd = open(filename, flags, 0666);
+  }
+
+  if (obj->fd == -1) {
+    return errno;
+  }
+
+  if (fstat(obj->fd, &obj->st_info) == -1) {
+    return errno;
+  }
+
+  /**
+   * If the file was created right now, then there is no buffer to map in memory.
+   */
+  if (!is_creat) {
+    obj->mem = mmap(0, obj->st_info.st_size, PROT_READ, MAP_SHARED, obj->fd, 0);
+    if (obj->mem == MAP_FAILED) {
+      return errno;
+    }
+
+    MALELF_MAP_ELF(obj);
+  }
+
+  return SUCCESS;
+}
+
+_i32 malelf_openr(malelf_object* obj, char* filename) {
+  return malelf_open(obj, filename, O_RDONLY);
+}
+
+_i32 malelf_openw(malelf_object* obj, char* filename) {
+  return malelf_open(obj, filename, O_RDWR | O_CREAT | O_TRUNC);
+}
+
+void malelf_close(malelf_object* obj) {
+  assert(obj != NULL);
+  assert(obj->fd != -1);
+  if (obj->mem != MAP_FAILED) {
+    munmap(obj->mem, obj->st_info.st_size);
+  }
+}
+
+_u8 malelf_add_section(malelf_object* input, malelf_object* output, malelf_add_section_t options) {
+  int i;
+  assert(options.name != NULL);
+  assert(options.data_fname != NULL);
+  LOG_SUCCESS("section name: %s\n", options.name);
+  LOG_SUCCESS("section data file: %s\n", options.data_fname);
+  LOG_SUCCESS("binary output: %s\n", output->fname);
+  LOG_SUCCESS("PHT address: 0x%08x\n", input->elf.elfh->e_phoff);
+  LOG_SUCCESS("Section header address: 0x%08x\n", input->elf.elfh->e_shoff);
+
+  if (write(output->fd, input->elf.elfh,  input->elf.elfh->e_ehsize) < input->elf.elfh->e_ehsize) {
+    LOG_ERROR("Failed to write() the elf header\n");
+    exit(1);
+  }
+
+  if (write(output->fd, input->elf.elfp, input->elf.elfh->e_phentsize * input->elf.elfh->e_phnum) < input->elf.elfh->e_phentsize * input->elf.elfh->e_phnum) {
+    LOG_ERROR("Failed to write() the elf pht\n");
+    exit(1);
+  }
+
+  for (i = 0; i < input->elf.elfh->e_shnum; i++) {
+    ElfW(Shdr)* s = (ElfW(Shdr)*) (input->elf.elfs + i);
+    if (s->sh_addr == 0)
+      continue;
+    _u8* data = input->mem + s->sh_offset;
+    _u8 size = s->sh_size;
+    if (write(output->fd, data, size) < size) {
+      LOG_ERROR("Failed to write() the sections...\n");
+      exit(1);
+    }
+  }
+
+  if (write(output->fd, input->elf.elfs, input->elf.elfh->e_shnum * input->elf.elfh->e_shentsize) < input->elf.elfh->e_shnum * input->elf.elfh->e_shentsize) {
+    LOG_ERROR("Failed to write() the elf sht\n");
+    exit(1);
+  }
+
+
+  return 1;
+}
+
 elf_attr* get_header_type(ElfW(Half) etype) {
   _u8 i;
 
-  for (i = 0; i < sizeof(elf_object_types)/sizeof(elf_attr); i++) {
-    if (elf_object_types[i].val == etype) {
-      return &elf_object_types[i];
+  for (i = 0; i < sizeof(malelf_object_types)/sizeof(elf_attr); i++) {
+    if (malelf_object_types[i].val == etype) {
+      return &malelf_object_types[i];
     }
   }
 
@@ -117,25 +242,18 @@ elf_attr* get_segment_type(ElfW(Word) segtype) {
   return NULL;
 }
 
-void init_elf_object(elf_object* obj) {
-  elf_object obj2;
-
-  obj2.fname = NULL;
-  obj2.mem = NULL;
-  obj2.elfh = NULL;
-  obj2.elfp = NULL;
-  obj2.elfs = NULL;
-
-  *obj = obj2;
-}
-
-_u8 copy_elf_object(elf_object* out, elf_object *in) {
+_u8 copy_malelf_object_raw(malelf_object* out, malelf_object *in) {
   assert(in != NULL);
   assert(out != NULL);
+
+  if (out->is_readonly != 0) {
+    LOG_ERROR("output file '%s' is read-only!\n", out->fname);
+    exit(1);
+  }
   
   out->mem = malloc(sizeof(_u8) * in->st_info.st_size);
   memcpy(out->mem, in->mem, in->st_info.st_size);
-
+  
   return SUCCESS;
 }
 
@@ -233,42 +351,7 @@ void pretty_print_elf_header(ElfW(Ehdr)* header) {
   print_table_header_art(80, 0);
 }
 
-void pretty_print_elf_header2(ElfW(Ehdr)* header) {
-
-  assert(header != NULL);
-  SAY("--------------------------------------------------------------------------------\n");
-  SAY("\t\t\t\tELF HEADER\n");
-  SAY("--------------------------------------------------------------------------------\n");
-  SAY("\tstruct member\tDescription\t\t\tValue\n");
-  SAY("\te_type\t\tObject type\t\t\t");
-  if (header->e_type == ET_LOPROC || header->e_type == ET_HIPROC) {
-    SAY("Processor-specific\n");
-  } else {
-    SAY("%s\n", GET_ATTR_NAME(get_header_type(header->e_type)));
-  }
-
-  SAY("\te_machine\tMachine\t\t\t\t");
-  if (header->e_machine >= 8) {
-    SAY("Unknown machine\n");
-  } else {
-    SAY("%s\n", elf_machine[header->e_machine].desc);
-  }
-
-  SAY("\te_version\tVersion\t\t\t\t%d\n", header->e_version);
-  SAY("\te_entry\t\tEntry point:\t\t\t0x%x\n", header->e_entry);
-  SAY("\te_phoff\t\tPHT offset\t\t\t0x%x\n", header->e_phoff);
-  SAY("\te_shoff\t\tSHT offset\t\t\t0x%x\n", header->e_shoff);
-  SAY("\te_ehsize\tELF Header size (bytes)\t\t%d\n", header->e_ehsize);
-  SAY("\te_phentsize\tSize of PHT entries\t\t%d\n", header->e_phentsize);
-  SAY("\te_phnum\t\tNumber of entries in PHT\t%d\n", header->e_phnum);
-  SAY("\te_shentsize\tSize of one entry in SHT\t%d\n", header->e_shentsize);
-  SAY("\te_shnum\t\tNumber of sections:\t\t%d\n", header->e_shnum);
-  SAY("\te_shstrndx\tSHT index of the section strtab\t%d\n", header->e_shstrndx);
-
-  SAY("-------------------------------------------------------------------------------\n");
-}
-
-void pretty_print_pht2(ElfW(Ehdr)* header, ElfW(Phdr)* pheaders) {
+void pretty_print_pht(ElfW(Ehdr)* header, ElfW(Phdr)* pheaders) {
   int i;
   tb_header tb_main_header, tb_header;
   tb_line line;
@@ -307,42 +390,55 @@ void pretty_print_pht2(ElfW(Ehdr)* header, ElfW(Phdr)* pheaders) {
   
 }
 
-void pretty_print_pht(ElfW(Ehdr)* header, ElfW(Phdr)* pheaders) {
+void pretty_print_sht(malelf_object* elf, ElfW(Ehdr)* header, ElfW(Shdr)* sections) {
   int i;
-  assert(pheaders != NULL);
-  
-  SAY("-------------------------\n");
-  SAY("|  Program Header Table |\n");
-  SAY("-------------------------\n");
-  SAY("| N |      Offset\t|\n");
-  SAY("-------------------------\n");
-  
-  for (i = 0; i < header->e_phnum; ++i) {
-    ElfW(Phdr)* h = (ElfW(Phdr)*)(pheaders + i);
-    printf("| %d |\t0x%08x\t|\n", i, h->p_offset);
-  }
-
-  SAY("-------------------------\n");
-}
-
-void pretty_print_sht(elf_object* elf, ElfW(Ehdr)* header, ElfW(Shdr)* sections) {
-  int i;
+  tb_header tb_main_header, tb_header;
+  tb_line line;
+  tb_column tb_main_col[1], tb_cols[5];
+  char tmp_str[80];
 
   assert(header != NULL);
   assert(sections != NULL);
-  SAY("--------------------------------------------------------------------------------\n");
-  SAY("|\t\t\t\tSection Header Table\t\t\t\t|\n");
-  SAY("--------------------------------------------------------------------------------\n");
-  SAY("| N |\tAddr\t\t|\tOffset\t|\tName\t\t|    Type\t|\n");
-  SAY("--------------------------------------------------------------------------------\n");
-  for (i = 0; i < header->e_shnum; ++i) {
+
+  bzero(tmp_str, sizeof(tmp_str));
+
+  SET_COLNAME(tb_main_col[0], "Section Header Table (SHT)");
+  tb_main_header.n_col = 1;
+  tb_main_header.col = tb_main_col;
+  print_table_header(&tb_main_header, 80, 80);
+
+  SET_COLNAME(tb_cols[0], "N");
+  SET_COLNAME(tb_cols[1], "Addr");
+  SET_COLNAME(tb_cols[2], "Offset");
+  SET_COLNAME(tb_cols[3], "Name");
+  SET_COLNAME(tb_cols[4], "Type");
+  tb_header.n_col = 5;
+  tb_header.col = tb_cols;
+  print_table_header(&tb_header, 80, 80);
+
+  line.n_col = 5;
+  line.col = tb_cols;
+  
+  for (i = 0; i < header->e_phnum; ++i) {
     ElfW(Shdr) *sect = (ElfW(Shdr)*)(sections + i);
+    ITOA(tmp_str, i);
+    SET_COLNAME(tb_cols[0], tmp_str);
+
+    HTOA(tmp_str, sect->sh_addr);
+    
+    SET_COLNAME(tb_cols[1], tmp_str);
+
+    ITOA(tmp_str, sect->sh_offset);
+    SET_COLNAME(tb_cols[2], tmp_str);
+    
     char sect_name[12];
     strncpy(sect_name, (char*) elf->mem + sections[header->e_shstrndx].sh_offset + sections[i].sh_name, 12);
-    
-    _u8 sht_type = sect->sh_type;
-    SAY("| %d |\t0x%08x\t|\t0x%04x\t| %s%s|  %s\t|\n", i, sect->sh_addr, sect->sh_offset, sect_name, strlen(sect_name) > 5 ? "\t\t" : "\t\t\t", GET_ATTR_NAME(get_section_type(sht_type)));
+    SET_COLNAME(tb_cols[3], sect_name);
+    SET_COLNAME(tb_cols[4], GET_ATTR_NAME(get_section_type(sect->sh_type)));
+    print_table_line(&line, 80, 80);
   }
+  
+  print_table_header_art(80, 0);
 }
 
 /**
@@ -350,7 +446,7 @@ void pretty_print_sht(elf_object* elf, ElfW(Ehdr)* header, ElfW(Shdr)* sections)
  *
  * TODO: *rewrite this*
  */
-void pretty_print_strtab(elf_object* elf, ElfW(Ehdr)* header, ElfW(Shdr)* sections) {
+void pretty_print_strtab(malelf_object* elf, ElfW(Ehdr)* header, ElfW(Shdr)* sections) {
   _u32 i, j, stable = 0, n_entries;
   ElfW(Sym)* elf_sym;
   char sname[14];

@@ -1,8 +1,0 @@
-#ifndef REVERSE_ELF_H
-#define REVERSE_ELF_H
-
-#include "elf_object.h"
-
-extern void reverse_elf2c(elf_object* elf);
-
-#endif

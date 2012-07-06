@@ -45,8 +45,9 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
-am_malelficus_OBJECTS = main.$(OBJEXT) elf_object.$(OBJEXT) \
-	print_table.$(OBJEXT) reverse_elf.$(OBJEXT)
+am_malelficus_OBJECTS = main.$(OBJEXT) malelf_object.$(OBJEXT) \
+	print_table.$(OBJEXT) reverse_elf.$(OBJEXT) infect.$(OBJEXT) \
+	util.$(OBJEXT) error.$(OBJEXT)
 malelficus_OBJECTS = $(am_malelficus_OBJECTS)
 malelficus_LDADD = $(LDADD)
 DEFAULT_INCLUDES = -I. -I$(top_builddir)
@@ -148,8 +149,15 @@ target_alias =
 top_build_prefix = ../
 top_builddir = ..
 top_srcdir = ..
-AM_CFLAGS = -Wall -Wextra -O2
-malelficus_SOURCES = main.c elf_object.c print_table.c reverse_elf.c
+AM_CFLAGS = -g -Wall -Wextra -Werror
+malelficus_SOURCES = main.c \
+			malelf_object.c \
+			print_table.c \
+			reverse_elf.c \
+			infect.c \
+			util.c \
+			error.c
+
 all: all-am
 
 .SUFFIXES:
@@ -231,10 +239,13 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-include ./$(DEPDIR)/elf_object.Po
+include ./$(DEPDIR)/error.Po
+include ./$(DEPDIR)/infect.Po
 include ./$(DEPDIR)/main.Po
+include ./$(DEPDIR)/malelf_object.Po
 include ./$(DEPDIR)/print_table.Po
 include ./$(DEPDIR)/reverse_elf.Po
+include ./$(DEPDIR)/util.Po
 
 .c.o:
 	$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
