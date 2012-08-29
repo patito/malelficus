@@ -36,7 +36,6 @@
 #include <elf.h>
 #include <link.h> /* ElfW(type) and others */
 
-#include "config.h"
 #include "defines.h"
 #include "util.h"
 #include "error.h"
@@ -44,11 +43,18 @@
 #include "malelf_object.h"
 #include "reverse_elf.h"
 #include "infect.h"
+#include "disas.h"
 
 /**
  * function prototypes
  */
-void help(), help_entry_point(), help_dissect(), help_reverse_elf(), help_infect(), help_copy();
+void help(),
+help_entry_point(),
+help_dissect(),
+help_reverse_elf(),
+help_infect(),
+help_copy(),
+help_disas();
 _u8 check_elf();
 _u8 saveFile(const char*, _u8*, off_t);
 _u8 entry_point(int argc, char** argv);
@@ -294,6 +300,8 @@ _u8 dissect(int argc, char** argv) {
 
   elf_t *elf = &input.elf;
 
+  //malelf_dissect(elf, option);
+
   if ((option & DISPLAY_EHT) == DISPLAY_EHT) {
     pretty_print_elf_header(elf->elfh);
     SAY("\n");
@@ -438,6 +446,56 @@ void infect(int argc, char** argv) {
   malelf_infect(&input, &output);
 }
 
+void disas(int argc, char** argv) {
+    int opt;
+    malelf_object input;
+    char* out_fname = NULL;
+    FILE* outfd;
+
+    input.fname = NULL;
+
+    while((opt = getopt(argc, argv, "hi:o:")) != -1) {
+      switch(opt) {
+      case 'h':
+        help_disas();
+        break;
+      case 'i':
+        input.fname = optarg;
+        break;
+      case 'o':
+        out_fname = optarg;
+        break;
+      case ':':
+        LOG_WARN("malelficus: Error - Option `%c' needs a value\n\n", optopt);
+        help_infect();
+        break;
+      case '?':
+        LOG_WARN("malelficus: Error - No such option: `%c'\n\n", optopt);
+        help_disas();
+      }
+    }
+
+    if (input.fname == NULL) {
+      help_disas();
+      exit(1);
+    }
+
+    if (out_fname == NULL) {
+      outfd = stdout;
+    } else {
+        outfd = fopen(out_fname, "w");
+        if (!outfd) {
+          perror("Error when open file for write...");
+          exit(1);
+        }
+    }
+
+    input.is_readonly = 1;
+    malelf_openr(&input, input.fname);
+
+    malelf_disas(&input, outfd);
+}
+
 int
 main(int argc, char **argv) {
 
@@ -458,6 +516,8 @@ main(int argc, char **argv) {
     infect(argc, argv);
   } else if (!strcmp("copy", argv[1])) {
     copy(argc, argv);
+  } else if(!strcmp("disas", argv[1])) {
+      disas(argc, argv);
   } else help();
 
   return 0;
@@ -476,6 +536,7 @@ void help() {
   SAY(" Commands:\n");
   SAY(" \tdissect\n");
   SAY(" \treverse_elf\n");
+  SAY(" \tdisas\n");
   SAY(" \tentry_point\n");
   SAY(" \tinfect\n");
   SAY(" \tcopy\n");
@@ -551,5 +612,14 @@ void help_copy() {
   SAY(" -i <binary>\tInput binary file\n");
   SAY(" -o <output-binary>\tOutput file\n");
   exit(SUCCESS);
-  
+}
+
+void help_disas() {
+  SAY("Disassembly ELF binary\n");
+  SAY("./malelficus disas [-h] -i <input-binary> [-o <output-asm>]\n");
+  SAY("\tDisassembly binary ELF in NASM compatible format.\n");
+  SAY(" -h\tdisas help\n");
+  SAY(" -i <binary>\tInput binary file\n");
+  SAY(" -o <output-asm>\tOutput file, default is stdout\n");
+  exit(SUCCESS);
 }

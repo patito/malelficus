@@ -47,9 +47,9 @@ am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
 am_malelficus_OBJECTS = main.$(OBJEXT) malelf_object.$(OBJEXT) \
 	print_table.$(OBJEXT) reverse_elf.$(OBJEXT) infect.$(OBJEXT) \
-	util.$(OBJEXT) error.$(OBJEXT)
+	util.$(OBJEXT) error.$(OBJEXT) disas.$(OBJEXT)
 malelficus_OBJECTS = $(am_malelficus_OBJECTS)
-malelficus_LDADD = $(LDADD)
+malelficus_DEPENDENCIES =
 DEFAULT_INCLUDES = -I. -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
@@ -149,15 +149,17 @@ target_alias =
 top_build_prefix = ../
 top_builddir = ..
 top_srcdir = ..
-AM_CFLAGS = -g -Wall -Wextra -Werror
+AM_CFLAGS = -g -Wall -Wextra -Werror -I/usr/include/beaengine
 malelficus_SOURCES = main.c \
 			malelf_object.c \
 			print_table.c \
 			reverse_elf.c \
 			infect.c \
 			util.c \
-			error.c
+			error.c \
+			disas.c
 
+malelficus_LDADD = -lBeaEngine -L/usr/lib
 all: all-am
 
 .SUFFIXES:
@@ -239,6 +241,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+include ./$(DEPDIR)/disas.Po
 include ./$(DEPDIR)/error.Po
 include ./$(DEPDIR)/infect.Po
 include ./$(DEPDIR)/main.Po

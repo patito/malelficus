@@ -10,7 +10,7 @@
 #define GET_ATTR_NAME(attr) attr != NULL ? (attr->name) : "UNKNOWN"
 #define GET_ATTR_DESC(attr) attr != NULL ? (attr->desc) : "UNKNOWN"
 
-#define GET_SECTION_NAME(header, sections) (char*) (elf->mem + sections[header->e_shstrndx].sh_offset + sections[i].sh_name)
+#define GET_SECTION_NAME(obj, header, sections, sec_idx) (char*) (obj->mem + sections[header->e_shstrndx].sh_offset + sections[sec_idx].sh_name)
 #define MALELF_MAP_ELF(obj) do {\
   assert(obj->mem != NULL);\
   obj->elf.elfh = (ElfW(Ehdr)*) obj->mem;\

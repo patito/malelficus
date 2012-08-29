@@ -119,6 +119,8 @@ _u8 reverse_elf2c(malelf_object* elf, FILE* fd) {
   ElfW(Phdr)* pheader;
   ElfW(Shdr)* sections;
   unsigned int file_addr = 0, _i_, i, j;
+  /*  unsigned int segment_length = 0;*/
+  _u8 count_str = 0;
 
   header = (ElfW(Ehdr)*) elf->mem;
   pheader = (ElfW(Phdr)*) (elf->mem + header->e_phoff);
@@ -174,15 +176,17 @@ _u8 reverse_elf2c(malelf_object* elf, FILE* fd) {
   for (i = 0; i < header->e_shnum; i++) {
     ElfW(Shdr)* s = (ElfW(Shdr)*) (sections + i);
     unsigned char* buf = (unsigned char*) (elf->mem + s->sh_offset);
-    _u8 count_str = 0;
+    
     /* Jump SHT_NULL */
     if (s->sh_type == 0x00 || s->sh_type == SHT_NOBITS) {
       continue;
     }
 
+    LOG_SUCCESS("%s:\t\t\taddress=%d\tstart=%d\tend=%d\tsize=%d\n", GET_SECTION_NAME(elf, header, sections, i), file_addr, s->sh_offset, s->sh_offset+s->sh_size, s->sh_size);
 
     if (file_addr < s->sh_offset) {
       PRINT_C("\n/* padding %d bytes */\n", s->sh_offset - file_addr);
+      LOG_SUCCESS("%s: padding %d bytes\n", GET_SECTION_NAME(elf, header, sections, i), s->sh_offset - file_addr);
       
       for (; file_addr < s->sh_offset; file_addr++) {
         if (count_str == 0) {
@@ -206,7 +210,8 @@ _u8 reverse_elf2c(malelf_object* elf, FILE* fd) {
 
     count_str = 0;
 
-    PRINT_C("/* Dump of section: %s, offset=%d */\n", GET_SECTION_NAME(header, sections), s->sh_offset);
+    PRINT_C("/* Dump of section: %s, offset=%d */\n", GET_SECTION_NAME(elf, header, sections, i), s->sh_offset);
+
     for (j = 0; j < s->sh_size; j++) {
       if (count_str == 0) {
         PRINT_C("/* %x */\t\"", file_addr);
@@ -227,6 +232,31 @@ _u8 reverse_elf2c(malelf_object* elf, FILE* fd) {
 
     if (count_str > 0) {
       PRINT_C("\"/* exit 2*/\n");
+    }
+  }
+
+  count_str = 0;
+
+  if (file_addr < header->e_shoff) {
+    PRINT_C("\n/* padding %d bytes */\n", header->e_shoff - file_addr);
+      
+    for (; file_addr < header->e_shoff; file_addr++) {
+      if (count_str == 0) {
+        PRINT_C("/* %x */\t\"", file_addr);
+      }
+
+      PRINT_C("\\x00");
+
+      if (count_str == 15) {
+        PRINT_C("\"\n");
+        count_str = 0;
+      } else {
+        count_str += 1;
+      }
+    }
+
+    if (count_str > 0) {
+      PRINT_C("\"\n\n");
     }
   }
 

@@ -36,6 +36,7 @@
 
 #include "defines.h"
 #include "util.h"
+#include "types.h"
 #include "error.h"
 #include "malelf_object.h"
 #include "print_table.h"
