@@ -1,3 +1,0 @@
-all:
-	./configure --enable-automated
-	$(MAKE)
