@@ -1,5 +1,0 @@
-{"PF_X", PF_X, "Segment is executable "},
-{"PF_W", PF_W, "Segment is writable "},
-{"PF_R", PF_R, "Segment is readable "},
-{"PF_MASKOS", PF_MASKOS, "OS-specific "},
-{"PF_MASKPROC", PF_MASKPROC, "Processor-specific "},
