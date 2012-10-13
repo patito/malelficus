@@ -113,7 +113,7 @@ EGREP = /bin/grep -E
 EXEEXT = 
 FGREP = /bin/grep -F
 GREP = /bin/grep
-INCLUDE_CUNIT = libraries/CUnit
+INCLUDE_CUNIT = CUnit
 INCLUDE_TESTS = test
 INSTALL = /usr/bin/install -c
 INSTALL_DATA = ${INSTALL} -m 644
@@ -204,7 +204,7 @@ target_alias =
 top_build_prefix = ../../
 top_builddir = ../..
 top_srcdir = ../..
-SUBDIRS = cmake-beaengine-gen beangine CUnit
+SUBDIRS = cmake-beaengine-gen beangine $(INCLUDE_CUNIT)
 DIST_SUBDIRS = 
 all: all-recursive
 

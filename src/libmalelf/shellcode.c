@@ -12,7 +12,10 @@ extern int fileno(FILE*);
 #include "malelf/error.h"
 #include "malelf/types.h"
 
-_u8 shellcode_create(FILE* fd_o, int in_size, FILE* fd_i, unsigned long int original_entry_point) {
+_u8 shellcode_create(FILE* fd_o,
+                     int in_size,
+                     FILE* fd_i,
+                     unsigned long int original_entry_point) {
   _u8 *mem, i, count = 0;
 
   union entry_t {

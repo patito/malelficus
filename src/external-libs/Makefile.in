@@ -204,7 +204,7 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-SUBDIRS = cmake-beaengine-gen beangine CUnit
+SUBDIRS = cmake-beaengine-gen beangine $(INCLUDE_CUNIT)
 DIST_SUBDIRS = 
 all: all-recursive
 

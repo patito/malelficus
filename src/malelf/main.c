@@ -497,7 +497,7 @@ void reverse_elf(int argc, char** argv) {
 
 void infect(int argc, char** argv) {
   int opt;
-  _u8 technique = 0;
+  _u8 technique = 0, _auto = 0;
   _i32 error;
   _u32 offset_entry_point = 0;
 
@@ -511,7 +511,7 @@ void infect(int argc, char** argv) {
   output.fname = NULL;
   parasite.fname = NULL;
 
-  while((opt = getopt(argc, argv, "hi:o:t:p:m:f:")) != -1) {
+  while((opt = getopt(argc, argv, "hi:o:t:p:m:f:a")) != -1) {
     switch(opt) {
     case 'h':
       help_infect();
@@ -530,6 +530,9 @@ void infect(int argc, char** argv) {
       break;
     case 'f':
       offset_entry_point = atoi(optarg);
+      break;
+    case 'a':
+      _auto = 1;
       break;
     case ':':
       LOG_WARN("malelficus: Error - Option `%c' needs a value\n\n", optopt);
@@ -552,6 +555,12 @@ void infect(int argc, char** argv) {
   }
 
   if (parasite.fname == NULL) {
+    help_infect();
+    exit(1);
+  }
+
+  if (offset_entry_point == 0 && _auto == 0) {
+    LOG_ERROR("offset entry point is required, or use -a to malelficus tries to discover the offset.\n");
     help_infect();
     exit(1);
   }
@@ -625,9 +634,12 @@ void disas(int argc, char** argv) {
   }
 
   input.is_readonly = 1;
-  malelf_openr(&input, input.fname);
-
-  malelf_disas(&input, outfd);
+  if (malelf_openr(&input, input.fname) == MALELF_SUCCESS) {
+    malelf_disas(&input, outfd);
+  } else {
+    LOG_ERROR("Failed to open input file...\n");
+    exit(-1);
+  }
 }
 
 int
@@ -719,15 +731,15 @@ void help_dissect() {
 void help_shellcode() {
   SAY("Shellcode creator\n");
   SAY("./malelficus shellcode [-h] -i <input-shellcode> -o <output> -t <output-type>\n");
-  SAY("\tThis command create the virus shellcode in the proper format for use with the \n");
-  SAY("\tinfect command.\n\n");
+  SAY("\tThis command create the virus shellcode in the proper\n\tformat for use with the ");
+  SAY("infect command.\n\n");
   SAY(" -h\tthis help\n");
   SAY(" -i <file>\tInput binary (created by nasm or gas)\n");
   SAY(" -z <original-entry-point> (optional)\n");
   SAY(" -s <shellcode size> (optional)\n");
   SAY(" -t <output-type>\n");
   SAY(" \t\tPossible output types:\n");
-  SAY(" \t\t\t- malelficus (default)\n");
+  SAY(" \t\t\t- c (default)\n");
   SAY("\n");
   exit(MALELF_SUCCESS);
 }
@@ -752,10 +764,12 @@ void help_infect() {
   SAY("\tthe method passed in -m\n");
   SAY(" -h\tinfect help\n");
   SAY(" -m\tInfect methods:\n");
-  SAY(" \t\t0 - Silvio Cesare technique (text-padding)\n");
+  SAY(" \t\t0 - Silvio Cesare technique (text padding append)\n");
+  SAY(" \t\t1 - Text segment prepend (Ryan O'Neill <ryan@bitlackeys.com>)\n");
   SAY(" -i <binary>\tInput binary file\n");
   SAY(" -o <output-binary>\tOutput infected file\n");
   SAY(" -p <malware>\tMalware FLAT binary (eg.: nasm -f bin)\n");
+  SAY(" -f <offset-to-return>\tOffset in malware to overwrite with the\n\t\t\ttrue entry_point\n");
   exit(MALELF_SUCCESS);
   
 }

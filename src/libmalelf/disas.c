@@ -11,8 +11,10 @@
 
 #include <BeaEngine.h>
 
+#include "malelf/error.h"
 #include "malelf/disas.h"
 #include "malelf/util.h"
+#include "malelf/object.h"
 
 #define _P malelf_print
 #define _PDIRECTIVE _P
@@ -142,16 +144,16 @@ void malelf_disas_program(malelf_object* obj, FILE* fd) {
           _PLABEL(fd, "%s:\t; 0x%08x\n", GET_SECTION_NAME(obj, ehdr, shdr, i), 0x08048000+s->sh_offset);
         }
 
-        /* ============================= Init the Disasm structure (important !)*/
+        /*  Init the Disasm structure */
         (void) memset (&MyDisasm, 0, sizeof(DISASM));
 
-        /* ============================= Init EIP */
+        /* Init EIP */
         MyDisasm.EIP = (UIntPtr) mem;
 
         MyDisasm.Options = Tabulation + NasmSyntax + PrefixedNumeral + ShowSegmentRegs;
 
 
-        /* ============================= Loop for Disasm */
+        /* Loop for Disasm */
         while ((unsigned)size < s->sh_size && !Error){
             len = Disasm(&MyDisasm);
 
@@ -174,9 +176,48 @@ void malelf_disas_program(malelf_object* obj, FILE* fd) {
     _P(fd, "\n");
 }
 
+void malelf_disas_flat(malelf_object* obj, FILE* fd) {
+  DISASM MyDisasm;
+  unsigned size = 0;
+  int len;
+  int Error = 0;
+
+  _P(fd, "\t; Disassembly of binary %s\n", obj->fname);
+
+  /*  Init the Disasm structure */
+  (void) memset (&MyDisasm, 0, sizeof(DISASM));
+
+  /* Init EIP */
+  MyDisasm.EIP = (UIntPtr) obj->mem;
+
+  MyDisasm.Options = Tabulation + NasmSyntax + PrefixedNumeral + ShowSegmentRegs;
+
+  /* Loop for Disasm */
+  while (size < (unsigned)obj->st_info.st_size && !Error){
+    len = Disasm(&MyDisasm);
+
+    if (len != UNKNOWN_OPCODE) {
+      size += len;
+      _P(fd, "%s\n", MyDisasm.CompleteInstr);
+      MyDisasm.EIP = MyDisasm.EIP + (UIntPtr)len;
+    }
+    else {
+      printf("ERROR\n");
+      Error = 1;
+    }
+  }
+
+  _P(fd, "\n\n");  
+}
+
 void malelf_disas(malelf_object* input, FILE* outfd) {
+  if (malelf_check_elf(input) == MALELF_SUCCESS) {
     malelf_disas_ehdr(input->elf.elfh, outfd);
     malelf_disas_phdr(&input->elf, outfd);
     malelf_disas_program(input, outfd);
     malelf_disas_sht(input, outfd);
+  } else {
+    LOG_WARN("Disassembling as FLAT binary.\n");
+    malelf_disas_flat(input, outfd);
+  }
 }
