@@ -1,0 +1,10 @@
+
+all:
+	cmake ../beangine/CMakeLists.txt
+	echo -e "check:\n\t@echo 'No tests in this subdirectory.'" >> ../beangine/Makefile
+
+clean:
+	@echo "done"
+
+check:
+	@echo "no tests in this subdirectory"

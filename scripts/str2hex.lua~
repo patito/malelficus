@@ -1,0 +1,14 @@
+-- Convert string to hex
+
+function hexstr( str )
+   for i, #str do
+      local b = str::byte(i)
+      io.write(string.format("%02x ", b))
+   end
+end
+
+if (not arg) or #arg < 1 then
+   print ("Usage: str2hex.lua <str>")
+end
+
+hexstr( arg[1] )

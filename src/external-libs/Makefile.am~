@@ -1,0 +1,2 @@
+
+SUBDIRS=cmake-beaengine-gen beangine CUnit

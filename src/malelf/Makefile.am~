@@ -1,0 +1,12 @@
+CFLAGS_LANGUAGE=-std=c99 -pedantic
+CFLAGS_WARNS=-Wall -Wextra -Werror
+CFLAGS_INCLUDES=-I../external-libs/beangine/include/beaengine -I../libmalelf
+
+AM_CFLAGS=	-ggdb -O2 $(CFLAGS_LANGUAGE) \
+		$(CFLAGS_WARNS) \
+		$(CFLAGS_INCLUDES)
+
+bin_PROGRAMS = malelf
+
+malelf_SOURCES = main.c
+malelf_LDADD = -L ../libmalelf -lmalelf

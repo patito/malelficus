@@ -1,0 +1,11 @@
+const char *vir =   "\xba\x08\x00\x00\x00"
+                    "\xb9\x82\x80\x04\x08"
+                    "\xbb\x01\x00\x00\x00"
+                    "\xb8\x04\x00\x00\x00"
+                    "\xcd\x80"
+                    "\xbb\x00\x00\x00\x00"
+                    "\xb8\x01\x00\x00\x00"
+                    "\xcd\x80"
+                    "\x68\x61\x63\x6b\x65"
+                    
+

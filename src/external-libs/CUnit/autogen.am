@@ -1,0 +1,5 @@
+all:
+	./configure --enable-automated
+
+check:
+	@echo "done"

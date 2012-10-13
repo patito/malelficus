@@ -1,0 +1,78 @@
+-- For Writing virus, you can not use the data segment, so we need to use the
+-- stack to store our strings.
+-- This isn't the best choice, but is the most safe!
+-- Aurhor: Tiago Natel de Moura
+-- package: Malelficus
+-- http://tiago4orion.github.com/malelficus
+
+-- The result should be:
+-- 	push dword 0x0000000a
+-- 	push dword 0x21212120
+-- 	push dword 0x4f4d4120
+-- 	push dword 0x45542055
+-- 	push dword 0x45202c41
+-- 	push dword 0x4c4c4549
+-- 	push dword 0x52424147
+
+function trim (str)
+   return (str:gsub("^%s*(.-)%s*$", "%1"))
+end
+
+function create_asm2( str, new_line )
+   if new_line then
+      str = string.format("%s\n", str)
+   end
+
+   str = trim(str)
+   length = string.len(str)
+   tb = {}
+
+   for i = length, 1, -4 do
+      table.insert(tb, string.byte(str, i)
+   end      
+end
+
+function create_asm( str, new_line )
+
+   if new_line then
+      str = string.format("%s\u0a", str)
+   end
+   
+   i = string.len(str)
+   
+   while i > 0 do
+      io.write("push dword ")
+      j = i
+
+      b1, b2, b3, b4 = 0, 0, 0, 0
+
+      b1 = string.byte(str, j)
+      
+      j = j - 1
+      if j > 0 then
+         b2 = string.byte(str, j)
+      end
+
+      j = j - 1
+      if j > 0 then
+         b3 = string.byte(str, i-2)
+      end
+
+      j = j - 1
+      if j > 0 then
+         b4 = string.byte(str, i-3)
+      end
+      
+      io.write (string.format("0x%02x%02x%02x%02x\n", b1 or 0, b2 or 0, b3 or 0, b4 or 0))
+      i = i - 4
+   end
+end
+
+if arg[1] == nil then
+   print (string.format("Usage: %s <string> [-n]", arg[0]))
+   print (" -n\tInsert new line at end of the string. [optional]\n")
+   os.exit(0)
+end
+
+create_asm2 (arg[1], arg[2] == '-n')
+
