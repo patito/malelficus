@@ -1,13 +1,13 @@
 	BITS 32
 
 	mov edx,25
-	push dword 0x0000000a
-	push dword 0x21212120
-	push dword 0x4f4d4120
-	push dword 0x45542055
-	push dword 0x45202c41
-	push dword 0x4c4c4549
-	push dword 0x52424147
+	push dword 0x00737563
+	push dword 0x69464c45
+	push dword 0x6c616d20
+	push dword 0x79622064
+	push dword 0x65746365
+	push word 0x666e
+	push byte 0x69
 	mov ecx, esp
 	mov ebx,1
 	mov eax,4

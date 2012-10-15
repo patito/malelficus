@@ -20,7 +20,7 @@
  *
  * Psychographed by i4k, written by a ghost programmer crazy!
  *
- * This function was coded in early morning of 19 March.
+ * This function was coded in early morning of 19 March, 2012.
  * There must be hundreds of bugs but I had to write this code very fast
  * because that the format tricks of printf doesn't help me  and now I'm
  * too lazy to improve it! All this does not justify... i know ...but I try ...

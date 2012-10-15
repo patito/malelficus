@@ -8,5 +8,8 @@ AM_CFLAGS=	-ggdb -O2 $(CFLAGS_LANGUAGE) \
 
 bin_PROGRAMS = malelf
 
-malelf_SOURCES = main.c
+malelf_SOURCES = 	main.c \
+			analyse.c \
+			database.c
+
 malelf_LDADD = -L../libmalelf -lmalelf

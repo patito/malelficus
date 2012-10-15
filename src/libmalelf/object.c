@@ -35,12 +35,12 @@
 #include <fcntl.h>
 #include <sys/mman.h>
 
-#include "malelf/defines.h"
-#include "malelf/util.h"
-#include "malelf/types.h"
-#include "malelf/error.h"
-#include "malelf/object.h"
-#include "malelf/dissect.h"
+#include <malelf/defines.h>
+#include <malelf/util.h>
+#include <malelf/types.h>
+#include <malelf/error.h>
+#include <malelf/object.h>
+#include <malelf/dissect.h>
 
 /**
  * Object file types
@@ -181,12 +181,14 @@ _i32 malelf_openw(malelf_object* obj, char* filename) {
 
 _u32 malelf_close(malelf_object* obj) {
   if (obj == NULL || obj->fd == -1) {
-    return MALELF_ERROR_CLOSED;
+    return MALELF_ECLOSED;
   }
   
-  if (obj->mem != MAP_FAILED) {
+  if (obj->mem != MAP_FAILED && obj->mem != NULL) {
     munmap(obj->mem, obj->st_info.st_size);
   }
+
+  close(obj->fd);
 
   return MALELF_SUCCESS;
 }
@@ -293,7 +295,7 @@ _u8 copy_malelf_object_raw(malelf_object* out, malelf_object *in) {
   
   out->mem = malloc(sizeof(_u8) * in->st_info.st_size);
   if (!out->mem) {
-    return MALELF_ERROR_ALLOC;
+    return MALELF_EALLOC;
   }
 
   out->alloc_type = ALLOC_MALLOC;

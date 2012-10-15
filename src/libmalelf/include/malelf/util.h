@@ -25,6 +25,7 @@
 #define ITOA(dest, src) sprintf(dest, "%d", src)
 #define HTOA(dest, src) sprintf(dest, "0x%08x", src)
 
+#define MALELF_UNUSED(var) (void*)var
 
 extern _u8 saveFile(const char* fname, _u8 *mem, off_t size);
 extern int malelf_log(FILE *fd, const char* prefix, const char* format, va_list args);

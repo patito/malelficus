@@ -50,7 +50,8 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
-am_malelf_OBJECTS = main.$(OBJEXT)
+am_malelf_OBJECTS = main.$(OBJEXT) analyse.$(OBJEXT) \
+	database.$(OBJEXT)
 malelf_OBJECTS = $(am_malelf_OBJECTS)
 malelf_DEPENDENCIES =
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
@@ -194,7 +195,10 @@ AM_CFLAGS = -ggdb -O2 $(CFLAGS_LANGUAGE) \
 		$(CFLAGS_WARNS) \
 		$(CFLAGS_INCLUDES)
 
-malelf_SOURCES = main.c
+malelf_SOURCES = main.c \
+			analyse.c \
+			database.c
+
 malelf_LDADD = -L../libmalelf -lmalelf
 all: all-am
 
@@ -283,6 +287,8 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/analyse.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/database.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/main.Po@am__quote@
 
 .c.o:
