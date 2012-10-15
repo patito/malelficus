@@ -1,0 +1,5 @@
+#include "database.h"
+
+void create_section_database(const char* scan_file, FILE* outfd) {
+
+}
