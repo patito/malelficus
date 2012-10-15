@@ -52,10 +52,10 @@ _u8 malelf_infect_silvio_padding(malelf_object* input,
     ElfW(Phdr) *phdr;
 
     unsigned int after_insertion_offset = 0;
-    unsigned int end_of_text;
+    unsigned int end_of_text = 0;
     unsigned long int old_e_entry = 0;
-    unsigned long parasite_vaddr;
-    unsigned long text;
+    unsigned long parasite_vaddr = 0;
+    unsigned long text = 0;
 
     LOG_SUCCESS("Length of parasite is %d bytes\n", parasite->st_info.st_size);
     
