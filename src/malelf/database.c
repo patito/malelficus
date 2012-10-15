@@ -56,7 +56,16 @@ _i32 update_section_database(const char* scan_file, FILE* outfd, _u32 *n_items) 
                 bzero(path, strlen(scan_file) + strlen(dp->d_name) + 1);
                 bzero(tmp_dir, strlen(scan_file) + 1);
                 strncpy(tmp_dir, scan_file, strlen(scan_file));
-                
+
+                if (!strcmp(basename(tmp_dir), dp->d_name)) {
+                    strncpy(tmp_dir, scan_file, strlen(scan_file));
+                    if (!strcmp(basename(dirname(tmp_dir)), dp->d_name)) {
+                        free(path);
+                        free(tmp_dir);
+                        continue;
+                    }                        
+                }
+                                     
                 if (tmp_dir[strlen(tmp_dir) - 1] == '/')
                     tmp_dir[strlen(tmp_dir) - 1] = 0;
                 
