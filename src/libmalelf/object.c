@@ -42,6 +42,8 @@
 #include <malelf/object.h>
 #include <malelf/dissect.h>
 
+_u8 malelf_quiet_mode = 0;
+
 /**
  * Object file types
  * see ELF Format Specification for more details
@@ -161,8 +163,6 @@ _i32 malelf_open(malelf_object* obj, char* filename, int flags) {
 
     if (malelf_check_elf(obj) == MALELF_SUCCESS) {
       MALELF_MAP_ELF(obj);
-    } else {
-      LOG_WARN("Binary '%s' is not ELF.\n", obj->fname);
     }
   }
 
@@ -199,11 +199,13 @@ _u8 malelf_add_section(malelf_object* input, malelf_object* output, malelf_add_s
 
   assert(options.name != NULL);
   assert(options.data_fname != NULL);
-  LOG_SUCCESS("section name: %s\n", options.name);
-  LOG_SUCCESS("section data file: %s\n", options.data_fname);
-  LOG_SUCCESS("binary output: %s\n", output->fname);
-  LOG_SUCCESS("PHT address: 0x%08x\n", input->elf.elfh->e_phoff);
-  LOG_SUCCESS("Section header address: 0x%08x\n", input->elf.elfh->e_shoff);
+  if (!malelf_quiet_mode) {
+      LOG_SUCCESS("section name: %s\n", options.name);
+      LOG_SUCCESS("section data file: %s\n", options.data_fname);
+      LOG_SUCCESS("binary output: %s\n", output->fname);
+      LOG_SUCCESS("PHT address: 0x%08x\n", input->elf.elfh->e_phoff);
+      LOG_SUCCESS("Section header address: 0x%08x\n", input->elf.elfh->e_shoff);
+  }
 
   if (write(output->fd, input->elf.elfh,  input->elf.elfh->e_ehsize) < input->elf.elfh->e_ehsize) {
     LOG_ERROR("Failed to write() the elf header\n");

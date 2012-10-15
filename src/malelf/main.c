@@ -76,7 +76,8 @@ _u8 pht(int argc, char** argv);
 /**
  * Global variables
  */
-int quiet_mode = 0, verbose_mode = 0;
+_u8 malelf_verbose_mode = 0;
+extern _u8 malelf_quiet_mode;
 
 /**
  * Software design
@@ -115,10 +116,10 @@ _u8 entry_point(int argc, char** argv) {
             help_entry_point();
             break;
         case 'q':
-            quiet_mode = 0x01;
+            malelf_quiet_mode = 0x01;
             break;
         case 'v':
-            verbose_mode = 0x01;
+            malelf_verbose_mode = 0x01;
             break;
         case 'g':
             action = ACTION_GET;
@@ -661,6 +662,7 @@ void database(int argc, char** argv) {
             {"output", 1, 0, 'o'},
             {"scan-input", 1, 0, 'f'},
             {"section", 0, 0, 's'},
+            {"quiet", 0, 0, 'q'},
             {0, 0, 0, 0}
         };
 
@@ -670,13 +672,10 @@ void database(int argc, char** argv) {
             break;
 
         switch (c) {
-        case 0:
-            printf("option %s", long_options[option_index].name);
-            if (optarg)
-                printf(" with arg %s", optarg);
-            printf("\n");
+        case 'q':
+            malelf_quiet_mode = 1;
             break;
-
+            
         case 'c':
             is_create = 1;
             break;

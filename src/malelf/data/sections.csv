@@ -85,3 +85,5 @@ SPIRITVC000337,1
 .stab,1
 .stabstr,3
 .gnu.version_d,1879048189
+.altinstr_replacement,1
+.altinstructions,1

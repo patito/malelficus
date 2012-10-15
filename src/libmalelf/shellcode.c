@@ -3,14 +3,13 @@
 #include <sys/mman.h>
 
 #ifdef __STDC__
-
 extern int fileno(FILE*);
-
 #endif
 
-#include "malelf/util.h"
-#include "malelf/error.h"
-#include "malelf/types.h"
+#include <malelf/defines.h>
+#include <malelf/util.h>
+#include <malelf/error.h>
+#include <malelf/types.h>
 
 _u8 shellcode_create(FILE* fd_o,
                      int in_size,

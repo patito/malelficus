@@ -5,6 +5,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include <libgen.h>
 #include <errno.h>
 #include <dirent.h>
 
@@ -14,6 +15,8 @@
 #include <malelf/error.h>
 #include <malelf/object.h>
 #include <malelf/util.h>
+
+extern _u8 malelf_quiet_mode;
 
 _i32 create_section_database(const char* scan_file, FILE* outfd, _u32 *n_items) {
     return update_section_database(scan_file, outfd, n_items);
@@ -38,8 +41,10 @@ _i32 update_section_database(const char* scan_file, FILE* outfd, _u32 *n_items) 
     /**
      * scan_file is a directory?
      */
-    if (S_ISDIR(st_info.st_mode)) {
-        LOG_SUCCESS("%s is a directory, iterating over files.\n");
+    if (S_ISDIR(st_info.st_mode) && !S_ISLNK(st_info.st_mode)) {
+        if (!malelf_quiet_mode) {
+            LOG_SUCCESS("%s is a directory, iterating over files.\n");
+        }
 
         if ((dirp = opendir(scan_file)) == NULL) {
             return errno;
@@ -48,7 +53,6 @@ _i32 update_section_database(const char* scan_file, FILE* outfd, _u32 *n_items) 
         do {
             errno = 0;
             if ((dp = readdir(dirp)) != NULL) {
-                printf("==%s\n", dp->d_name);
                 if (!strcmp(dp->d_name, ".") || !strcmp(dp->d_name, ".."))
                     continue;
                 char *path = (char*) malloc(strlen(scan_file) + strlen(dp->d_name) + 2);
@@ -63,8 +67,10 @@ _i32 update_section_database(const char* scan_file, FILE* outfd, _u32 *n_items) 
                         free(path);
                         free(tmp_dir);
                         continue;
-                    }                        
+                    }
                 }
+
+                strncpy(tmp_dir, scan_file, strlen(scan_file));
                                      
                 if (tmp_dir[strlen(tmp_dir) - 1] == '/')
                     tmp_dir[strlen(tmp_dir) - 1] = 0;
@@ -72,7 +78,10 @@ _i32 update_section_database(const char* scan_file, FILE* outfd, _u32 *n_items) 
                 strcat(path, tmp_dir);
                 strcat(path, "/");
                 strcat(path, dp->d_name);
-                LOG_SUCCESS("Extracting section names from %s\n", path);
+
+                if (!malelf_quiet_mode) {
+                    LOG_SUCCESS("Extracting section names from %s\n", path);
+                }
                 status = update_section_database(path, outfd, n_items);
                 free(path);
                 free(tmp_dir);
@@ -93,10 +102,14 @@ _i32 update_section_database(const char* scan_file, FILE* outfd, _u32 *n_items) 
             return status;
         }
     } else if (S_ISLNK(st_info.st_mode)) {
-        LOG_WARN("File '%s' is a symbolic link. Skipping file...\n", scan_file);
+        if (!malelf_quiet_mode) {
+            LOG_WARN("File '%s' is a symbolic link. Skipping file...\n", scan_file);
+        }
         return MALELF_SUCCESS;
     } else if (!S_ISREG(st_info.st_mode)) {
-        LOG_WARN("File '%s' is not a regular file. Skipping file...\n", scan_file);
+        if (!malelf_quiet_mode) {
+            LOG_WARN("File '%s' is not a regular file. Skipping file...\n", scan_file);
+        }
         return MALELF_SUCCESS;
     }
 

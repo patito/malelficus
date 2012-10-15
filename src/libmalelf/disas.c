@@ -11,10 +11,13 @@
 
 #include <BeaEngine.h>
 
-#include "malelf/error.h"
-#include "malelf/disas.h"
-#include "malelf/util.h"
-#include "malelf/object.h"
+#include <malelf/defines.h>
+#include <malelf/error.h>
+#include <malelf/disas.h>
+#include <malelf/util.h>
+#include <malelf/object.h>
+
+extern _u8 malelf_quiet_mode;
 
 #define _P malelf_print
 #define _PDIRECTIVE _P
@@ -164,7 +167,7 @@ void malelf_disas_program(malelf_object* obj, FILE* fd) {
                 j++;
             }
             else {
-                printf("ERROR\n");
+                LOG_ERROR("ERROR when disassembling offset %d\n", j);
                 Error = 1;
             }
         };

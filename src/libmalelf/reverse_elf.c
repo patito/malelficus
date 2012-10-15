@@ -4,10 +4,13 @@
 #include <assert.h>
 #include <sys/mman.h>
 #include <libgen.h>
-#include "malelf/reverse_elf.h"
-#include "malelf/object.h"
-#include "malelf/types.h"
-#include "malelf/util.h"
+
+#include <malelf/defines.h>
+#include <malelf/reverse_elf.h>
+#include <malelf/object.h>
+#include <malelf/types.h>
+#include <malelf/util.h>
+
 /*
  
   Extracted from elf.h
@@ -183,11 +186,15 @@ _u8 reverse_elf2c(malelf_object* elf, FILE* fd) {
       continue;
     }
 
-    LOG_SUCCESS("%s:\t\t\taddress=%d\tstart=%d\tend=%d\tsize=%d\n", GET_SECTION_NAME(elf, header, sections, i), file_addr, s->sh_offset, s->sh_offset+s->sh_size, s->sh_size);
+    if (!malelf_quiet_mode) {
+        LOG_SUCCESS("%s:\t\t\taddress=%d\tstart=%d\tend=%d\tsize=%d\n", GET_SECTION_NAME(elf, header, sections, i), file_addr, s->sh_offset, s->sh_offset+s->sh_size, s->sh_size);
+    }
 
     if (file_addr < s->sh_offset) {
       PRINT_C(fd, "\n/* padding %d bytes */\n", s->sh_offset - file_addr);
-      LOG_SUCCESS("%s: padding %d bytes\n", GET_SECTION_NAME(elf, header, sections, i), s->sh_offset - file_addr);
+      if (!malelf_quiet_mode) {
+          LOG_SUCCESS("%s: padding %d bytes\n", GET_SECTION_NAME(elf, header, sections, i), s->sh_offset - file_addr);
+      }
       
       for (; file_addr < s->sh_offset; file_addr++) {
         if (count_str == 0) {

@@ -7,7 +7,10 @@
 #include <string.h>
 #include <assert.h>
 
-#include "malelf/print_table.h"
+#include <malelf/types.h>
+#include <malelf/print_table.h>
+
+extern _u8 malelf_quiet_mode;
 
 /**
  * param1 = struct line

@@ -12,13 +12,13 @@
  * Macros
  */
 #define LOG_RAW malelf_say
-#define SAY malelf_say
+#define SAY if(!malelf_quiet_mode) malelf_say
 #define LOG LOG_RAW
-#define LOG_SUCCESS malelf_success
-#define LOG_ERROR malelf_error
+#define LOG_SUCCESS if (!malelf_quiet_mode) malelf_success
+#define LOG_ERROR if (!malelf_quiet_mode) malelf_error
 #define LOG_WARN malelf_warn
 #define LOG_OFFSET(desc_format, value)          \
-  if (quiet_mode) {                             \
+  if (malelf_quiet_mode) {                             \
     LOG_RAW("0x%x", value);                     \
   } else LOG_RAW(desc_format, value)
 

@@ -5,6 +5,7 @@
 #include <assert.h>
 #include <link.h>
 
+#include <malelf/defines.h>
 #include <malelf/object.h>
 #include <malelf/util.h>
 #include <malelf/dissect.h>

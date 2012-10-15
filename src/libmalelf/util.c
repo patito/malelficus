@@ -7,8 +7,10 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-#include "malelf/util.h"
-#include "malelf/error.h"
+#include <malelf/util.h>
+#include <malelf/error.h>
+
+extern _u8 malelf_quiet_mode;
 
 int malelf_log(FILE* fd, const char* prefix, const char *format, va_list args) {
   char outbuf[MAX_LOG_BUFFER];
