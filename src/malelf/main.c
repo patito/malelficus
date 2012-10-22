@@ -1065,7 +1065,7 @@ void help() {
     SAY(" \tanalyse\n");
   
     SAY("\n");
-    SAY("Use:\n \t%s command -h\n to get help about the command.\n"); 
+    SAY("Use:\n \t%s command -h\n to get help about the command.\n", program_name); 
 
     printf(" -h\tprint this help and exit\n");
 
