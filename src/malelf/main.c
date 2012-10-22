@@ -1148,7 +1148,6 @@ void help_infect() {
 void help_copy() {
     SAY("Copy ELF binary\n");
     SAY("%s copy [-h] -i <input-binary> -o <output-binary>]\n", program_name);
-    SAY("\tCopy binary ELF.\n");
     SAY("\tthe method passed in -m\n");
     SAY(" -h\tinfect help\n");
     SAY(" -i <binary>\tInput binary file\n");
@@ -1163,11 +1162,18 @@ void help_disas() {
     SAY(" -h\tdisas help\n");
     SAY(" -i <binary>\tInput binary file\n");
     SAY(" -o <output-asm>\tOutput file, default is stdout\n");
+    SAY(" -s <section-name>\tDisassembly the section\n");
     exit(MALELF_SUCCESS);
 }
 
 void help_analyse() {
-
+  SAY("Analyse the ELF binary for malwares.\n");
+  SAY("%s analyse [-h] -i <input> -o <output-file> [,-f <output-format>]\n", program_name);
+  SAY(" -h\tanalyse help\n");
+  SAY(" -i <input-binary>\tInput binary file\n");
+  SAY(" -o <output-file>\tOutput report\n");
+  SAY(" -f <output-format>\tFormat for report\n");
+  exit(MALELF_SUCCESS);
 }
 
 void help_database() {

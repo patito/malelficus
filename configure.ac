@@ -33,6 +33,7 @@ AC_SUBST([INCLUDE_TESTS])
 
 # Checks for programs.
 AC_PROG_CC
+AC_CHECK_PROG([HAVE_NASM], [nasm], [true], [false])
 
 # Checks for libraries.
 
@@ -114,4 +115,10 @@ else
    AC_MSG_RESULT([0111    Unit tests: disabled (use ./configure --enable-tests to enable      1000])
 fi
 
-AC_MSG_RESULT([1001                                                                        1010])
+if test "x$HAVE_NASM" = "xtrue"; then
+   AC_MSG_RESULT([1001    NASM: installed                                                     1010])
+else
+   AC_MSG_RESULT([1001    NASM: not installed... you need install nasm.                       1010])
+fi
+
+AC_MSG_RESULT([1011                                                                        1100])

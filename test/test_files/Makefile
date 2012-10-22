@@ -2,7 +2,7 @@
 NASM = nasm
 NASM_INCLUDE = ../../samples/inc/
 
-all: clean uninfected malware1
+all: clean uninfected malware1 malware2
 	@echo "done"
 
 uninfected: uninfected.o
@@ -16,6 +16,12 @@ malware1: malware1.o
 
 malware1.o:
 	$(NASM) -f bin -o $@ malware1.asm
+
+malware2: malware2.o
+	@echo  -n ""
+
+malware2.o:
+	$(NASM) -f bin -o $@ malware2.asm
 
 clean:
 	rm -f uninfected *.o *.hex
