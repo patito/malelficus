@@ -6,6 +6,7 @@
 
 #include "malelf/object.h"
 
-extern void malelf_disas(malelf_object* input, FILE* out);
+extern _i32 malelf_disas(malelf_object* input, FILE* out);
+extern _i32 malelf_disas_section(malelf_object *input, char *section, FILE *outfd);
 
 #endif

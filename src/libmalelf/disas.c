@@ -30,7 +30,7 @@ int malelf_print_isn(FILE* fd, const char* format, ...) {
   return malelf_log(fd, "        ", format, args);
 }
 
-void malelf_disas_ehdr(ElfW(Ehdr)* ehdr, FILE* fd) {
+_i32 malelf_disas_ehdr(ElfW(Ehdr)* ehdr, FILE* fd) {
     _PDIRECTIVE(fd, "BITS 32\n");
     _PISN(fd, "%%assign origin 0x08048000\n\n");
     _P(fd, "ehdr:\t\t\t\t\t; Elf32_Ehdr\n");
@@ -69,9 +69,11 @@ void malelf_disas_ehdr(ElfW(Ehdr)* ehdr, FILE* fd) {
       filesize      equ     $ - $$
 
     */
+
+    return MALELF_SUCCESS;
 }
 
-void malelf_disas_phdr(elf_t* elf, FILE* fd) {
+_i32 malelf_disas_phdr(elf_t* elf, FILE* fd) {
     ElfW(Ehdr)* ehdr = elf->elfh;
     ElfW(Phdr)* phdr = elf->elfp;
     int i;
@@ -91,9 +93,11 @@ void malelf_disas_phdr(elf_t* elf, FILE* fd) {
     }
     _P(fd, "\n");
     _PISN(fd, "phdrsize\tequ\t$ - phdr_0\n\n");
+
+    return MALELF_SUCCESS;
 }
 
-void malelf_disas_sht(malelf_object* obj, FILE* fd) {
+_i32 malelf_disas_sht(malelf_object* obj, FILE* fd) {
     ElfW(Ehdr)* ehdr = obj->elf.elfh;
     /*    ElfW(Phdr)* phdr = obj->elf.elfp;*/
     ElfW(Shdr)* shdr = obj->elf.elfs;
@@ -117,9 +121,11 @@ void malelf_disas_sht(malelf_object* obj, FILE* fd) {
     }
 
     _P(fd, "\n");
+
+    return MALELF_SUCCESS;
 }
 
-void malelf_disas_program(malelf_object* obj, FILE* fd) {
+_i32 malelf_disas_program(malelf_object* obj, FILE* fd) {
     ElfW(Ehdr)* ehdr = obj->elf.elfh;
     /*    ElfW(Phdr)* phdr = obj->elf.elfp;*/
     ElfW(Shdr)* shdr = obj->elf.elfs;
@@ -177,9 +183,11 @@ void malelf_disas_program(malelf_object* obj, FILE* fd) {
     }
 
     _P(fd, "\n");
+
+    return MALELF_SUCCESS;
 }
 
-void malelf_disas_flat(malelf_object* obj, FILE* fd) {
+_i32 malelf_disas_flat(malelf_object* obj, FILE* fd) {
   DISASM MyDisasm;
   unsigned size = 0;
   int len;
@@ -210,17 +218,92 @@ void malelf_disas_flat(malelf_object* obj, FILE* fd) {
     }
   }
 
-  _P(fd, "\n\n");  
+  _P(fd, "\n\n");
+
+  return Error ? MALELF_EDISAS : MALELF_SUCCESS;
 }
 
-void malelf_disas(malelf_object* input, FILE* outfd) {
+_i32 malelf_disas_section(malelf_object* obj, char* section, FILE* fd) {
+    ElfW(Ehdr)* ehdr = obj->elf.elfh;
+    ElfW(Shdr)* shdr = obj->elf.elfs;
+    int i;
+    int Error = 0;
+
+    for (i = 0; i < ehdr->e_shnum; i++) {
+        ElfW(Shdr)* s = (ElfW(Shdr)*) (shdr + i);
+        char* name = NULL;
+
+        /* skip SHT_NULL */
+        if (s->sh_type == SHT_NULL)
+            continue;
+
+        if (ehdr->e_shstrndx != 0x00) {
+          name = GET_SECTION_NAME(obj, ehdr, shdr, i);
+        }
+
+        if (name != NULL && !strcmp(name, section)) {
+          _PLABEL(fd, "%s:\t; 0x%08x\n", GET_SECTION_NAME(obj, ehdr, shdr, i), 0x08048000+s->sh_offset);
+          _u8* mem = obj->mem + s->sh_offset;
+          DISASM MyDisasm;
+          int len, j = 0, size = 0;
+          int Error = 0;
+
+          /*  Init the Disasm structure */
+          (void) memset (&MyDisasm, 0, sizeof(DISASM));
+
+          /* Init EIP */
+          MyDisasm.EIP = (UIntPtr) mem;
+
+          MyDisasm.Options = Tabulation + NasmSyntax + PrefixedNumeral + ShowSegmentRegs;
+
+
+          /* Loop for Disasm */
+          while ((unsigned)size < s->sh_size && !Error){
+            len = Disasm(&MyDisasm);
+
+            if (len != UNKNOWN_OPCODE) {
+              size += len;
+              _P(fd, "%s\n", MyDisasm.CompleteInstr);
+              MyDisasm.EIP = MyDisasm.EIP + (UIntPtr)len;
+              j++;
+            }
+            else {
+              LOG_ERROR("ERROR when disassembling offset %d [%02x%02x]\n", j, mem[j], mem[j+1]);
+              /* Error = 1; */
+              j++;
+              size += 1;
+            }
+          };
+
+          _P(fd, "\n\n");
+
+        }
+    }
+
+    _P(fd, "\n");
+
+      return Error ? MALELF_EDISAS : MALELF_SUCCESS;
+}
+
+_i32 malelf_disas(malelf_object* input, FILE* outfd) {
   if (malelf_check_elf(input) == MALELF_SUCCESS) {
-    malelf_disas_ehdr(input->elf.elfh, outfd);
-    malelf_disas_phdr(&input->elf, outfd);
-    malelf_disas_program(input, outfd);
-    malelf_disas_sht(input, outfd);
+    if (malelf_disas_ehdr(input->elf.elfh, outfd) != MALELF_SUCCESS)
+      return MALELF_EDISAS;
+    
+    if (malelf_disas_phdr(&input->elf, outfd) != MALELF_SUCCESS)
+      return MALELF_SUCCESS;
+    
+    if (malelf_disas_program(input, outfd) != MALELF_SUCCESS)
+      return MALELF_SUCCESS;
+
+    if (malelf_disas_sht(input, outfd) != MALELF_SUCCESS)
+      return MALELF_EDISAS;
+    
   } else {
     LOG_WARN("Disassembling as FLAT binary.\n");
-    malelf_disas_flat(input, outfd);
+    if (malelf_disas_flat(input, outfd) != MALELF_SUCCESS)
+      return MALELF_EDISAS;
   }
+
+  return MALELF_SUCCESS;
 }

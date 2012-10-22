@@ -7,5 +7,6 @@
 #include <malelf/types.h>
 
 extern _u8 malelf_quiet_mode;
+extern _u8 malelf_verbose_mode;
 
 #endif

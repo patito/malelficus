@@ -18,8 +18,8 @@ int malelf_log(FILE* fd, const char* prefix, const char *format, va_list args) {
   int i;
   size_t len;
 
-  bzero(outbuf, MAX_LOG_BUFFER);
-  bzero(n_format, MAX_LOG_BUFFER);
+  memset(outbuf, '\0', MAX_LOG_BUFFER);
+  memset(n_format, '\0', MAX_LOG_BUFFER);
   strncpy(n_format, prefix, strlen(prefix));
   strncat(n_format, format, MAX_LOG_BUFFER - strlen(n_format));
   

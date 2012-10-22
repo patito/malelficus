@@ -57,8 +57,8 @@ _i32 update_section_database(const char* scan_file, FILE* outfd, _u32 *n_items) 
                     continue;
                 char *path = (char*) malloc(strlen(scan_file) + strlen(dp->d_name) + 2);
                 char *tmp_dir = malloc(strlen(scan_file)+1);
-                bzero(path, strlen(scan_file) + strlen(dp->d_name) + 1);
-                bzero(tmp_dir, strlen(scan_file) + 1);
+                memset(path, '\0', strlen(scan_file) + strlen(dp->d_name) + 1);
+                memset(tmp_dir, '\0', strlen(scan_file) + 1);
                 strncpy(tmp_dir, scan_file, strlen(scan_file));
 
                 if (!strcmp(basename(tmp_dir), dp->d_name)) {
@@ -137,8 +137,8 @@ _i32 update_section_database(const char* scan_file, FILE* outfd, _u32 *n_items) 
 
     for (i = 0; i < header->e_shnum; ++i) {
         ElfW(Shdr) *sect = (ElfW(Shdr)*)(sections + i);
-        bzero(sect_name, 255);
-        bzero(sect_type, 255);
+        memset(sect_name, '\0', 255);
+        memset(sect_type, '\0', 255);
 
         if (sect->sh_type != SHT_NULL && header->e_shstrndx != 0x00) {
             strncpy(sect_name, (char*) elf_obj.mem + sections[header->e_shstrndx].sh_offset + sections[i].sh_name, 255);
@@ -169,7 +169,7 @@ _u8 in_database(FILE* database, char* sect_name, char* sect_type) {
     fseek(database, 0L, SEEK_SET);
 
     while (!feof(database)) {
-        bzero(line, 256);
+        memset(line, '\0', 256);
         if (!fgets(line, 256, database)) {
             break;
         }
@@ -185,8 +185,15 @@ _u8 in_database(FILE* database, char* sect_name, char* sect_type) {
             tmp_name = line;
             tmp_type = buf;
 
-            if (!strcmp(tmp_name, sect_name) &&
-                !strcmp(tmp_type, sect_type)) {
+            if (strcmp(tmp_name, sect_name) != 0) {
+                continue;
+            }
+
+            if (sect_type != NULL) {
+                if (!strcmp(tmp_type, sect_type)) {
+                    return 1;
+                }
+            } else {
                 return 1;
             }
         }

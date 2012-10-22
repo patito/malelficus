@@ -20,5 +20,9 @@ extern void print_table_generic(tb_line*, int, int, int);
 extern void print_table_line(tb_line*, int, int);
 extern void print_table_header(tb_header*, int, int);
 extern void print_table_header_art(int, int);
+extern _i32 malelf_sections_exec(malelf_object* elf_obj,
+                          _i32 (*callback)(   char* sect_n,
+                                              char* sect_t,
+                                              void* arg), void* arg);
 
 #endif

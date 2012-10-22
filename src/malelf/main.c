@@ -48,10 +48,13 @@
 #include <malelf/shellcode.h>
 
 #include "database.h"
+#include "analyse.h"
 
 #ifdef __STDC__
 extern int fileno(FILE*);
 #endif
+
+#define DEFAULT_SECTION_DATABASE "~/.malelficus/data/sections.csv"
 
 /**
  * function prototypes
@@ -79,6 +82,8 @@ _u8 pht(int argc, char** argv);
 _u8 malelf_verbose_mode = 0;
 extern _u8 malelf_quiet_mode;
 
+char* program_name;
+
 /**
  * Software design
  *
@@ -91,7 +96,7 @@ extern _u8 malelf_quiet_mode;
 /**
  * Handle entry point
  *
- * ./malelficus entry_point [-qhvg] [-u address] [-i <input-file>] [-o <output-file>]
+ * %s entry_point [-qhvg] [-u address] [-i <input-file>] [-o <output-file>]
  *
  * -q quiet mode
  * -h entry point help
@@ -250,12 +255,13 @@ _u8 copy(int argc, char** argv) {
 
 _u8 shellcode(int argc, char** argv) {
     int opt, shellcode_size = 0;
-    unsigned long int original_entry_point = 0;
+    unsigned long int original_entry_point = 0, magic_bytes = 0;
     char* input_filename = NULL;
     char* output_filename = NULL;
     char* output_type = NULL;
     FILE *fd_i, *fd_o;
     struct stat st_info;
+    _i32 error = 0;
   
     while((opt = getopt(argc, argv, "hi:o:t:z:s:")) != -1) {
         switch(opt) {
@@ -300,7 +306,14 @@ _u8 shellcode(int argc, char** argv) {
 
     if (stat(input_filename, &st_info) == -1) {
         perror("failed to stat file.\n");
+        fclose(fd_i);
         return -1;
+    }
+
+    if (st_info.st_size == 0) {
+        LOG_ERROR("Empty file '%s'.\n", input_filename);
+        fclose(fd_i);
+        exit(-1);
     }
 
     if (shellcode_size == 0 || shellcode_size > st_info.st_size) {
@@ -313,21 +326,36 @@ _u8 shellcode(int argc, char** argv) {
         fd_o = fopen(output_filename, "w");
         if (!fd_o) {
             perror("Permission denied to open output file.\n");
+            fclose(fd_i);
             return -1;
         }
     }
 
-    if (!output_type || !strcmp("malelficus", output_type)) {
-        shellcode_create(fd_o, shellcode_size, fd_i, original_entry_point);
-    } else {
-        fclose(fd_i);
-        if (fd_o != stdout && fd_o != stderr) {
-            fclose(fd_o);
+    if (!output_type)
+        output_type = "c";
+
+    if (!strcmp("c", output_type)) {
+        error = shellcode_create_c(fd_o, shellcode_size, fd_i, original_entry_point);
+    } else if (!strcmp("malelficus", output_type)) {
+        if (fd_o == stdout) {
+            LOG_ERROR("Option -t malelficus *require* a output file. Use -o <file>\n");
+            goto shellcode_exit;            
         }
-    
-        LOG_ERROR("Output type not supperted.\n");
+        error = shellcode_create_malelficus(fd_o, shellcode_size, fd_i, original_entry_point, magic_bytes);
+    } else {
+        LOG_ERROR("Unsupported output type: %s\n", output_type);
+        goto shellcode_exit;
     }
 
+    if (error != MALELF_SUCCESS)
+        malelf_perror(error);
+
+ shellcode_exit:
+    fclose(fd_i);
+    if (fd_o != stdout && fd_o != stderr) {
+        fclose(fd_o);
+    }
+    
     return MALELF_SUCCESS;
 }
 
@@ -503,6 +531,7 @@ void infect(int argc, char** argv) {
     _u8 technique = 0, _auto = 0;
     _i32 error;
     _u32 offset_entry_point = 0;
+    unsigned long int magic_bytes = 0;
 
     typedef enum {
         SILVIO_PADDING = 0
@@ -514,7 +543,7 @@ void infect(int argc, char** argv) {
     output.fname = NULL;
     parasite.fname = NULL;
 
-    while((opt = getopt(argc, argv, "hi:o:t:p:m:f:a")) != -1) {
+    while((opt = getopt(argc, argv, "hi:o:t:p:m:f:a:b")) != -1) {
         switch(opt) {
         case 'h':
             help_infect();
@@ -528,6 +557,9 @@ void infect(int argc, char** argv) {
         case 'm':
             technique = atoi(optarg);
             break;
+        case 'b':
+            magic_bytes = (unsigned long int) strtol(optarg, NULL, 16);
+            break;            
         case 'p':
             parasite.fname = optarg;
             break;
@@ -576,7 +608,8 @@ void infect(int argc, char** argv) {
 
     input.is_readonly = 1;
 
-    if ((error = malelf_openr(&parasite, parasite.fname)) != MALELF_SUCCESS) {
+    if ((error = malelf_openr(&parasite,
+                              parasite.fname)) != MALELF_SUCCESS) {
         malelf_perror(error);
         LOG_ERROR("Failed to open parasite file '%s'\n", parasite.fname);
         exit(-1);
@@ -584,7 +617,11 @@ void infect(int argc, char** argv) {
 
     switch (technique) {
     case SILVIO_PADDING:
-        error = malelf_infect_silvio_padding(&input, &output, &parasite, offset_entry_point);
+        error = malelf_infect_silvio_padding(&input,
+                                            &output,
+                                            &parasite,
+                                            offset_entry_point,
+                                            magic_bytes);
         break;
     }
 
@@ -595,12 +632,13 @@ void infect(int argc, char** argv) {
 void disas(int argc, char** argv) {
     int opt;
     malelf_object input;
-    char* out_fname = NULL;
-    FILE* outfd;
+    char *out_fname = NULL, *section = NULL;
+    FILE *outfd;
+    _i32 error;
 
     input.fname = NULL;
 
-    while((opt = getopt(argc, argv, "hi:o:")) != -1) {
+    while((opt = getopt(argc, argv, "hi:o:s:")) != -1) {
         switch(opt) {
         case 'h':
             help_disas();
@@ -611,6 +649,9 @@ void disas(int argc, char** argv) {
         case 'o':
             out_fname = optarg;
             break;
+        case 's':
+          section = optarg;
+          break;
         case ':':
             LOG_WARN("malelficus: Error - Option `%c' needs a value\n\n", optopt);
             help_infect();
@@ -638,10 +679,19 @@ void disas(int argc, char** argv) {
 
     input.is_readonly = 1;
     if (malelf_openr(&input, input.fname) == MALELF_SUCCESS) {
-        malelf_disas(&input, outfd);
+      if (section) {
+        error = malelf_disas_section(&input, section, outfd);
+      } else {        
+        error = malelf_disas(&input, outfd);
+      }
     } else {
         LOG_ERROR("Failed to open input file...\n");
         exit(-1);
+    }
+
+    if (error != MALELF_SUCCESS) {
+      malelf_perror(error);
+      exit(-1);
     }
 }
 
@@ -663,15 +713,19 @@ void database(int argc, char** argv) {
             {"scan-input", 1, 0, 'f'},
             {"section", 0, 0, 's'},
             {"quiet", 0, 0, 'q'},
+            {"help", 0, 0, 'h'},
             {0, 0, 0, 0}
         };
 
-        c = getopt_long(argc, argv, "cuo:f:",
+        c = getopt_long(argc, argv, "hcuo:f:",
                         long_options, &option_index);
         if (c == -1)
             break;
 
         switch (c) {
+        case 'h':
+            help_database();
+            break;
         case 'q':
             malelf_quiet_mode = 1;
             break;
@@ -757,31 +811,98 @@ void database(int argc, char** argv) {
 }
 
 void analyse(int argc, char** argv) {
-    int opt;
+    int c;
+    unsigned malelf_opt = 0;
     malelf_object input;
-    char* out_fname = NULL;
-    FILE* outfd;
+    struct stat st_info;
+    char *out_fname = NULL,
+        *sect_name = NULL,
+        *segm_name = NULL,
+        *section_db = NULL,
+        *segment_db = NULL;
+    FILE *outfd = NULL, *section_db_fp = NULL, *segment_db_fp = NULL;
+    _i32 error = 0;
+
+#define ENTRY_POINT 0x01
+#define SUSP_SECT (ENTRY_POINT << 1)
+#define SUSP_SEGM (ENTRY_POINT << 2)
+#define SUSP_INSTR_SECT (ENTRY_POINT << 3)
+
+#define HAS_ENTRY_POINT(val) ((val & ENTRY_POINT) == ENTRY_POINT)
+#define HAS_SUSP_SECT(val) ((val & SUSP_SECT) == SUSP_SECT)
+#define HAS_SUSP_SEGM(val) ((val & SUSP_SEGM) == SUSP_SEGM)
+#define HAS_INSTR_SECT(val) ((val & SUSP_INSTR_SECT) == SUSP_INSTR_SECT)
 
     input.fname = NULL;
 
-    while((opt = getopt(argc, argv, "hi:o:")) != -1) {
-        switch(opt) {
+    while (1) {
+        int option_index = 0;
+        static struct option long_options[] = {
+            {"entry-point", 0, 0, 'e'},
+            {"suspect-sections", 0, 0, 'S'},
+            {"suspect-segments", 0, 0, 'J'},
+            {"section", 1, 0, 's'},
+            {"segment", 1, 0, 'j'},
+            {"help", 0, 0, 'h'},
+            {"output", 1, 0, 'o'},
+            {"file", 1, 0, 'i'},
+            {"section-db", 1, 0, 'z'},
+            {"segment-db", 1, 0, 'Z'},
+            {"verbose", 0, 0, 'v'},
+            {0, 0, 0, 0}
+        };
+
+        c = getopt_long(argc, argv, "hveSJs:j:o:i:z:Z:",
+                        long_options, &option_index);
+        if (c == -1)
+            break;
+
+        switch (c) {
         case 'h':
             help_analyse();
             break;
-        case 'i':
-            input.fname = optarg;
+        case 'v':
+            malelf_verbose_mode = 1;
+            break;
+        case 'e':
+            malelf_opt |= ENTRY_POINT;
+            break;
+            
+        case 'S':
+            malelf_opt |= SUSP_SECT;
+            break;
+
+        case 'J':
+            malelf_opt |= SUSP_SEGM;
+            break;
+
+        case 's':
+            sect_name = optarg;
+            break;
+
+        case 'j':
+            segm_name = optarg;
             break;
         case 'o':
             out_fname = optarg;
             break;
-        case ':':
-            LOG_WARN("malelficus: Error - Option `%c' needs a value\n\n", optopt);
-            help_infect();
+
+        case 'i':
+            input.fname = optarg;
             break;
+
+        case 'z':
+            section_db = optarg;
+            break;
+
+        case 'Z':
+            segment_db = optarg;
+
         case '?':
-            LOG_WARN("malelficus: Error - No such option: `%c'\n\n", optopt);
-            help_disas();
+            break;
+
+        default:
+            printf("?? getopt returned character code 0%o ??\n", c);
         }
     }
 
@@ -792,7 +913,7 @@ void analyse(int argc, char** argv) {
     }
 
     if (out_fname == NULL) {
-        LOG_SUCCESS("Using stdout for log output.\n");
+        LOG_VERBOSE_SUCCESS("Using stdout for log output.\n");
         outfd = stdout;
     } else {
         outfd = fopen(out_fname, "w");
@@ -804,18 +925,94 @@ void analyse(int argc, char** argv) {
 
     input.is_readonly = 1;
   
-    if (malelf_openr(&input, input.fname) != MALELF_SUCCESS) {
+    if ((error = malelf_openr(&input, input.fname)) != MALELF_SUCCESS) {
+        malelf_perror(error);
         LOG_ERROR("Failed to open input file...\n");
         exit(-1);
     }
+
+    if (malelf_check_elf(&input) != MALELF_SUCCESS) {
+        LOG_ERROR("%s only analyse ELF binaries...\n", program_name);
+        exit(-1);
+    }
+
+    if (sect_name != NULL) {
+        LOG_SUCCESS("Analysing section: %s\n", sect_name);
+    }
+
+    if (segm_name != NULL) {
+        LOG_SUCCESS("Analysing segment: %s\n", segm_name);
+    }
+
+    if (HAS_ENTRY_POINT(malelf_opt)) {
+        LOG_SUCCESS("entry point: %08x\n", input.elf.elfh->e_entry);
+    }
+
+    if (!malelf_opt) {
+        malelf_opt |= ENTRY_POINT | SUSP_SECT | SUSP_SEGM | SUSP_INSTR_SECT;
+    }
+
+    if (HAS_SUSP_SECT(malelf_opt)) {
+        if (section_db == NULL) {
+            section_db = DEFAULT_SECTION_DATABASE;
+            if (stat(section_db, &st_info) == -1) {
+                LOG_ERROR("No section database supplied... use --section-db=your-section-database.csv\n");
+                goto analyse_exit;
+            }
+        }
+
+        section_db_fp = fopen(section_db, "r");
+        if (!section_db_fp) {
+            LOG_ERROR("Failed to open section database '%s'\n", section_db);
+            goto analyse_exit;
+        }
+        
+        error = analyse_suspect_section(&input, sect_name, section_db_fp);
+        if (error != MALELF_SUCCESS) {
+            malelf_perror(error);
+            goto analyse_exit;
+        }
+    }
+
+    if (!HAS_SUSP_SECT(malelf_opt) == 5) {
+        if (segment_db == NULL) {
+            segment_db = DEFAULT_SECTION_DATABASE;
+            if (stat(segment_db, &st_info) == -1) {
+                LOG_ERROR("No section database supplied... use --section-db=your-section-database.csv\n");
+                goto analyse_exit;
+            }
+        }
+
+        segment_db_fp = fopen(segment_db, "r");
+        if (!segment_db_fp) {
+            LOG_ERROR("Failed to open section database '%s'\n", segment_db);
+            goto analyse_exit;
+        }
+        
+        error = analyse_suspect_section(&input, sect_name, segment_db_fp);
+        if (error != MALELF_SUCCESS) {
+            malelf_perror(error);
+            goto analyse_exit;
+        }
+    }
+
+ analyse_exit:
+    if (out_fname)
+        fclose(outfd);
+    if (section_db_fp)
+        fclose(section_db_fp);
+
+    malelf_close(&input);
 }
 
 int
 main(int argc, char **argv) {
-
+    
+    program_name = *argv;
+    
     if(argc == 1) {
         LOG_WARN("This program needs arguments....\n\n");
-        help(1);
+        help();
     }
 
     if (!strcmp("-h", argv[1])) {
@@ -854,7 +1051,7 @@ void help() {
   
     SAY("PRESS ENTER TO CONTINUE\n");
     getc(stdin);
-    printf("./malelficus <command> <options>\n\n");
+    printf("%s <command> <options>\n\n", program_name);
 
     SAY(" Commands:\n");
     SAY(" \tdissect\n");
@@ -864,9 +1061,11 @@ void help() {
     SAY(" \tinfect\n");
     SAY(" \tshellcode\n");
     SAY(" \tcopy\n");
+    SAY(" \tdatabase\n");
+    SAY(" \tanalyse\n");
   
     SAY("\n");
-    SAY("Use:\n \t./malelficus command -h\n to get help about the command.\n"); 
+    SAY("Use:\n \t%s command -h\n to get help about the command.\n"); 
 
     printf(" -h\tprint this help and exit\n");
 
@@ -875,7 +1074,7 @@ void help() {
 
 void help_entry_point() {
     SAY("Entry point command\n");
-    SAY("./malelficus entry_point [-qhvg] [-u address] [-i <input-file>] [-o <output-file>]\n");
+    SAY("%s entry_point [-qhvg] [-u address] [-i <input-file>] [-o <output-file>]\n", program_name);
     SAY(" -q\tquiet mode\n");
     SAY(" -h\tentry point help\n");
     SAY(" -v\tverbose mode\n");
@@ -889,7 +1088,7 @@ void help_entry_point() {
 
 void help_dissect() {
     SAY("Dissect command\n");
-    SAY("./malelficus dissect [-hvepsS] -i <input file>\n");
+    SAY("%s dissect [-hvepsS] -i <input file>\n", program_name);
     SAY("\tThis command display information about the ELF binary\n\n");
     SAY(" -h\tdissect help\n");
     SAY(" -i <file>\t Input binary file\n");
@@ -902,7 +1101,7 @@ void help_dissect() {
 
 void help_shellcode() {
     SAY("Shellcode creator\n");
-    SAY("./malelficus shellcode [-h] -i <input-shellcode> -o <output> -t <output-type>\n");
+    SAY("%s shellcode [-h] -i <input-shellcode> -o <output> -t <output-type>\n", program_name);
     SAY("\tThis command create the virus shellcode in the proper\n\tformat for use with the ");
     SAY("infect command.\n\n");
     SAY(" -h\tthis help\n");
@@ -918,7 +1117,7 @@ void help_shellcode() {
 
 void help_reverse_elf() {
     SAY("Reverse ELF binary\n");
-    SAY("./malelficus reverse_elf [-h] -i <input file> [,-o <output-file>]\n");
+    SAY("%s reverse_elf [-h] -i <input file> [,-o <output-file>]\n", program_name);
     SAY("\tThis command reverse the ELF binary image in the C structs representation.\n");
     SAY("\tIt will provide the chance of manual edit the binary image.\n");
     SAY(" -h\treverse_elf help\n");
@@ -931,7 +1130,7 @@ void help_reverse_elf() {
 
 void help_infect() {
     SAY("Infect ELF binary\n");
-    SAY("./malelficus infect [-h] -m <algo> -i <input-binary> [,-o <output-infected-binary>]\n");
+    SAY("%s infect [-h] -m <algo> -i <input-binary> [,-o <output-infected-binary>]\n", program_name);
     SAY("\tThis command tries to infect a binary using.\n");
     SAY("\tthe method passed in -m\n");
     SAY(" -h\tinfect help\n");
@@ -948,7 +1147,7 @@ void help_infect() {
 
 void help_copy() {
     SAY("Copy ELF binary\n");
-    SAY("./malelficus copy [-h] -i <input-binary> -o <output-binary>]\n");
+    SAY("%s copy [-h] -i <input-binary> -o <output-binary>]\n", program_name);
     SAY("\tCopy binary ELF.\n");
     SAY("\tthe method passed in -m\n");
     SAY(" -h\tinfect help\n");
@@ -959,7 +1158,7 @@ void help_copy() {
 
 void help_disas() {
     SAY("Disassembly ELF binary\n");
-    SAY("./malelficus disas [-h] -i <input-binary> [-o <output-asm>]\n");
+    SAY("%s disas [-h] -i <input-binary> [-o <output-asm>]\n", program_name);
     SAY("\tDisassembly binary ELF in NASM compatible format.\n");
     SAY(" -h\tdisas help\n");
     SAY(" -i <binary>\tInput binary file\n");
@@ -972,5 +1171,16 @@ void help_analyse() {
 }
 
 void help_database() {
-
+    SAY("Database manager\n");
+    SAY("%s database [-csu] -f <scan_dir -o <database-output-csv>\n\n", program_name);
+    SAY("\t Help in maintanaince of the database of know symbols, sections, segments, etc...\n");
+    SAY(" -h/--help\tdatabase help\n");
+    SAY(" -c/--create\tCreate a new database file (use in among of --section or --segment, etc).\n");
+    SAY(" -u/--update\tUpdate a existing database file.\n");
+    SAY(" -f/--scan-input <file-or-directory>\tFile or directory to scanning.\n");
+    SAY(" -o/--output <file>\tFile to write the database (default = stdout)\n");
+    SAY(" -q/--quiet\tsilent mode (dont print messages).\n");
+    SAY("\n\tUsage:\t%s --create --section --scan-file=/usr/bin --output=sections.csv\n");
+    SAY("\n\tOR\n\t\t%s -u -s -f /usr/bin -o sections.csv\n", program_name, program_name);
+    exit(MALELF_SUCCESS);
 }

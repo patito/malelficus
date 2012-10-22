@@ -47,12 +47,22 @@ typedef enum {
   MALELF_ECLOSED = 41,
   MALELF_EALLOC = 42,
   MALELF_ENOT_ELF = 43,
-  MALELF_ECORRUPTED = 44
+  MALELF_ECORRUPTED = 44,
+  MALELF_ESUSPECT_SECTIONS = 45,
+  MALELF_EMISSING_MAGIC_BYTES = 46,
+  MALELF_EINV_OFFSET_ENTRY = 47,
+  MALELF_EDISAS = 48,
+
+  MALELF_LAST_ERROR = 50
 } malelf_status;
 
-
+#define malelf_perror(code) _malelf_perror(code, __FUNCTION__, __FILE__, __LINE__)
 #define malelf_fatal(code) do {malelf_perror(code); LOG_ERROR("Aborting...\n"); exit(code); } while(0)
 
-extern void malelf_perror(int code);
+extern void _malelf_perror(int code,
+                           const char* func,
+                           const char* file,
+                           int line);
+extern const char* malelf_strerror(int code);
 
 #endif

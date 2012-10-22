@@ -15,6 +15,7 @@
 #define SAY if(!malelf_quiet_mode) malelf_say
 #define LOG LOG_RAW
 #define LOG_SUCCESS if (!malelf_quiet_mode) malelf_success
+#define LOG_VERBOSE_SUCCESS if (malelf_verbose_mode) LOG_SUCCESS
 #define LOG_ERROR if (!malelf_quiet_mode) malelf_error
 #define LOG_WARN malelf_warn
 #define LOG_OFFSET(desc_format, value)          \

@@ -25,7 +25,11 @@ typedef enum {
   ALLOC_MMAP = 0,
   ALLOC_MALLOC
 } alloc_type_t;
-  
+
+union malelf_dword {
+    unsigned long int long_val;
+    unsigned char char_val[4];
+};
 
 typedef struct {
   ElfW(Ehdr) *elfh;

