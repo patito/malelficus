@@ -1,6 +1,6 @@
 CFLAGS_LANGUAGE=-std=c99 -pedantic
 CFLAGS_WARNS=-Wall -Wextra -Werror
-CFLAGS_INCLUDES=-I../external-libs/beangine/include/beaengine \
+CFLAGS_INCLUDES=-I../external-libs/beangine/include \
 		-Iinclude
 
 AM_CFLAGS=	-ggdb -fPIC -O2 $(CFLAGS_LANGUAGE) \

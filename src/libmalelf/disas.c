@@ -9,7 +9,7 @@
 #include <unistd.h>
 #include <inttypes.h>
 
-#include <BeaEngine.h>
+#include <beaengine/BeaEngine.h>
 
 #include <malelf/defines.h>
 #include <malelf/error.h>
