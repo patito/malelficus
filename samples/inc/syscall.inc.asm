@@ -345,4 +345,8 @@
 %define sys_fanotify_event           338
 %define sys_fanotify_mark            339
 %define sys_prlimit64                340
-        
+
+        ;; Syscall Flags and Constants
+%define  O_RDONLY 00
+%define  O_WRONLY 01
+%define  O_RDWR   02
