@@ -57,7 +57,9 @@ AC_CONFIG_FILES([     Makefile \
                       src/external-libs/Makefile \
                       src/libmalelf/Makefile \
                       src/malelf/Makefile \
-                      test/Makefile])
+                      test/Makefile
+                      test/malwares/Makefile
+                      test/host/Makefile])
 
 
 AC_OUTPUT

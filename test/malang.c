@@ -4,7 +4,7 @@
 
 static unsigned _debug_ = 1;
 
-#define DEBUG(fmt...) if (_debug_) fprintf(stdout, fmt)
+#define DEBUG(fmt...) if (_debug_) fprintf(stdout, "[!] "fmt)
 
 #define ENV_MAX_VARIABLES 1000
 #define VAR_MAX_LENGTH 10
@@ -166,11 +166,11 @@ int main() {
 
   assign(&ast, "variable1", 15);
 
-  PRINT_INTEGER(var1);
+  PRINT_VAR(var1);
 
   assign(&ast, "variable1", 20);
 
-  PRINT_INTEGER(var1);
+  PRINT_VAR(var1);
   
   return 0;
 }

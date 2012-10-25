@@ -1,4 +1,4 @@
-SUBDIRS=test_files
+SUBDIRS=malwares host 
 
 TESTS=			malelf_object \
 			infection
@@ -9,7 +9,7 @@ check_PROGRAMS = 	malelf_object \
 bin_PROGRAMS = 		malelf_object \
 			infection
 
-AM_CFLAGS=		-Wall -Werror \
+AM_CFLAGS=		-Wall -Werror -ggdb \
 			-I../src/external-libs/CUnit/CUnit/Headers \
 			-I../src/libmalelf/include
 
