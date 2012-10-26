@@ -7,7 +7,6 @@
 #include <sys/wait.h>
 #include <CUnit.h>
 #include <Automated.h>
-#include <time.h>
 #include <libgen.h>
 
 #include <malelf/error.h>
@@ -28,22 +27,23 @@ int clean_suite_success(void) {
 }
 int clean_suite_failure(void) { return -1; }
 
-_i32 filestrcmp(char* file, char* str) {
-    malelf_object obj;
-    _i32 error;
-    char* res = NULL;
+_i32 filestrcmp(char* file_path, char* str) {
 
-    obj.fname = file;
+	FILE* file = fopen(file_path, "r"); 
+	char tmp[256]={0x0};
 
-    if ((error = malelf_openr(&obj, file)) != MALELF_SUCCESS) {
-        return error;
-    }
-
-    res = strstr((char*)obj.mem, str);
-
-    malelf_close(&obj);
-
-    return res != NULL;
+	while(file!=NULL && fgets(tmp, sizeof(tmp), file) != NULL)
+	{
+		if (strstr(tmp, str)){
+			fclose(file);
+			return 1;
+		}
+	}
+	
+	if(file != NULL) 
+		fclose(file);
+	
+	return 0;
 }
 
 _i32 filecmp(char* file1, char* file2) {
@@ -84,17 +84,20 @@ _i32 filecmp(char* file1, char* file2) {
 }
 
 void test_malelf_infect_silvio_padding_by_malware(char* malware_path, char* malware_message) {
-    char* infected_dir = "infected/";
-    char* uninfected_dir = "host/";
     char* malware_path_gen = "/tmp/malware_ready.o";
     char* redir = " 2>&1 > ";
     char chmod_str[256];
+
+	char* infected_dir = "infected/";
     char infected_path[256];
     char infected_exec[256];
+	char infected_output_file[256];
+	
+	char* uninfected_dir = "host/";
     char uninfected_path[256];
     char uninfected_exec[256];
-    char infected_output_file[256];
     char uninfected_output_file[256];
+
     FILE* mal_fd_out, *mal_fd_in;
     unsigned long int magic_bytes = 0;
     struct stat mal_stat_info;
@@ -113,106 +116,26 @@ void test_malelf_infect_silvio_padding_by_malware(char* malware_path, char* malw
                                       "/bin/uname"
     };
 
+	memset(chmod_str, 0, 256);
+    memset(infected_path, 0, 256);
+    memset(infected_exec, 0, 256);
+	memset(uninfected_path, 0, 256);
+	memset(uninfected_exec, 0, 256);
+    memset(infected_output_file, 0, 256);
+    memset(uninfected_output_file, 0, 256);
+
     for (i = 0; i < 8; i++) {
 
-        memset(chmod_str, 0, 256);
-        memset(infected_path, 0, 256);
-        memset(infected_exec, 0, 256);
-		memset(uninfected_path, 0, 256);
-		memset(uninfected_exec, 0, 256);
-        memset(infected_output_file, 0, 256);
-        memset(uninfected_output_file, 0, 256);
-
+		//Preparing strings for the tests
 		strncpy(uninfected_path, uninfected_files[i], 255);
 
         strncpy(infected_path, infected_dir, 255);
         strncat(infected_path, basename(uninfected_path), 255);
-        strncat(infected_output_file, infected_path, 255);
+
+        strncpy(infected_output_file, infected_path, 255);
         strncat(infected_output_file, ".out", 255);
 
-		input.fname = uninfected_path;
-        input.is_readonly = 1;
-        output.fname = infected_path;
-
-        //for testing purposes only
-        printf("%s\n", uninfected_path);
-
-        mal_fd_in = fopen(malware_path, "r");
-        CU_ASSERT(mal_fd_in != NULL);
-        if (mal_fd_in == NULL) {
-            perror("Could not open the malware...\n");
-            return;
-        }
-
-        mal_fd_out = fopen(malware_path_gen, "w");
-        CU_ASSERT(mal_fd_out != NULL);
-        if (mal_fd_out == NULL) {
-            perror("Could not open the output file...\n");
-            return;
-        }
-
-        if (fstat(fileno(mal_fd_in), &mal_stat_info) == -1) {
-            malelf_perror(errno);
-            fclose(mal_fd_out);
-            return;
-        }
-
-        error = shellcode_create_malelficus(mal_fd_out,
-                                            mal_stat_info.st_size,
-                                            mal_fd_in,
-                                            0,
-                                            0);
-
-        CU_ASSERT(error == MALELF_SUCCESS);
-
-        fclose(mal_fd_out);
-
-        malware.fname = malware_path_gen;
-
-        error = malelf_openr(&malware, malware.fname);
-
-        CU_ASSERT(error == MALELF_SUCCESS);
-
-        if (error != MALELF_SUCCESS) {
-            malelf_perror(error);
-            fclose(mal_fd_out);
-            return;
-        }
-
-        error = malelf_openr(&input, input.fname);
-        CU_ASSERT(error == MALELF_SUCCESS);
-
-        if (error != MALELF_SUCCESS) {
-            malelf_perror(error);
-            return;
-        }
-    
-        error = malelf_infect_silvio_padding(&input,
-                                             &output,
-                                             &malware,
-                                             0,
-                                             magic_bytes);
-        CU_ASSERT(error == MALELF_SUCCESS);
-
-        if (error != MALELF_SUCCESS) {
-            malelf_perror(error);
-            return;
-        }
-
-        malelf_close(&input);
-        malelf_close(&output);
-
-        strncpy(chmod_str, "chmod +x ", 255);
-        strncat(chmod_str, infected_path, 255);
-
-        CU_ASSERT((error = system(chmod_str)) == 0);
-
-        if (error != 0) {
-            malelf_perror(error);
-            return;
-        }
-
-        strncpy(uninfected_output_file, uninfected_dir, 255);
+		strncpy(uninfected_output_file, uninfected_dir, 255);
         strncat(uninfected_output_file, basename(uninfected_path), 255);
         strncat(uninfected_output_file, ".out", 255);
 
@@ -225,27 +148,101 @@ void test_malelf_infect_silvio_padding_by_malware(char* malware_path, char* malw
         strncat(infected_exec, redir, 255);
         strncat(infected_exec, infected_output_file, 255);
 
+		strncpy(chmod_str, "chmod +x ", 255);
+        strncat(chmod_str, infected_path, 255);
+
+		//Preparing files for the tests
+		input.fname = uninfected_path;
+        input.is_readonly = 1;    
+		output.fname = infected_path;
+		malware.fname = malware_path_gen;
+
+		//Testing ...
+        mal_fd_in = fopen(malware_path, "r");
+        CU_ASSERT(mal_fd_in != NULL);
+        if (mal_fd_in == NULL) {
+            perror("Could not open the malware...\n");
+            return;
+        }
+
+		//Testing ...
+        mal_fd_out = fopen(malware_path_gen, "w");
+        CU_ASSERT(mal_fd_out != NULL);
+        if (mal_fd_out == NULL) {
+            perror("Could not open the output file...\n");
+            return;
+        }
+
+        if (fstat(fileno(mal_fd_in), &mal_stat_info) == -1) {
+            malelf_perror(errno);
+			fclose(mal_fd_in);
+            fclose(mal_fd_out);
+            return;
+        }
+
+		//Testing ...
+        error = shellcode_create_malelficus(mal_fd_out, mal_stat_info.st_size, mal_fd_in, 0, 0);
+
+	    fclose(mal_fd_in);
+        fclose(mal_fd_out);
+
+        CU_ASSERT(error == MALELF_SUCCESS);
+
+		if (error != MALELF_SUCCESS) {
+            malelf_perror(error);
+	        return;
+        }
+
+		//Testing ...
+		error = malelf_openr(&malware, malware.fname);
+        CU_ASSERT(error == MALELF_SUCCESS);
+
+        if (error != MALELF_SUCCESS) {
+            malelf_perror(error);
+	        return;
+        }
+
+		//Testing ...
+        error = malelf_openr(&input, input.fname);
+        CU_ASSERT(error == MALELF_SUCCESS);
+
+        if (error != MALELF_SUCCESS) {
+            malelf_perror(error);
+            return;
+        }
+        
+		//Testing ...
+		error = malelf_infect_silvio_padding(&input, &output, &malware, 0, magic_bytes);
+
+        malelf_close(&input);
+        malelf_close(&output);
+
+        CU_ASSERT(error == MALELF_SUCCESS);
+
+        if (error != MALELF_SUCCESS) {
+            malelf_perror(error);
+            return;
+        }
+		
+		//Testing ...
+		error = system(chmod_str);
+        CU_ASSERT(error == 0);
+
+		//Testing ...
         error = system(uninfected_exec);
         CU_ASSERT((error != 134) && (error != 139) && (error != 4));
 
+		//Testing ...
         error = system(infected_exec);
         CU_ASSERT((error != 134) && (error != 139) && (error != 4));
 
-        CU_ASSERT((error = filecmp(uninfected_output_file, infected_output_file)) != 0);
+		//Testing ...
+		error = filecmp(uninfected_output_file, infected_output_file);
+        CU_ASSERT(error != 0);
 
-		int found_string = 0;
-
-		FILE* infected_file = fopen(infected_output_file, "r"); 
-		char tmp[256]={0x0};
-		while(infected_file!=NULL && fgets(tmp, sizeof(tmp), infected_file) != NULL)
-		{
-			if (strstr(tmp, malware_message))
-				found_string = 1;
-		}
-		if(infected_file != NULL) 
-			fclose(infected_file);
-
-		CU_ASSERT(found_string);
+		//Testing ...
+		error = filestrcmp(infected_output_file, malware_message);
+		CU_ASSERT(error != 0);
     }
 }
 
@@ -281,7 +278,6 @@ int main()
     /* Run all tests using the automated interface */
     CU_automated_run_tests();
     CU_list_tests_to_file();
-
 
     /* Clean up registry and return */
     CU_cleanup_registry();
