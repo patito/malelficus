@@ -1,6 +1,0 @@
-bin_PROGRAMS = uninfected
-
-uninfected_SOURCES = uninfected.c
-
-
-
