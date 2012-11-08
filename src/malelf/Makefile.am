@@ -2,7 +2,7 @@ CFLAGS_LANGUAGE=-std=c99 -pedantic
 CFLAGS_WARNS=-Wall -Wextra -Werror
 CFLAGS_INCLUDES=-I../external-libs/beangine/include/beaengine -I../libmalelf/include
 
-AM_CFLAGS=	-ggdb -O2 $(CFLAGS_LANGUAGE) \
+AM_CFLAGS=	-ggdb -O2 $(M32_CFLAGS) $(CFLAGS_LANGUAGE) \
 		$(CFLAGS_WARNS) \
 		$(CFLAGS_INCLUDES)
 

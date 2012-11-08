@@ -28,7 +28,7 @@ void test_malelf_init_object(void) {
 
 void test_malelf_openr() {
     malelf_object obj;
-    char *fname = "test_files/uninfected";
+    char *fname = "host/uninfected";
 
     obj.fname = fname;
 
@@ -46,7 +46,7 @@ void test_malelf_openr() {
 
 void test_malelf_openw() {
     malelf_object obj;
-    char *fname = "test_files/empty";
+    char *fname = "/tmp/malelf-empty";
 
     obj.fname = fname;
 
@@ -70,7 +70,7 @@ void test_malelf_openw() {
 
 void test_malelf_check_elf() {
     malelf_object obj;
-    obj.fname = "test_files/uninfected";
+    obj.fname = "host/uninfected";
 
     CU_ASSERT(MALELF_SUCCESS == malelf_openr(&obj, obj.fname));
     CU_ASSERT(MALELF_SUCCESS == malelf_check_elf(&obj));

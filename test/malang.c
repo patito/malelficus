@@ -1,3 +1,8 @@
+/**
+ * Some ideas for a AST binary language to embed in malwares...
+ * By i4k
+ */
+
 #include <stdio.h>
 #include <string.h>
 #include <stdint.h>

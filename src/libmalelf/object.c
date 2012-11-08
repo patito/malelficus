@@ -23,6 +23,10 @@
 
 */
 
+/**
+ * \mainpage Malelficus Library to analyse and infect binary files.
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -42,51 +46,58 @@
 #include <malelf/object.h>
 #include <malelf/dissect.h>
 
+/**
+ * \brief Quiet mode
+ *
+ * Enable quiet mode
+ */
 _u8 malelf_quiet_mode = 0;
 
 /**
- * Object file types
+ * \brief Object file types
+ *
  * see ELF Format Specification for more details
  */
-elf_attr malelf_object_types[] = {
+malelf_elf_attr malelf_object_types[] = {
 #include "header_types.inc"
 };
 
 /**
- * Possible target machines
+ * \brief Possible target machines
  */
-elf_attr elf_machine[] = {
+malelf_elf_attr elf_machine[] = {
 #include "machines.inc"
 };
 
 /**
- * Possible section types
+ * \brief Possible section types
  */
-elf_attr elf_section_types[] = {
+malelf_elf_attr elf_section_types[] = {
 #include "section_types.inc"
 };
 
 /**
- * Possible segment types
+ * \brief Possible segment types
  */
-elf_attr elf_segment_types[] = {
+malelf_elf_attr elf_segment_types[] = {
 #include "segment_types.inc"
 };
 
 /**
- * Possible segment flags
+ * \brief Possible segment flags
  */
-elf_attr elf_segment_flags[] = {
+malelf_elf_attr elf_segment_flags[] = {
 #include "segment_flags.inc"
 };
 
 /**
- * Initialize the malelf object data type.
+ * \brief Initialize the malelf object data type.
+ * 
  * Never forget to call this function before use the malelf API
  * with malelf_object.
  *
- * @param malelf_object*
- * @return void
+ * \param malelf_object* Malelf object type
+ * \return void
  */
 void malelf_init_object(malelf_object* obj) {
     obj->fname = NULL;
@@ -98,10 +109,10 @@ void malelf_init_object(malelf_object* obj) {
 }
 
 /**
- * Check if the binary file mapped in obj is of type ELF
+ * \brief Check if the binary file mapped in obj is of type ELF
  *
- * @param malelf_object*
- * @return malelf_status
+ * \param malelf_object* Malelf object type
+ * \return _u8 Returns a malelf_status enum number.
  */
 _u8 malelf_check_elf(malelf_object* obj) {
     _u8 valid = MALELF_SUCCESS;
@@ -122,12 +133,13 @@ _u8 malelf_check_elf(malelf_object* obj) {
 }
 
 /**
- * Open the binary file 'filename' and fill the struct malelf_object.
+ * \brief Open the binary file 'filename' and fill the struct malelf_object.
+ *
  * Uses mmap to map the binary in memory.
  *
- * @param malelf_object* obj
- * @param char* filename
- * @param int flags
+ * \param malelf_object* obj
+ * \param char* filename
+ * \param int flags
  */
 _i32 malelf_open(malelf_object* obj, char* filename, int flags) {
     _u8 is_creat = (flags & O_CREAT) == O_CREAT;
@@ -239,10 +251,10 @@ _u8 malelf_add_section(malelf_object* input, malelf_object* output, malelf_add_s
     return 1;
 }
 
-elf_attr* get_header_type(ElfW(Half) etype) {
+malelf_elf_attr* get_header_type(ElfW(Half) etype) {
     _u8 i;
 
-    for (i = 0; i < sizeof(malelf_object_types)/sizeof(elf_attr); i++) {
+    for (i = 0; i < sizeof(malelf_object_types)/sizeof(malelf_elf_attr); i++) {
         if (malelf_object_types[i].val == etype) {
             return &malelf_object_types[i];
         }
@@ -251,10 +263,10 @@ elf_attr* get_header_type(ElfW(Half) etype) {
     return NULL;
 }
 
-elf_attr* get_section_type(ElfW(Half) stype) {
+malelf_elf_attr* get_section_type(ElfW(Half) stype) {
     _u8 i;
 
-    for (i = 0; i < sizeof(elf_section_types)/sizeof(elf_attr); i++) {
+    for (i = 0; i < sizeof(elf_section_types)/sizeof(malelf_elf_attr); i++) {
         if (elf_section_types[i].val == stype) {
             return  &elf_section_types[i];
         }
@@ -263,10 +275,10 @@ elf_attr* get_section_type(ElfW(Half) stype) {
     return NULL;
 }
 
-elf_attr* get_machine(ElfW(Half) emach) {
+malelf_elf_attr* get_machine(ElfW(Half) emach) {
     _u8 i;
 
-    for (i = 0; i < sizeof(elf_machine)/sizeof(elf_attr); i++) {
+    for (i = 0; i < sizeof(elf_machine)/sizeof(malelf_elf_attr); i++) {
         if (elf_machine[i].val == emach) {
             return &elf_machine[i];
         }
@@ -275,10 +287,10 @@ elf_attr* get_machine(ElfW(Half) emach) {
     return NULL;
 }
 
-elf_attr* get_segment_type(ElfW(Word) segtype) {
+malelf_elf_attr* get_segment_type(ElfW(Word) segtype) {
     _u32 i;
 
-    for (i = 0; i < sizeof(elf_segment_types)/sizeof(elf_attr); i++) {
+    for (i = 0; i < sizeof(elf_segment_types)/sizeof(malelf_elf_attr); i++) {
         if (elf_segment_types[i].val == segtype) {
             return &elf_segment_types[i];
         }
