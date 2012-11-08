@@ -1,6 +1,0 @@
-#ifndef DATABASE_H
-#define DATABASE_H
-
-void create_section_database(const char* scan_file, FILE* outfd);
-
-#endif
