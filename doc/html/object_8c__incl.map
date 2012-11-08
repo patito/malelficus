@@ -1,0 +1,13 @@
+<map id="G" name="G">
+<area shape="rect" id="node25" href="$defines_8h.html" title="malelf/defines.h" alt="" coords="272,237,387,267"/>
+<area shape="rect" id="node27" href="$types_8h.html" title="malelf/types.h" alt="" coords="277,315,381,344"/>
+<area shape="rect" id="node32" href="$util_8h.html" title="malelf/util.h" alt="" coords="140,160,228,189"/>
+<area shape="rect" id="node40" href="$error_8h.html" title="malelf/error.h" alt="" coords="161,83,260,112"/>
+<area shape="rect" id="node43" href="$object_8h.html" title="malelf/object.h" alt="" coords="421,83,528,112"/>
+<area shape="rect" id="node52" href="$dissect_8h.html" title="malelf/dissect.h" alt="" coords="1309,83,1424,112"/>
+<area shape="rect" id="node54" href="$header__types_8inc.html" title="header_types.inc" alt="" coords="1448,83,1568,112"/>
+<area shape="rect" id="node56" href="$machines_8inc.html" title="machines.inc" alt="" coords="1592,83,1691,112"/>
+<area shape="rect" id="node58" href="$section__types_8inc.html" title="section_types.inc" alt="" coords="1715,83,1837,112"/>
+<area shape="rect" id="node60" href="$segment__types_8inc.html" title="segment_types.inc" alt="" coords="1861,83,1992,112"/>
+<area shape="rect" id="node62" href="$segment__flags_8inc.html" title="segment_flags.inc" alt="" coords="2016,83,2144,112"/>
+</map>

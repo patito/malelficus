@@ -1,0 +1,307 @@
+\hypertarget{util_8h}{
+\section{src/libmalelf/include/malelf/util.h File Reference}
+\label{util_8h}\index{src/libmalelf/include/malelf/util.h@{src/libmalelf/include/malelf/util.h}}
+}
+{\ttfamily \#include $<$stdio.h$>$}\par
+{\ttfamily \#include $<$stdarg.h$>$}\par
+{\ttfamily \#include \char`\"{}defines.h\char`\"{}}\par
+{\ttfamily \#include \char`\"{}types.h\char`\"{}}\par
+Include dependency graph for util.h:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=342pt]{util_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=400pt]{util_8h__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Defines}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{util_8h_a12dc04e9161abfdd033e2bb0193e6387}{MAX\_\-LOG\_\-BUFFER}~1024
+\item 
+\#define \hyperlink{util_8h_ad949df569bf250c13a2b0afb4202c788}{LOG\_\-RAW}~malelf\_\-say
+\item 
+\#define \hyperlink{util_8h_aaa5f65974d3240c5828344f78cebde50}{SAY}~if(!\hyperlink{util_8c_a9832bf9a14bd3b9656e7be172ac16c9b}{malelf\_\-quiet\_\-mode}) malelf\_\-say
+\item 
+\#define \hyperlink{util_8h_a159ca84d25a5487d8e81e4438725df19}{LOG}~LOG\_\-RAW
+\item 
+\#define \hyperlink{util_8h_a41a95f9112ce515b554571d40c926251}{LOG\_\-SUCCESS}~if (!\hyperlink{util_8c_a9832bf9a14bd3b9656e7be172ac16c9b}{malelf\_\-quiet\_\-mode}) malelf\_\-success
+\item 
+\#define \hyperlink{util_8h_adf8c5c50672d8ac8c77490e507611618}{LOG\_\-VERBOSE\_\-SUCCESS}~if (\hyperlink{defines_8h_acd6ab4d02330caecbb7e6e11930b31b3}{malelf\_\-verbose\_\-mode}) LOG\_\-SUCCESS
+\item 
+\#define \hyperlink{util_8h_aced66975c154ea0e2a8ec3bc818b4e08}{LOG\_\-ERROR}~if (!\hyperlink{util_8c_a9832bf9a14bd3b9656e7be172ac16c9b}{malelf\_\-quiet\_\-mode}) malelf\_\-error
+\item 
+\#define \hyperlink{util_8h_aea3f57d6dcc5b4ac957e2679e87dde27}{LOG\_\-WARN}~malelf\_\-warn
+\item 
+\#define \hyperlink{util_8h_aadf6774e19887211734c54a45c3dd171}{LOG\_\-OFFSET}(desc\_\-format, value)
+\item 
+\#define \hyperlink{util_8h_ac4ac9f31cfaaefb4f69098bb1d4c3735}{ITOA}(dest, src)~sprintf(dest, \char`\"{}\%d\char`\"{}, src)
+\item 
+\#define \hyperlink{util_8h_a93cbdd21c4ca66a81684b4aef7dcbdf7}{HTOA}(dest, src)~sprintf(dest, \char`\"{}0x\%08x\char`\"{}, src)
+\item 
+\#define \hyperlink{util_8h_ac87d3b54aa4120dcc7d3bc368e8ecfa7}{MALELF\_\-UNUSED}(var)~(void$\ast$)var
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{types_8h_af2b0f13cffd24f6dddf794ae0c7472b4}{\_\-u8} \hyperlink{util_8h_a7030062f94da236e11cadbd65d7a2c29}{saveFile} (const char $\ast$fname, \hyperlink{types_8h_af2b0f13cffd24f6dddf794ae0c7472b4}{\_\-u8} $\ast$mem, off\_\-t size)
+\item 
+int \hyperlink{util_8h_a247542ae0b6acc9ada0109283141c737}{malelf\_\-log} (FILE $\ast$fd, const char $\ast$prefix, const char $\ast$format, va\_\-list args)
+\item 
+int \hyperlink{util_8h_ac6734a7443633a78f6a87d5511ca2364}{malelf\_\-print} (FILE $\ast$fd, const char $\ast$format,...)
+\item 
+int \hyperlink{util_8h_a1cd6a5086679cbb2b107e781aeb3835d}{malelf\_\-say} (const char $\ast$format,...)
+\item 
+int \hyperlink{util_8h_aea4d2b93d2acad2b43abc0aff8680828}{malelf\_\-success} (const char $\ast$format,...)
+\item 
+int \hyperlink{util_8h_a9d6a039b287860279870f4297d80ef6a}{malelf\_\-error} (const char $\ast$format,...)
+\item 
+int \hyperlink{util_8h_abf9a0a02da3599092c0aa5cbbe62ff2f}{malelf\_\-warn} (const char $\ast$format,...)
+\end{DoxyCompactItemize}
+
+
+\subsection{Define Documentation}
+\hypertarget{util_8h_a93cbdd21c4ca66a81684b4aef7dcbdf7}{
+\index{util.h@{util.h}!HTOA@{HTOA}}
+\index{HTOA@{HTOA}!util.h@{util.h}}
+\subsubsection[{HTOA}]{\setlength{\rightskip}{0pt plus 5cm}\#define HTOA(
+\begin{DoxyParamCaption}
+\item[{}]{dest, }
+\item[{}]{src}
+\end{DoxyParamCaption}
+)~sprintf(dest, \char`\"{}0x\%08x\char`\"{}, src)}}
+\label{util_8h_a93cbdd21c4ca66a81684b4aef7dcbdf7}
+
+
+Definition at line 27 of file util.h.
+
+\hypertarget{util_8h_ac4ac9f31cfaaefb4f69098bb1d4c3735}{
+\index{util.h@{util.h}!ITOA@{ITOA}}
+\index{ITOA@{ITOA}!util.h@{util.h}}
+\subsubsection[{ITOA}]{\setlength{\rightskip}{0pt plus 5cm}\#define ITOA(
+\begin{DoxyParamCaption}
+\item[{}]{dest, }
+\item[{}]{src}
+\end{DoxyParamCaption}
+)~sprintf(dest, \char`\"{}\%d\char`\"{}, src)}}
+\label{util_8h_ac4ac9f31cfaaefb4f69098bb1d4c3735}
+
+
+Definition at line 26 of file util.h.
+
+\hypertarget{util_8h_a159ca84d25a5487d8e81e4438725df19}{
+\index{util.h@{util.h}!LOG@{LOG}}
+\index{LOG@{LOG}!util.h@{util.h}}
+\subsubsection[{LOG}]{\setlength{\rightskip}{0pt plus 5cm}\#define LOG~LOG\_\-RAW}}
+\label{util_8h_a159ca84d25a5487d8e81e4438725df19}
+
+
+Definition at line 16 of file util.h.
+
+\hypertarget{util_8h_aced66975c154ea0e2a8ec3bc818b4e08}{
+\index{util.h@{util.h}!LOG\_\-ERROR@{LOG\_\-ERROR}}
+\index{LOG\_\-ERROR@{LOG\_\-ERROR}!util.h@{util.h}}
+\subsubsection[{LOG\_\-ERROR}]{\setlength{\rightskip}{0pt plus 5cm}\#define LOG\_\-ERROR~if (!{\bf malelf\_\-quiet\_\-mode}) malelf\_\-error}}
+\label{util_8h_aced66975c154ea0e2a8ec3bc818b4e08}
+
+
+Definition at line 19 of file util.h.
+
+\hypertarget{util_8h_aadf6774e19887211734c54a45c3dd171}{
+\index{util.h@{util.h}!LOG\_\-OFFSET@{LOG\_\-OFFSET}}
+\index{LOG\_\-OFFSET@{LOG\_\-OFFSET}!util.h@{util.h}}
+\subsubsection[{LOG\_\-OFFSET}]{\setlength{\rightskip}{0pt plus 5cm}\#define LOG\_\-OFFSET(
+\begin{DoxyParamCaption}
+\item[{}]{desc\_\-format, }
+\item[{}]{value}
+\end{DoxyParamCaption}
+)}}
+\label{util_8h_aadf6774e19887211734c54a45c3dd171}
+{\bfseries Value:}
+\begin{DoxyCode}
+if (malelf_quiet_mode) {                             \
+    LOG_RAW("0x%x", value);                     \
+  } else LOG_RAW(desc_format, value)
+\end{DoxyCode}
+
+
+Definition at line 21 of file util.h.
+
+\hypertarget{util_8h_ad949df569bf250c13a2b0afb4202c788}{
+\index{util.h@{util.h}!LOG\_\-RAW@{LOG\_\-RAW}}
+\index{LOG\_\-RAW@{LOG\_\-RAW}!util.h@{util.h}}
+\subsubsection[{LOG\_\-RAW}]{\setlength{\rightskip}{0pt plus 5cm}\#define LOG\_\-RAW~malelf\_\-say}}
+\label{util_8h_ad949df569bf250c13a2b0afb4202c788}
+Macros 
+
+Definition at line 14 of file util.h.
+
+\hypertarget{util_8h_a41a95f9112ce515b554571d40c926251}{
+\index{util.h@{util.h}!LOG\_\-SUCCESS@{LOG\_\-SUCCESS}}
+\index{LOG\_\-SUCCESS@{LOG\_\-SUCCESS}!util.h@{util.h}}
+\subsubsection[{LOG\_\-SUCCESS}]{\setlength{\rightskip}{0pt plus 5cm}\#define LOG\_\-SUCCESS~if (!{\bf malelf\_\-quiet\_\-mode}) malelf\_\-success}}
+\label{util_8h_a41a95f9112ce515b554571d40c926251}
+
+
+Definition at line 17 of file util.h.
+
+\hypertarget{util_8h_adf8c5c50672d8ac8c77490e507611618}{
+\index{util.h@{util.h}!LOG\_\-VERBOSE\_\-SUCCESS@{LOG\_\-VERBOSE\_\-SUCCESS}}
+\index{LOG\_\-VERBOSE\_\-SUCCESS@{LOG\_\-VERBOSE\_\-SUCCESS}!util.h@{util.h}}
+\subsubsection[{LOG\_\-VERBOSE\_\-SUCCESS}]{\setlength{\rightskip}{0pt plus 5cm}\#define LOG\_\-VERBOSE\_\-SUCCESS~if ({\bf malelf\_\-verbose\_\-mode}) LOG\_\-SUCCESS}}
+\label{util_8h_adf8c5c50672d8ac8c77490e507611618}
+
+
+Definition at line 18 of file util.h.
+
+\hypertarget{util_8h_aea3f57d6dcc5b4ac957e2679e87dde27}{
+\index{util.h@{util.h}!LOG\_\-WARN@{LOG\_\-WARN}}
+\index{LOG\_\-WARN@{LOG\_\-WARN}!util.h@{util.h}}
+\subsubsection[{LOG\_\-WARN}]{\setlength{\rightskip}{0pt plus 5cm}\#define LOG\_\-WARN~malelf\_\-warn}}
+\label{util_8h_aea3f57d6dcc5b4ac957e2679e87dde27}
+
+
+Definition at line 20 of file util.h.
+
+\hypertarget{util_8h_ac87d3b54aa4120dcc7d3bc368e8ecfa7}{
+\index{util.h@{util.h}!MALELF\_\-UNUSED@{MALELF\_\-UNUSED}}
+\index{MALELF\_\-UNUSED@{MALELF\_\-UNUSED}!util.h@{util.h}}
+\subsubsection[{MALELF\_\-UNUSED}]{\setlength{\rightskip}{0pt plus 5cm}\#define MALELF\_\-UNUSED(
+\begin{DoxyParamCaption}
+\item[{}]{var}
+\end{DoxyParamCaption}
+)~(void$\ast$)var}}
+\label{util_8h_ac87d3b54aa4120dcc7d3bc368e8ecfa7}
+
+
+Definition at line 29 of file util.h.
+
+\hypertarget{util_8h_a12dc04e9161abfdd033e2bb0193e6387}{
+\index{util.h@{util.h}!MAX\_\-LOG\_\-BUFFER@{MAX\_\-LOG\_\-BUFFER}}
+\index{MAX\_\-LOG\_\-BUFFER@{MAX\_\-LOG\_\-BUFFER}!util.h@{util.h}}
+\subsubsection[{MAX\_\-LOG\_\-BUFFER}]{\setlength{\rightskip}{0pt plus 5cm}\#define MAX\_\-LOG\_\-BUFFER~1024}}
+\label{util_8h_a12dc04e9161abfdd033e2bb0193e6387}
+
+
+Definition at line 9 of file util.h.
+
+\hypertarget{util_8h_aaa5f65974d3240c5828344f78cebde50}{
+\index{util.h@{util.h}!SAY@{SAY}}
+\index{SAY@{SAY}!util.h@{util.h}}
+\subsubsection[{SAY}]{\setlength{\rightskip}{0pt plus 5cm}\#define SAY~if(!{\bf malelf\_\-quiet\_\-mode}) malelf\_\-say}}
+\label{util_8h_aaa5f65974d3240c5828344f78cebde50}
+
+
+Definition at line 15 of file util.h.
+
+
+
+\subsection{Function Documentation}
+\hypertarget{util_8h_a9d6a039b287860279870f4297d80ef6a}{
+\index{util.h@{util.h}!malelf\_\-error@{malelf\_\-error}}
+\index{malelf\_\-error@{malelf\_\-error}!util.h@{util.h}}
+\subsubsection[{malelf\_\-error}]{\setlength{\rightskip}{0pt plus 5cm}int malelf\_\-error (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{format, }
+\item[{}]{...}
+\end{DoxyParamCaption}
+)}}
+\label{util_8h_a9d6a039b287860279870f4297d80ef6a}
+
+
+Definition at line 49 of file util.c.
+
+\hypertarget{util_8h_a247542ae0b6acc9ada0109283141c737}{
+\index{util.h@{util.h}!malelf\_\-log@{malelf\_\-log}}
+\index{malelf\_\-log@{malelf\_\-log}!util.h@{util.h}}
+\subsubsection[{malelf\_\-log}]{\setlength{\rightskip}{0pt plus 5cm}int malelf\_\-log (
+\begin{DoxyParamCaption}
+\item[{FILE $\ast$}]{fd, }
+\item[{const char $\ast$}]{prefix, }
+\item[{const char $\ast$}]{format, }
+\item[{va\_\-list}]{args}
+\end{DoxyParamCaption}
+)}}
+\label{util_8h_a247542ae0b6acc9ada0109283141c737}
+
+
+Definition at line 15 of file util.c.
+
+\hypertarget{util_8h_ac6734a7443633a78f6a87d5511ca2364}{
+\index{util.h@{util.h}!malelf\_\-print@{malelf\_\-print}}
+\index{malelf\_\-print@{malelf\_\-print}!util.h@{util.h}}
+\subsubsection[{malelf\_\-print}]{\setlength{\rightskip}{0pt plus 5cm}int malelf\_\-print (
+\begin{DoxyParamCaption}
+\item[{FILE $\ast$}]{fd, }
+\item[{const char $\ast$}]{format, }
+\item[{}]{...}
+\end{DoxyParamCaption}
+)}}
+\label{util_8h_ac6734a7443633a78f6a87d5511ca2364}
+
+
+Definition at line 37 of file util.c.
+
+\hypertarget{util_8h_a1cd6a5086679cbb2b107e781aeb3835d}{
+\index{util.h@{util.h}!malelf\_\-say@{malelf\_\-say}}
+\index{malelf\_\-say@{malelf\_\-say}!util.h@{util.h}}
+\subsubsection[{malelf\_\-say}]{\setlength{\rightskip}{0pt plus 5cm}int malelf\_\-say (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{format, }
+\item[{}]{...}
+\end{DoxyParamCaption}
+)}}
+\label{util_8h_a1cd6a5086679cbb2b107e781aeb3835d}
+
+
+Definition at line 43 of file util.c.
+
+\hypertarget{util_8h_aea4d2b93d2acad2b43abc0aff8680828}{
+\index{util.h@{util.h}!malelf\_\-success@{malelf\_\-success}}
+\index{malelf\_\-success@{malelf\_\-success}!util.h@{util.h}}
+\subsubsection[{malelf\_\-success}]{\setlength{\rightskip}{0pt plus 5cm}int malelf\_\-success (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{format, }
+\item[{}]{...}
+\end{DoxyParamCaption}
+)}}
+\label{util_8h_aea4d2b93d2acad2b43abc0aff8680828}
+
+
+Definition at line 55 of file util.c.
+
+\hypertarget{util_8h_abf9a0a02da3599092c0aa5cbbe62ff2f}{
+\index{util.h@{util.h}!malelf\_\-warn@{malelf\_\-warn}}
+\index{malelf\_\-warn@{malelf\_\-warn}!util.h@{util.h}}
+\subsubsection[{malelf\_\-warn}]{\setlength{\rightskip}{0pt plus 5cm}int malelf\_\-warn (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{format, }
+\item[{}]{...}
+\end{DoxyParamCaption}
+)}}
+\label{util_8h_abf9a0a02da3599092c0aa5cbbe62ff2f}
+
+
+Definition at line 61 of file util.c.
+
+\hypertarget{util_8h_a7030062f94da236e11cadbd65d7a2c29}{
+\index{util.h@{util.h}!saveFile@{saveFile}}
+\index{saveFile@{saveFile}!util.h@{util.h}}
+\subsubsection[{saveFile}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \_\-u8} saveFile (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{fname, }
+\item[{{\bf \_\-u8} $\ast$}]{mem, }
+\item[{off\_\-t}]{size}
+\end{DoxyParamCaption}
+)}}
+\label{util_8h_a7030062f94da236e11cadbd65d7a2c29}
+
+
+Definition at line 67 of file util.c.
+

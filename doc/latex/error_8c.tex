@@ -1,0 +1,86 @@
+\hypertarget{error_8c}{
+\section{src/libmalelf/error.c File Reference}
+\label{error_8c}\index{src/libmalelf/error.c@{src/libmalelf/error.c}}
+}
+{\ttfamily \#include $<$stdio.h$>$}\par
+{\ttfamily \#include $<$stdlib.h$>$}\par
+{\ttfamily \#include $<$string.h$>$}\par
+{\ttfamily \#include \char`\"{}malelf/error.h\char`\"{}}\par
+Include dependency graph for error.c:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=356pt]{error_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+const char $\ast$ \hyperlink{error_8c_af225ce01f3f2709e264c7036e813c3b1}{malelf\_\-strerror} (int code)
+\item 
+void \hyperlink{error_8c_ad60f880160e465f8f99c9d4ad8c95d21}{\_\-malelf\_\-perror} (int code, const char $\ast$func, const char $\ast$file, int line)
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+const char $\ast$ \hyperlink{error_8c_a93e57a1f4365443157657d4050705a42}{malelf\_\-strerr} \mbox{[}$\,$\mbox{]}
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\hypertarget{error_8c_ad60f880160e465f8f99c9d4ad8c95d21}{
+\index{error.c@{error.c}!\_\-malelf\_\-perror@{\_\-malelf\_\-perror}}
+\index{\_\-malelf\_\-perror@{\_\-malelf\_\-perror}!error.c@{error.c}}
+\subsubsection[{\_\-malelf\_\-perror}]{\setlength{\rightskip}{0pt plus 5cm}void \_\-malelf\_\-perror (
+\begin{DoxyParamCaption}
+\item[{int}]{code, }
+\item[{const char $\ast$}]{func, }
+\item[{const char $\ast$}]{file, }
+\item[{int}]{line}
+\end{DoxyParamCaption}
+)}}
+\label{error_8c_ad60f880160e465f8f99c9d4ad8c95d21}
+
+
+Definition at line 24 of file error.c.
+
+\hypertarget{error_8c_af225ce01f3f2709e264c7036e813c3b1}{
+\index{error.c@{error.c}!malelf\_\-strerror@{malelf\_\-strerror}}
+\index{malelf\_\-strerror@{malelf\_\-strerror}!error.c@{error.c}}
+\subsubsection[{malelf\_\-strerror}]{\setlength{\rightskip}{0pt plus 5cm}const char$\ast$ malelf\_\-strerror (
+\begin{DoxyParamCaption}
+\item[{int}]{code}
+\end{DoxyParamCaption}
+)}}
+\label{error_8c_af225ce01f3f2709e264c7036e813c3b1}
+
+
+Definition at line 20 of file error.c.
+
+
+
+\subsection{Variable Documentation}
+\hypertarget{error_8c_a93e57a1f4365443157657d4050705a42}{
+\index{error.c@{error.c}!malelf\_\-strerr@{malelf\_\-strerr}}
+\index{malelf\_\-strerr@{malelf\_\-strerr}!error.c@{error.c}}
+\subsubsection[{malelf\_\-strerr}]{\setlength{\rightskip}{0pt plus 5cm}const char$\ast$ {\bf malelf\_\-strerr}\mbox{[}$\,$\mbox{]}}}
+\label{error_8c_a93e57a1f4365443157657d4050705a42}
+{\bfseries Initial value:}
+\begin{DoxyCode}
+ {
+    "Unknow error", 
+    "File already closed",
+    "Error allocating memory",
+    "Binary is NOT ELF",
+    "Binary is corrupted",
+    "Binary has suspect section names",
+    "Missing magic bytes in malware",
+    "Invalid offset for returned entry point in malware",
+    "Disassembly error."
+    
+}
+\end{DoxyCode}
+
+
+Definition at line 7 of file error.c.
+

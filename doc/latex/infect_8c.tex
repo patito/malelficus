@@ -1,0 +1,83 @@
+\hypertarget{infect_8c}{
+\section{src/libmalelf/infect.c File Reference}
+\label{infect_8c}\index{src/libmalelf/infect.c@{src/libmalelf/infect.c}}
+}
+{\ttfamily \#include $<$stdio.h$>$}\par
+{\ttfamily \#include $<$stdlib.h$>$}\par
+{\ttfamily \#include $<$sys/types.h$>$}\par
+{\ttfamily \#include $<$sys/stat.h$>$}\par
+{\ttfamily \#include $<$unistd.h$>$}\par
+{\ttfamily \#include \char`\"{}malelf/infect.h\char`\"{}}\par
+{\ttfamily \#include \char`\"{}malelf/util.h\char`\"{}}\par
+{\ttfamily \#include \char`\"{}malelf/error.h\char`\"{}}\par
+{\ttfamily \#include \char`\"{}malelf/object.h\char`\"{}}\par
+Include dependency graph for infect.c:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=400pt]{infect_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Defines}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{infect_8c_a7d467c1d283fdfa1f2081ba1e0d01b6e}{PAGE\_\-SIZE}~4096
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{types_8h_af2b0f13cffd24f6dddf794ae0c7472b4}{\_\-u8} \hyperlink{infect_8c_ab2204e6548cea638fdc54fe23b0a2ec0}{malelf\_\-infect\_\-silvio\_\-padding} (\hyperlink{structmalelf__object}{malelf\_\-object} $\ast$input, \hyperlink{structmalelf__object}{malelf\_\-object} $\ast$output, \hyperlink{structmalelf__object}{malelf\_\-object} $\ast$parasite, \hyperlink{types_8h_a07491c35a48354e0e7b56974a04cc3de}{\_\-u32} offset\_\-entry\_\-point, unsigned long int magic\_\-bytes)
+\item 
+\hyperlink{types_8h_af2b0f13cffd24f6dddf794ae0c7472b4}{\_\-u8} \hyperlink{infect_8c_ade77317192a56215582fdb0ad3b44cc6}{\_\-malelf\_\-parasite\_\-silvio\_\-padding} (\hyperlink{structmalelf__object}{malelf\_\-object} $\ast$input, \hyperlink{structmalelf__object}{malelf\_\-object} $\ast$output, unsigned int end\_\-of\_\-text, \hyperlink{structmalelf__object}{malelf\_\-object} $\ast$parasite, \hyperlink{types_8h_a07491c35a48354e0e7b56974a04cc3de}{\_\-u32} offset\_\-entry\_\-point, unsigned old\_\-e\_\-entry, unsigned long int magic\_\-bytes)
+\end{DoxyCompactItemize}
+
+
+\subsection{Define Documentation}
+\hypertarget{infect_8c_a7d467c1d283fdfa1f2081ba1e0d01b6e}{
+\index{infect.c@{infect.c}!PAGE\_\-SIZE@{PAGE\_\-SIZE}}
+\index{PAGE\_\-SIZE@{PAGE\_\-SIZE}!infect.c@{infect.c}}
+\subsubsection[{PAGE\_\-SIZE}]{\setlength{\rightskip}{0pt plus 5cm}\#define PAGE\_\-SIZE~4096}}
+\label{infect_8c_a7d467c1d283fdfa1f2081ba1e0d01b6e}
+
+
+Definition at line 36 of file infect.c.
+
+
+
+\subsection{Function Documentation}
+\hypertarget{infect_8c_ade77317192a56215582fdb0ad3b44cc6}{
+\index{infect.c@{infect.c}!\_\-malelf\_\-parasite\_\-silvio\_\-padding@{\_\-malelf\_\-parasite\_\-silvio\_\-padding}}
+\index{\_\-malelf\_\-parasite\_\-silvio\_\-padding@{\_\-malelf\_\-parasite\_\-silvio\_\-padding}!infect.c@{infect.c}}
+\subsubsection[{\_\-malelf\_\-parasite\_\-silvio\_\-padding}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \_\-u8} \_\-malelf\_\-parasite\_\-silvio\_\-padding (
+\begin{DoxyParamCaption}
+\item[{{\bf malelf\_\-object} $\ast$}]{input, }
+\item[{{\bf malelf\_\-object} $\ast$}]{output, }
+\item[{unsigned int}]{end\_\-of\_\-text, }
+\item[{{\bf malelf\_\-object} $\ast$}]{parasite, }
+\item[{{\bf \_\-u32}}]{offset\_\-entry\_\-point, }
+\item[{unsigned}]{old\_\-e\_\-entry, }
+\item[{unsigned long int}]{magic\_\-bytes}
+\end{DoxyParamCaption}
+)}}
+\label{infect_8c_ade77317192a56215582fdb0ad3b44cc6}
+
+
+Definition at line 135 of file infect.c.
+
+\hypertarget{infect_8c_ab2204e6548cea638fdc54fe23b0a2ec0}{
+\index{infect.c@{infect.c}!malelf\_\-infect\_\-silvio\_\-padding@{malelf\_\-infect\_\-silvio\_\-padding}}
+\index{malelf\_\-infect\_\-silvio\_\-padding@{malelf\_\-infect\_\-silvio\_\-padding}!infect.c@{infect.c}}
+\subsubsection[{malelf\_\-infect\_\-silvio\_\-padding}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \_\-u8} malelf\_\-infect\_\-silvio\_\-padding (
+\begin{DoxyParamCaption}
+\item[{{\bf malelf\_\-object} $\ast$}]{input, }
+\item[{{\bf malelf\_\-object} $\ast$}]{output, }
+\item[{{\bf malelf\_\-object} $\ast$}]{parasite, }
+\item[{{\bf \_\-u32}}]{offset\_\-entry\_\-point, }
+\item[{unsigned long int}]{magic\_\-bytes}
+\end{DoxyParamCaption}
+)}}
+\label{infect_8c_ab2204e6548cea638fdc54fe23b0a2ec0}
+Try to infect the ELF using the text padding technique created by Silvio Cesare. More information: \href{http://www.win.tue.nl/~aeb/linux/hh/virus/unix-viruses.txt}{\tt http://www.win.tue.nl/$\sim$aeb/linux/hh/virus/unix-\/viruses.txt} 
+
+Definition at line 43 of file infect.c.
+

@@ -1,0 +1,234 @@
+\hypertarget{disas_8c}{
+\section{src/libmalelf/disas.c File Reference}
+\label{disas_8c}\index{src/libmalelf/disas.c@{src/libmalelf/disas.c}}
+}
+{\ttfamily \#include $<$errno.h$>$}\par
+{\ttfamily \#include $<$fcntl.h$>$}\par
+{\ttfamily \#include $<$stdlib.h$>$}\par
+{\ttfamily \#include $<$string.h$>$}\par
+{\ttfamily \#include $<$stdio.h$>$}\par
+{\ttfamily \#include $<$sys/mman.h$>$}\par
+{\ttfamily \#include $<$sys/stat.h$>$}\par
+{\ttfamily \#include $<$sys/types.h$>$}\par
+{\ttfamily \#include $<$unistd.h$>$}\par
+{\ttfamily \#include $<$inttypes.h$>$}\par
+{\ttfamily \#include $<$beaengine/BeaEngine.h$>$}\par
+{\ttfamily \#include $<$malelf/defines.h$>$}\par
+{\ttfamily \#include $<$malelf/error.h$>$}\par
+{\ttfamily \#include $<$malelf/disas.h$>$}\par
+{\ttfamily \#include $<$malelf/util.h$>$}\par
+{\ttfamily \#include $<$malelf/object.h$>$}\par
+Include dependency graph for disas.c:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=400pt]{disas_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Defines}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{disas_8c_a1bf6c868670adced4756500721b9d6ae}{\_\-P}~malelf\_\-print
+\item 
+\#define \hyperlink{disas_8c_afb517d6fab1f8049d683a0953ddd27e8}{\_\-PDIRECTIVE}~\_\-P
+\item 
+\#define \hyperlink{disas_8c_a3257f30baf0314af3f830124b55ee8d6}{\_\-PISN}~malelf\_\-print\_\-isn
+\item 
+\#define \hyperlink{disas_8c_ad6b0103f7c81805f5e803bbd348510b0}{\_\-PLABEL}~\_\-P
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{disas_8c_a914cd9d658cbf28142de1bc2239d5c90}{malelf\_\-print\_\-isn} (FILE $\ast$fd, const char $\ast$format,...)
+\item 
+\hyperlink{types_8h_aacb1ea6e27efde1c708a8bc4b56ee1a2}{\_\-i32} \hyperlink{disas_8c_a038ee7ce644f9c84afa9eda088a88a19}{malelf\_\-disas\_\-ehdr} (ElfW(Ehdr)$\ast$ehdr, FILE $\ast$fd)
+\item 
+\hyperlink{types_8h_aacb1ea6e27efde1c708a8bc4b56ee1a2}{\_\-i32} \hyperlink{disas_8c_a443fe5760c50193cf071c934c092e298}{malelf\_\-disas\_\-phdr} (\hyperlink{structmalelf__elf__t}{malelf\_\-elf\_\-t} $\ast$elf, FILE $\ast$fd)
+\item 
+\hyperlink{types_8h_aacb1ea6e27efde1c708a8bc4b56ee1a2}{\_\-i32} \hyperlink{disas_8c_aaf83c95eafd6ebf3615de15015928785}{malelf\_\-disas\_\-sht} (\hyperlink{structmalelf__object}{malelf\_\-object} $\ast$obj, FILE $\ast$fd)
+\item 
+\hyperlink{types_8h_aacb1ea6e27efde1c708a8bc4b56ee1a2}{\_\-i32} \hyperlink{disas_8c_a0b48f10e02dc75265d8dcfac19320e20}{malelf\_\-disas\_\-program} (\hyperlink{structmalelf__object}{malelf\_\-object} $\ast$obj, FILE $\ast$fd)
+\item 
+\hyperlink{types_8h_aacb1ea6e27efde1c708a8bc4b56ee1a2}{\_\-i32} \hyperlink{disas_8c_af9ff556491cf0633735f10e5c4994f21}{malelf\_\-disas\_\-flat} (\hyperlink{structmalelf__object}{malelf\_\-object} $\ast$obj, FILE $\ast$fd)
+\item 
+\hyperlink{types_8h_aacb1ea6e27efde1c708a8bc4b56ee1a2}{\_\-i32} \hyperlink{disas_8c_ab01161abb4cd223636c52bac74fc16eb}{malelf\_\-disas\_\-section} (\hyperlink{structmalelf__object}{malelf\_\-object} $\ast$obj, char $\ast$section, FILE $\ast$fd)
+\item 
+\hyperlink{types_8h_aacb1ea6e27efde1c708a8bc4b56ee1a2}{\_\-i32} \hyperlink{disas_8c_a6e603fc09032b4fad1dd486b3381ee50}{malelf\_\-disas} (\hyperlink{structmalelf__object}{malelf\_\-object} $\ast$input, FILE $\ast$outfd)
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{types_8h_af2b0f13cffd24f6dddf794ae0c7472b4}{\_\-u8} \hyperlink{disas_8c_a9832bf9a14bd3b9656e7be172ac16c9b}{malelf\_\-quiet\_\-mode}
+\begin{DoxyCompactList}\small\item\em Quiet mode. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Define Documentation}
+\hypertarget{disas_8c_a1bf6c868670adced4756500721b9d6ae}{
+\index{disas.c@{disas.c}!\_\-P@{\_\-P}}
+\index{\_\-P@{\_\-P}!disas.c@{disas.c}}
+\subsubsection[{\_\-P}]{\setlength{\rightskip}{0pt plus 5cm}\#define \_\-P~malelf\_\-print}}
+\label{disas_8c_a1bf6c868670adced4756500721b9d6ae}
+
+
+Definition at line 22 of file disas.c.
+
+\hypertarget{disas_8c_afb517d6fab1f8049d683a0953ddd27e8}{
+\index{disas.c@{disas.c}!\_\-PDIRECTIVE@{\_\-PDIRECTIVE}}
+\index{\_\-PDIRECTIVE@{\_\-PDIRECTIVE}!disas.c@{disas.c}}
+\subsubsection[{\_\-PDIRECTIVE}]{\setlength{\rightskip}{0pt plus 5cm}\#define \_\-PDIRECTIVE~\_\-P}}
+\label{disas_8c_afb517d6fab1f8049d683a0953ddd27e8}
+
+
+Definition at line 23 of file disas.c.
+
+\hypertarget{disas_8c_a3257f30baf0314af3f830124b55ee8d6}{
+\index{disas.c@{disas.c}!\_\-PISN@{\_\-PISN}}
+\index{\_\-PISN@{\_\-PISN}!disas.c@{disas.c}}
+\subsubsection[{\_\-PISN}]{\setlength{\rightskip}{0pt plus 5cm}\#define \_\-PISN~malelf\_\-print\_\-isn}}
+\label{disas_8c_a3257f30baf0314af3f830124b55ee8d6}
+
+
+Definition at line 24 of file disas.c.
+
+\hypertarget{disas_8c_ad6b0103f7c81805f5e803bbd348510b0}{
+\index{disas.c@{disas.c}!\_\-PLABEL@{\_\-PLABEL}}
+\index{\_\-PLABEL@{\_\-PLABEL}!disas.c@{disas.c}}
+\subsubsection[{\_\-PLABEL}]{\setlength{\rightskip}{0pt plus 5cm}\#define \_\-PLABEL~\_\-P}}
+\label{disas_8c_ad6b0103f7c81805f5e803bbd348510b0}
+
+
+Definition at line 25 of file disas.c.
+
+
+
+\subsection{Function Documentation}
+\hypertarget{disas_8c_a6e603fc09032b4fad1dd486b3381ee50}{
+\index{disas.c@{disas.c}!malelf\_\-disas@{malelf\_\-disas}}
+\index{malelf\_\-disas@{malelf\_\-disas}!disas.c@{disas.c}}
+\subsubsection[{malelf\_\-disas}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \_\-i32} malelf\_\-disas (
+\begin{DoxyParamCaption}
+\item[{{\bf malelf\_\-object} $\ast$}]{input, }
+\item[{FILE $\ast$}]{outfd}
+\end{DoxyParamCaption}
+)}}
+\label{disas_8c_a6e603fc09032b4fad1dd486b3381ee50}
+
+
+Definition at line 288 of file disas.c.
+
+\hypertarget{disas_8c_a038ee7ce644f9c84afa9eda088a88a19}{
+\index{disas.c@{disas.c}!malelf\_\-disas\_\-ehdr@{malelf\_\-disas\_\-ehdr}}
+\index{malelf\_\-disas\_\-ehdr@{malelf\_\-disas\_\-ehdr}!disas.c@{disas.c}}
+\subsubsection[{malelf\_\-disas\_\-ehdr}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \_\-i32} malelf\_\-disas\_\-ehdr (
+\begin{DoxyParamCaption}
+\item[{ElfW(Ehdr)$\ast$}]{ehdr, }
+\item[{FILE $\ast$}]{fd}
+\end{DoxyParamCaption}
+)}}
+\label{disas_8c_a038ee7ce644f9c84afa9eda088a88a19}
+
+
+Definition at line 33 of file disas.c.
+
+\hypertarget{disas_8c_af9ff556491cf0633735f10e5c4994f21}{
+\index{disas.c@{disas.c}!malelf\_\-disas\_\-flat@{malelf\_\-disas\_\-flat}}
+\index{malelf\_\-disas\_\-flat@{malelf\_\-disas\_\-flat}!disas.c@{disas.c}}
+\subsubsection[{malelf\_\-disas\_\-flat}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \_\-i32} malelf\_\-disas\_\-flat (
+\begin{DoxyParamCaption}
+\item[{{\bf malelf\_\-object} $\ast$}]{obj, }
+\item[{FILE $\ast$}]{fd}
+\end{DoxyParamCaption}
+)}}
+\label{disas_8c_af9ff556491cf0633735f10e5c4994f21}
+
+
+Definition at line 190 of file disas.c.
+
+\hypertarget{disas_8c_a443fe5760c50193cf071c934c092e298}{
+\index{disas.c@{disas.c}!malelf\_\-disas\_\-phdr@{malelf\_\-disas\_\-phdr}}
+\index{malelf\_\-disas\_\-phdr@{malelf\_\-disas\_\-phdr}!disas.c@{disas.c}}
+\subsubsection[{malelf\_\-disas\_\-phdr}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \_\-i32} malelf\_\-disas\_\-phdr (
+\begin{DoxyParamCaption}
+\item[{{\bf malelf\_\-elf\_\-t} $\ast$}]{elf, }
+\item[{FILE $\ast$}]{fd}
+\end{DoxyParamCaption}
+)}}
+\label{disas_8c_a443fe5760c50193cf071c934c092e298}
+
+
+Definition at line 76 of file disas.c.
+
+\hypertarget{disas_8c_a0b48f10e02dc75265d8dcfac19320e20}{
+\index{disas.c@{disas.c}!malelf\_\-disas\_\-program@{malelf\_\-disas\_\-program}}
+\index{malelf\_\-disas\_\-program@{malelf\_\-disas\_\-program}!disas.c@{disas.c}}
+\subsubsection[{malelf\_\-disas\_\-program}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \_\-i32} malelf\_\-disas\_\-program (
+\begin{DoxyParamCaption}
+\item[{{\bf malelf\_\-object} $\ast$}]{obj, }
+\item[{FILE $\ast$}]{fd}
+\end{DoxyParamCaption}
+)}}
+\label{disas_8c_a0b48f10e02dc75265d8dcfac19320e20}
+
+
+Definition at line 128 of file disas.c.
+
+\hypertarget{disas_8c_ab01161abb4cd223636c52bac74fc16eb}{
+\index{disas.c@{disas.c}!malelf\_\-disas\_\-section@{malelf\_\-disas\_\-section}}
+\index{malelf\_\-disas\_\-section@{malelf\_\-disas\_\-section}!disas.c@{disas.c}}
+\subsubsection[{malelf\_\-disas\_\-section}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \_\-i32} malelf\_\-disas\_\-section (
+\begin{DoxyParamCaption}
+\item[{{\bf malelf\_\-object} $\ast$}]{obj, }
+\item[{char $\ast$}]{section, }
+\item[{FILE $\ast$}]{fd}
+\end{DoxyParamCaption}
+)}}
+\label{disas_8c_ab01161abb4cd223636c52bac74fc16eb}
+
+
+Definition at line 226 of file disas.c.
+
+\hypertarget{disas_8c_aaf83c95eafd6ebf3615de15015928785}{
+\index{disas.c@{disas.c}!malelf\_\-disas\_\-sht@{malelf\_\-disas\_\-sht}}
+\index{malelf\_\-disas\_\-sht@{malelf\_\-disas\_\-sht}!disas.c@{disas.c}}
+\subsubsection[{malelf\_\-disas\_\-sht}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \_\-i32} malelf\_\-disas\_\-sht (
+\begin{DoxyParamCaption}
+\item[{{\bf malelf\_\-object} $\ast$}]{obj, }
+\item[{FILE $\ast$}]{fd}
+\end{DoxyParamCaption}
+)}}
+\label{disas_8c_aaf83c95eafd6ebf3615de15015928785}
+
+
+Definition at line 100 of file disas.c.
+
+\hypertarget{disas_8c_a914cd9d658cbf28142de1bc2239d5c90}{
+\index{disas.c@{disas.c}!malelf\_\-print\_\-isn@{malelf\_\-print\_\-isn}}
+\index{malelf\_\-print\_\-isn@{malelf\_\-print\_\-isn}!disas.c@{disas.c}}
+\subsubsection[{malelf\_\-print\_\-isn}]{\setlength{\rightskip}{0pt plus 5cm}int malelf\_\-print\_\-isn (
+\begin{DoxyParamCaption}
+\item[{FILE $\ast$}]{fd, }
+\item[{const char $\ast$}]{format, }
+\item[{}]{...}
+\end{DoxyParamCaption}
+)}}
+\label{disas_8c_a914cd9d658cbf28142de1bc2239d5c90}
+
+
+Definition at line 27 of file disas.c.
+
+
+
+\subsection{Variable Documentation}
+\hypertarget{disas_8c_a9832bf9a14bd3b9656e7be172ac16c9b}{
+\index{disas.c@{disas.c}!malelf\_\-quiet\_\-mode@{malelf\_\-quiet\_\-mode}}
+\index{malelf\_\-quiet\_\-mode@{malelf\_\-quiet\_\-mode}!disas.c@{disas.c}}
+\subsubsection[{malelf\_\-quiet\_\-mode}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \_\-u8} {\bf malelf\_\-quiet\_\-mode}}}
+\label{disas_8c_a9832bf9a14bd3b9656e7be172ac16c9b}
+
+
+Quiet mode. 
+
+Enable quiet mode 
+
+Definition at line 54 of file object.c.
+
