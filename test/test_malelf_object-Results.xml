@@ -13,116 +13,19 @@
           </CUNIT_RUN_TEST_SUCCESS> 
         </CUNIT_RUN_TEST_RECORD> 
         <CUNIT_RUN_TEST_RECORD> 
-          <CUNIT_RUN_TEST_FAILURE> 
+          <CUNIT_RUN_TEST_SUCCESS> 
             <TEST_NAME> testing malelf_openr </TEST_NAME> 
-            <FILE_NAME> test_malelf_object.c </FILE_NAME> 
-            <LINE_NUMBER> 35 </LINE_NUMBER> 
-            <CONDITION> MALELF_SUCCESS == malelf_openr(&amp;obj, obj.fname) </CONDITION> 
-          </CUNIT_RUN_TEST_FAILURE> 
+          </CUNIT_RUN_TEST_SUCCESS> 
         </CUNIT_RUN_TEST_RECORD> 
         <CUNIT_RUN_TEST_RECORD> 
-          <CUNIT_RUN_TEST_FAILURE> 
-            <TEST_NAME> testing malelf_openr </TEST_NAME> 
-            <FILE_NAME> test_malelf_object.c </FILE_NAME> 
-            <LINE_NUMBER> 37 </LINE_NUMBER> 
-            <CONDITION> -1 != obj.fd </CONDITION> 
-          </CUNIT_RUN_TEST_FAILURE> 
-        </CUNIT_RUN_TEST_RECORD> 
-        <CUNIT_RUN_TEST_RECORD> 
-          <CUNIT_RUN_TEST_FAILURE> 
-            <TEST_NAME> testing malelf_openr </TEST_NAME> 
-            <FILE_NAME> test_malelf_object.c </FILE_NAME> 
-            <LINE_NUMBER> 38 </LINE_NUMBER> 
-            <CONDITION> NULL != obj.mem </CONDITION> 
-          </CUNIT_RUN_TEST_FAILURE> 
-        </CUNIT_RUN_TEST_RECORD> 
-        <CUNIT_RUN_TEST_RECORD> 
-          <CUNIT_RUN_TEST_FAILURE> 
-            <TEST_NAME> testing malelf_openr </TEST_NAME> 
-            <FILE_NAME> test_malelf_object.c </FILE_NAME> 
-            <LINE_NUMBER> 39 </LINE_NUMBER> 
-            <CONDITION> NULL != obj.elf.elfh </CONDITION> 
-          </CUNIT_RUN_TEST_FAILURE> 
-        </CUNIT_RUN_TEST_RECORD> 
-        <CUNIT_RUN_TEST_RECORD> 
-          <CUNIT_RUN_TEST_FAILURE> 
-            <TEST_NAME> testing malelf_openr </TEST_NAME> 
-            <FILE_NAME> test_malelf_object.c </FILE_NAME> 
-            <LINE_NUMBER> 40 </LINE_NUMBER> 
-            <CONDITION> NULL != obj.elf.elfp </CONDITION> 
-          </CUNIT_RUN_TEST_FAILURE> 
-        </CUNIT_RUN_TEST_RECORD> 
-        <CUNIT_RUN_TEST_RECORD> 
-          <CUNIT_RUN_TEST_FAILURE> 
-            <TEST_NAME> testing malelf_openr </TEST_NAME> 
-            <FILE_NAME> test_malelf_object.c </FILE_NAME> 
-            <LINE_NUMBER> 41 </LINE_NUMBER> 
-            <CONDITION> NULL != obj.elf.elfs </CONDITION> 
-          </CUNIT_RUN_TEST_FAILURE> 
-        </CUNIT_RUN_TEST_RECORD> 
-        <CUNIT_RUN_TEST_RECORD> 
-          <CUNIT_RUN_TEST_FAILURE> 
-            <TEST_NAME> testing malelf_openr </TEST_NAME> 
-            <FILE_NAME> test_malelf_object.c </FILE_NAME> 
-            <LINE_NUMBER> 44 </LINE_NUMBER> 
-            <CONDITION> MALELF_SUCCESS == malelf_close(&amp;obj) </CONDITION> 
-          </CUNIT_RUN_TEST_FAILURE> 
-        </CUNIT_RUN_TEST_RECORD> 
-        <CUNIT_RUN_TEST_RECORD> 
-          <CUNIT_RUN_TEST_FAILURE> 
+          <CUNIT_RUN_TEST_SUCCESS> 
             <TEST_NAME> testing malelf_openw </TEST_NAME> 
-            <FILE_NAME> test_malelf_object.c </FILE_NAME> 
-            <LINE_NUMBER> 53 </LINE_NUMBER> 
-            <CONDITION> MALELF_SUCCESS == malelf_openw(&amp;obj, obj.fname) </CONDITION> 
-          </CUNIT_RUN_TEST_FAILURE> 
+          </CUNIT_RUN_TEST_SUCCESS> 
         </CUNIT_RUN_TEST_RECORD> 
         <CUNIT_RUN_TEST_RECORD> 
-          <CUNIT_RUN_TEST_FAILURE> 
-            <TEST_NAME> testing malelf_openw </TEST_NAME> 
-            <FILE_NAME> test_malelf_object.c </FILE_NAME> 
-            <LINE_NUMBER> 55 </LINE_NUMBER> 
-            <CONDITION> -1 != obj.fd </CONDITION> 
-          </CUNIT_RUN_TEST_FAILURE> 
-        </CUNIT_RUN_TEST_RECORD> 
-        <CUNIT_RUN_TEST_RECORD> 
-          <CUNIT_RUN_TEST_FAILURE> 
-            <TEST_NAME> testing malelf_openw </TEST_NAME> 
-            <FILE_NAME> test_malelf_object.c </FILE_NAME> 
-            <LINE_NUMBER> 62 </LINE_NUMBER> 
-            <CONDITION> obj.st_info.st_size == 0 </CONDITION> 
-          </CUNIT_RUN_TEST_FAILURE> 
-        </CUNIT_RUN_TEST_RECORD> 
-        <CUNIT_RUN_TEST_RECORD> 
-          <CUNIT_RUN_TEST_FAILURE> 
-            <TEST_NAME> testing malelf_openw </TEST_NAME> 
-            <FILE_NAME> test_malelf_object.c </FILE_NAME> 
-            <LINE_NUMBER> 64 </LINE_NUMBER> 
-            <CONDITION> MALELF_SUCCESS == malelf_close(&amp;obj) </CONDITION> 
-          </CUNIT_RUN_TEST_FAILURE> 
-        </CUNIT_RUN_TEST_RECORD> 
-        <CUNIT_RUN_TEST_RECORD> 
-          <CUNIT_RUN_TEST_FAILURE> 
+          <CUNIT_RUN_TEST_SUCCESS> 
             <TEST_NAME> testing malelf_check_elf </TEST_NAME> 
-            <FILE_NAME> test_malelf_object.c </FILE_NAME> 
-            <LINE_NUMBER> 75 </LINE_NUMBER> 
-            <CONDITION> MALELF_SUCCESS == malelf_openr(&amp;obj, obj.fname) </CONDITION> 
-          </CUNIT_RUN_TEST_FAILURE> 
-        </CUNIT_RUN_TEST_RECORD> 
-        <CUNIT_RUN_TEST_RECORD> 
-          <CUNIT_RUN_TEST_FAILURE> 
-            <TEST_NAME> testing malelf_check_elf </TEST_NAME> 
-            <FILE_NAME> test_malelf_object.c </FILE_NAME> 
-            <LINE_NUMBER> 76 </LINE_NUMBER> 
-            <CONDITION> MALELF_SUCCESS == malelf_check_elf(&amp;obj) </CONDITION> 
-          </CUNIT_RUN_TEST_FAILURE> 
-        </CUNIT_RUN_TEST_RECORD> 
-        <CUNIT_RUN_TEST_RECORD> 
-          <CUNIT_RUN_TEST_FAILURE> 
-            <TEST_NAME> testing malelf_check_elf </TEST_NAME> 
-            <FILE_NAME> test_malelf_object.c </FILE_NAME> 
-            <LINE_NUMBER> 78 </LINE_NUMBER> 
-            <CONDITION> MALELF_SUCCESS == malelf_close(&amp;obj) </CONDITION> 
-          </CUNIT_RUN_TEST_FAILURE> 
+          </CUNIT_RUN_TEST_SUCCESS> 
         </CUNIT_RUN_TEST_RECORD> 
       </CUNIT_RUN_SUITE_SUCCESS> 
     </CUNIT_RUN_SUITE> 
@@ -140,19 +43,19 @@
       <TYPE> Test Cases </TYPE> 
       <TOTAL> 4 </TOTAL> 
       <RUN> 4 </RUN> 
-      <SUCCEEDED> 1 </SUCCEEDED> 
-      <FAILED> 3 </FAILED> 
+      <SUCCEEDED> 4 </SUCCEEDED> 
+      <FAILED> 0 </FAILED> 
       <INACTIVE> 0 </INACTIVE> 
     </CUNIT_RUN_SUMMARY_RECORD> 
     <CUNIT_RUN_SUMMARY_RECORD> 
       <TYPE> Assertions </TYPE> 
       <TOTAL> 29 </TOTAL> 
       <RUN> 29 </RUN> 
-      <SUCCEEDED> 15 </SUCCEEDED> 
-      <FAILED> 14 </FAILED> 
+      <SUCCEEDED> 29 </SUCCEEDED> 
+      <FAILED> 0 </FAILED> 
       <INACTIVE> n/a </INACTIVE> 
     </CUNIT_RUN_SUMMARY_RECORD> 
   </CUNIT_RUN_SUMMARY> 
-  <CUNIT_FOOTER> File Generated By CUnit v2.1-2 - Thu Oct 25 10:29:32 2012
+  <CUNIT_FOOTER> File Generated By CUnit v2.1-2 - Sat Nov  3 17:33:20 2012
  </CUNIT_FOOTER> 
 </CUNIT_TEST_RUN_REPORT>

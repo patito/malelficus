@@ -3,7 +3,7 @@ CFLAGS_WARNS=-Wall -Wextra -Werror
 CFLAGS_INCLUDES=-I../external-libs/beangine/include \
 		-Iinclude
 
-AM_CFLAGS=	-ggdb -fPIC -O2 $(CFLAGS_LANGUAGE) \
+AM_CFLAGS=	-ggdb -fPIC -O2 $(M32_CFLAGS) $(CFLAGS_LANGUAGE) \
 		$(CFLAGS_WARNS) \
 		$(CFLAGS_INCLUDES)
 

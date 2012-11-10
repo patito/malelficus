@@ -1,0 +1,122 @@
+\hypertarget{print__table_8c}{
+\section{src/libmalelf/print\_\-table.c File Reference}
+\label{print__table_8c}\index{src/libmalelf/print\_\-table.c@{src/libmalelf/print\_\-table.c}}
+}
+{\ttfamily \#include $<$stdio.h$>$}\par
+{\ttfamily \#include $<$stdlib.h$>$}\par
+{\ttfamily \#include $<$string.h$>$}\par
+{\ttfamily \#include $<$assert.h$>$}\par
+{\ttfamily \#include $<$malelf/types.h$>$}\par
+{\ttfamily \#include $<$malelf/print\_\-table.h$>$}\par
+Include dependency graph for print\_\-table.c:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=400pt]{print__table_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{print__table_8c_adad1379c7151cd6e882c737ad62daae9}{\_\-\_\-print\_\-table\_\-generic} (\hyperlink{structtb__line}{tb\_\-line} $\ast$l, int line\_\-size, int fit\_\-on\_\-screen, int has\_\-header)
+\item 
+void \hyperlink{print__table_8c_acfe0951bacb7ec31ea873aa955ee06e2}{print\_\-table\_\-header} (\hyperlink{structtb__line}{tb\_\-header} $\ast$h, int header\_\-size, int fit\_\-on\_\-screen)
+\item 
+void \hyperlink{print__table_8c_a9ee699b61d5f92867fbbd88dd94533c3}{print\_\-table\_\-line} (\hyperlink{structtb__line}{tb\_\-line} $\ast$l, int line\_\-size, int fit\_\-on\_\-screen)
+\item 
+void \hyperlink{print__table_8c_a6cecbbe406457c13d52a9ed1f35ea841}{print\_\-table\_\-header\_\-art} (int header\_\-size, int left\_\-screen)
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{types_8h_af2b0f13cffd24f6dddf794ae0c7472b4}{\_\-u8} \hyperlink{print__table_8c_a9832bf9a14bd3b9656e7be172ac16c9b}{malelf\_\-quiet\_\-mode}
+\begin{DoxyCompactList}\small\item\em Quiet mode. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\hypertarget{print__table_8c_adad1379c7151cd6e882c737ad62daae9}{
+\index{print\_\-table.c@{print\_\-table.c}!\_\-\_\-print\_\-table\_\-generic@{\_\-\_\-print\_\-table\_\-generic}}
+\index{\_\-\_\-print\_\-table\_\-generic@{\_\-\_\-print\_\-table\_\-generic}!print_table.c@{print\_\-table.c}}
+\subsubsection[{\_\-\_\-print\_\-table\_\-generic}]{\setlength{\rightskip}{0pt plus 5cm}void \_\-\_\-print\_\-table\_\-generic (
+\begin{DoxyParamCaption}
+\item[{{\bf tb\_\-line} $\ast$}]{l, }
+\item[{int}]{line\_\-size, }
+\item[{int}]{fit\_\-on\_\-screen, }
+\item[{int}]{has\_\-header}
+\end{DoxyParamCaption}
+)}}
+\label{print__table_8c_adad1379c7151cd6e882c737ad62daae9}
+param1 = struct line param2 = size of the line table (sum of columns length) param3 = length of the screen where the table need to be positioned
+
+This function dump a structure line or header to screen.
+
+TODO: DANGER! THIS CODE IS UGLY AND BADLY WRITTEN!
+
+Psychographed by i4k, written by a ghost programmer crazy!
+
+This function was coded in early morning of 19 March, 2012. There must be hundreds of bugs but I had to write this code very fast because that the format tricks of printf doesn't help me and now I'm too lazy to improve it! All this does not justify... i know ...but I try ... 
+
+Definition at line 31 of file print\_\-table.c.
+
+\hypertarget{print__table_8c_acfe0951bacb7ec31ea873aa955ee06e2}{
+\index{print\_\-table.c@{print\_\-table.c}!print\_\-table\_\-header@{print\_\-table\_\-header}}
+\index{print\_\-table\_\-header@{print\_\-table\_\-header}!print_table.c@{print\_\-table.c}}
+\subsubsection[{print\_\-table\_\-header}]{\setlength{\rightskip}{0pt plus 5cm}void print\_\-table\_\-header (
+\begin{DoxyParamCaption}
+\item[{{\bf tb\_\-header} $\ast$}]{h, }
+\item[{int}]{header\_\-size, }
+\item[{int}]{fit\_\-on\_\-screen}
+\end{DoxyParamCaption}
+)}}
+\label{print__table_8c_acfe0951bacb7ec31ea873aa955ee06e2}
+
+
+Definition at line 137 of file print\_\-table.c.
+
+\hypertarget{print__table_8c_a6cecbbe406457c13d52a9ed1f35ea841}{
+\index{print\_\-table.c@{print\_\-table.c}!print\_\-table\_\-header\_\-art@{print\_\-table\_\-header\_\-art}}
+\index{print\_\-table\_\-header\_\-art@{print\_\-table\_\-header\_\-art}!print_table.c@{print\_\-table.c}}
+\subsubsection[{print\_\-table\_\-header\_\-art}]{\setlength{\rightskip}{0pt plus 5cm}void print\_\-table\_\-header\_\-art (
+\begin{DoxyParamCaption}
+\item[{int}]{header\_\-size, }
+\item[{int}]{left\_\-screen}
+\end{DoxyParamCaption}
+)}}
+\label{print__table_8c_a6cecbbe406457c13d52a9ed1f35ea841}
+
+
+Definition at line 145 of file print\_\-table.c.
+
+\hypertarget{print__table_8c_a9ee699b61d5f92867fbbd88dd94533c3}{
+\index{print\_\-table.c@{print\_\-table.c}!print\_\-table\_\-line@{print\_\-table\_\-line}}
+\index{print\_\-table\_\-line@{print\_\-table\_\-line}!print_table.c@{print\_\-table.c}}
+\subsubsection[{print\_\-table\_\-line}]{\setlength{\rightskip}{0pt plus 5cm}void print\_\-table\_\-line (
+\begin{DoxyParamCaption}
+\item[{{\bf tb\_\-line} $\ast$}]{l, }
+\item[{int}]{line\_\-size, }
+\item[{int}]{fit\_\-on\_\-screen}
+\end{DoxyParamCaption}
+)}}
+\label{print__table_8c_a9ee699b61d5f92867fbbd88dd94533c3}
+
+
+Definition at line 141 of file print\_\-table.c.
+
+
+
+\subsection{Variable Documentation}
+\hypertarget{print__table_8c_a9832bf9a14bd3b9656e7be172ac16c9b}{
+\index{print\_\-table.c@{print\_\-table.c}!malelf\_\-quiet\_\-mode@{malelf\_\-quiet\_\-mode}}
+\index{malelf\_\-quiet\_\-mode@{malelf\_\-quiet\_\-mode}!print_table.c@{print\_\-table.c}}
+\subsubsection[{malelf\_\-quiet\_\-mode}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \_\-u8} {\bf malelf\_\-quiet\_\-mode}}}
+\label{print__table_8c_a9832bf9a14bd3b9656e7be172ac16c9b}
+
+
+Quiet mode. 
+
+get out of here immediately! cursed code!
+
+Enable quiet mode 
+
+Definition at line 54 of file object.c.
+

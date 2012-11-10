@@ -1,0 +1,284 @@
+\hypertarget{reverse__elf_8c}{
+\section{src/libmalelf/reverse\_\-elf.c File Reference}
+\label{reverse__elf_8c}\index{src/libmalelf/reverse\_\-elf.c@{src/libmalelf/reverse\_\-elf.c}}
+}
+{\ttfamily \#include $<$stdio.h$>$}\par
+{\ttfamily \#include $<$stdlib.h$>$}\par
+{\ttfamily \#include $<$string.h$>$}\par
+{\ttfamily \#include $<$assert.h$>$}\par
+{\ttfamily \#include $<$sys/mman.h$>$}\par
+{\ttfamily \#include $<$libgen.h$>$}\par
+{\ttfamily \#include $<$malelf/defines.h$>$}\par
+{\ttfamily \#include $<$malelf/reverse\_\-elf.h$>$}\par
+{\ttfamily \#include $<$malelf/object.h$>$}\par
+{\ttfamily \#include $<$malelf/types.h$>$}\par
+{\ttfamily \#include $<$malelf/util.h$>$}\par
+Include dependency graph for reverse\_\-elf.c:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=400pt]{reverse__elf_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Defines}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{reverse__elf_8c_af65e1e6a295622bd6c74b699a7d83750}{TOP\_\-TEMPLATE\_\-COMMENT}~\char`\"{}$\backslash$n\char`\"{}
+\item 
+\#define \hyperlink{reverse__elf_8c_a06f29430a62eaea6ef6e326e5322aaa2}{TOP\_\-TEMPLATE}~TOP\_\-TEMPLATE\_\-COMMENT \char`\"{}\#include $<$stdio.h$>$$\backslash$n $\backslash$\#include $<$elf.h$>$$\backslash$n $\backslash$\#include $<$sys/types.h$>$ $\backslash$n$\backslash$\#include $<$sys/stat.h$>$$\backslash$n\#include $<$unistd.h$>$$\backslash$n$\backslash$\#include $<$fcntl.h$>$$\backslash$n$\backslash$n\char`\"{}
+\item 
+\#define \hyperlink{reverse__elf_8c_a6f2f6cfafaa5cc6dab98670456a034c1}{SELF\_\-GENERATE\_\-SRC}
+\item 
+\#define \hyperlink{reverse__elf_8c_acb0a6d3b4461a0b9a27ad3426d6de2a8}{PRINT\_\-C}~fprintf
+\item 
+\#define \hyperlink{reverse__elf_8c_aee4dca60970d913c2ebbcb21e89ca9b5}{PRINT\_\-FILEADDR}~PRINT\_\-C(fd, \char`\"{}/$\ast$ \%06x $\ast$/\char`\"{}, file\_\-addr);
+\item 
+\#define \hyperlink{reverse__elf_8c_a480b00640baf1f1902146fd554093482}{PRINT\_\-CHAR}(str, size, desc)
+\item 
+\#define \hyperlink{reverse__elf_8c_ad98822138b8364bf86debc9ae07cb23e}{PRINT\_\-WORD}(value, desc)~do \{ PRINT\_\-FILEADDR PRINT\_\-C(fd, \char`\"{}$\backslash$t\%d,$\backslash$t/$\ast$ \%s $\ast$/$\backslash$n\char`\"{}, value, desc); file\_\-addr += sizeof(value); \} while(0)
+\item 
+\#define \hyperlink{reverse__elf_8c_a2ccd27439a9345f311cf85519228dd6d}{PRINT\_\-WORD\_\-END}(value, desc)~do \{ PRINT\_\-FILEADDR PRINT\_\-C(fd, \char`\"{}$\backslash$t\%d$\backslash$t/$\ast$ \%s $\ast$/$\backslash$n\char`\"{}, value, desc); file\_\-addr += sizeof(value); \} while(0)
+\item 
+\#define \hyperlink{reverse__elf_8c_a69d4d1ace964579845ff71b030bb08de}{PRINT\_\-HALF}(value, desc)~PRINT\_\-WORD(value, desc)
+\item 
+\#define \hyperlink{reverse__elf_8c_ab07fe678941f4c46433e1786eab4709a}{PRINT\_\-ADDR}(value, desc)~do \{ PRINT\_\-FILEADDR PRINT\_\-C(fd, \char`\"{}$\backslash$t0x\%x,$\backslash$t/$\ast$ \%s $\ast$/$\backslash$n\char`\"{}, value, desc); file\_\-addr += sizeof(value); \} while(0)
+\item 
+\#define \hyperlink{reverse__elf_8c_a9c71bf5e7d5217429f760c271faed21d}{PRINT\_\-ADDR\_\-END}(value, desc)~do \{ PRINT\_\-FILEADDR PRINT\_\-C(fd, \char`\"{}$\backslash$t0x\%x$\backslash$t/$\ast$ \%s $\ast$/$\backslash$n\char`\"{}, value, desc); file\_\-addr += sizeof(value); \} while(0)
+\item 
+\#define \hyperlink{reverse__elf_8c_a6ffd8ff46a6ac94cd8c009a2faeba841}{PRINT\_\-OFF}(value, desc)~PRINT\_\-ADDR(value, desc)
+\item 
+\#define \hyperlink{reverse__elf_8c_ad5d1b7b30661a6996421712d8756365a}{PADCHAR}~0
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{types_8h_af2b0f13cffd24f6dddf794ae0c7472b4}{\_\-u8} \hyperlink{reverse__elf_8c_af105815abb941024cdf0c799b399ff91}{reverse\_\-elf2c} (\hyperlink{structmalelf__object}{malelf\_\-object} $\ast$elf, FILE $\ast$fd)
+\item 
+void \hyperlink{reverse__elf_8c_ac917e62ed160fdcfb75beb21eca98f2d}{reverse\_\-elf2cgen} (int fd\_\-input, int fd\_\-output)
+\end{DoxyCompactItemize}
+
+
+\subsection{Define Documentation}
+\hypertarget{reverse__elf_8c_ad5d1b7b30661a6996421712d8756365a}{
+\index{reverse\_\-elf.c@{reverse\_\-elf.c}!PADCHAR@{PADCHAR}}
+\index{PADCHAR@{PADCHAR}!reverse_elf.c@{reverse\_\-elf.c}}
+\subsubsection[{PADCHAR}]{\setlength{\rightskip}{0pt plus 5cm}\#define PADCHAR~0}}
+\label{reverse__elf_8c_ad5d1b7b30661a6996421712d8756365a}
+
+
+Definition at line 117 of file reverse\_\-elf.c.
+
+\hypertarget{reverse__elf_8c_ab07fe678941f4c46433e1786eab4709a}{
+\index{reverse\_\-elf.c@{reverse\_\-elf.c}!PRINT\_\-ADDR@{PRINT\_\-ADDR}}
+\index{PRINT\_\-ADDR@{PRINT\_\-ADDR}!reverse_elf.c@{reverse\_\-elf.c}}
+\subsubsection[{PRINT\_\-ADDR}]{\setlength{\rightskip}{0pt plus 5cm}\#define PRINT\_\-ADDR(
+\begin{DoxyParamCaption}
+\item[{}]{value, }
+\item[{}]{desc}
+\end{DoxyParamCaption}
+)~do \{ PRINT\_\-FILEADDR PRINT\_\-C(fd, \char`\"{}$\backslash$t0x\%x,$\backslash$t/$\ast$ \%s $\ast$/$\backslash$n\char`\"{}, value, desc); file\_\-addr += sizeof(value); \} while(0)}}
+\label{reverse__elf_8c_ab07fe678941f4c46433e1786eab4709a}
+
+
+Definition at line 114 of file reverse\_\-elf.c.
+
+\hypertarget{reverse__elf_8c_a9c71bf5e7d5217429f760c271faed21d}{
+\index{reverse\_\-elf.c@{reverse\_\-elf.c}!PRINT\_\-ADDR\_\-END@{PRINT\_\-ADDR\_\-END}}
+\index{PRINT\_\-ADDR\_\-END@{PRINT\_\-ADDR\_\-END}!reverse_elf.c@{reverse\_\-elf.c}}
+\subsubsection[{PRINT\_\-ADDR\_\-END}]{\setlength{\rightskip}{0pt plus 5cm}\#define PRINT\_\-ADDR\_\-END(
+\begin{DoxyParamCaption}
+\item[{}]{value, }
+\item[{}]{desc}
+\end{DoxyParamCaption}
+)~do \{ PRINT\_\-FILEADDR PRINT\_\-C(fd, \char`\"{}$\backslash$t0x\%x$\backslash$t/$\ast$ \%s $\ast$/$\backslash$n\char`\"{}, value, desc); file\_\-addr += sizeof(value); \} while(0)}}
+\label{reverse__elf_8c_a9c71bf5e7d5217429f760c271faed21d}
+
+
+Definition at line 115 of file reverse\_\-elf.c.
+
+\hypertarget{reverse__elf_8c_acb0a6d3b4461a0b9a27ad3426d6de2a8}{
+\index{reverse\_\-elf.c@{reverse\_\-elf.c}!PRINT\_\-C@{PRINT\_\-C}}
+\index{PRINT\_\-C@{PRINT\_\-C}!reverse_elf.c@{reverse\_\-elf.c}}
+\subsubsection[{PRINT\_\-C}]{\setlength{\rightskip}{0pt plus 5cm}\#define PRINT\_\-C~fprintf}}
+\label{reverse__elf_8c_acb0a6d3b4461a0b9a27ad3426d6de2a8}
+
+
+Definition at line 103 of file reverse\_\-elf.c.
+
+\hypertarget{reverse__elf_8c_a480b00640baf1f1902146fd554093482}{
+\index{reverse\_\-elf.c@{reverse\_\-elf.c}!PRINT\_\-CHAR@{PRINT\_\-CHAR}}
+\index{PRINT\_\-CHAR@{PRINT\_\-CHAR}!reverse_elf.c@{reverse\_\-elf.c}}
+\subsubsection[{PRINT\_\-CHAR}]{\setlength{\rightskip}{0pt plus 5cm}\#define PRINT\_\-CHAR(
+\begin{DoxyParamCaption}
+\item[{}]{str, }
+\item[{}]{size, }
+\item[{}]{desc}
+\end{DoxyParamCaption}
+)}}
+\label{reverse__elf_8c_a480b00640baf1f1902146fd554093482}
+{\bfseries Value:}
+\begin{DoxyCode}
+do { PRINT_FILEADDR \
+ PRINT_C(fd, "\t\"");                                         \
+ for (_i_ = 0; _i_ < size; ++_i_) { \
+   PRINT_C(fd, "\\x%x", str[_i_]); } \
+ PRINT_C(fd, "\",\n"); file_addr += size; } while(0)
+\end{DoxyCode}
+
+
+Definition at line 105 of file reverse\_\-elf.c.
+
+\hypertarget{reverse__elf_8c_aee4dca60970d913c2ebbcb21e89ca9b5}{
+\index{reverse\_\-elf.c@{reverse\_\-elf.c}!PRINT\_\-FILEADDR@{PRINT\_\-FILEADDR}}
+\index{PRINT\_\-FILEADDR@{PRINT\_\-FILEADDR}!reverse_elf.c@{reverse\_\-elf.c}}
+\subsubsection[{PRINT\_\-FILEADDR}]{\setlength{\rightskip}{0pt plus 5cm}\#define PRINT\_\-FILEADDR~PRINT\_\-C(fd, \char`\"{}/$\ast$ \%06x $\ast$/\char`\"{}, file\_\-addr);}}
+\label{reverse__elf_8c_aee4dca60970d913c2ebbcb21e89ca9b5}
+
+
+Definition at line 104 of file reverse\_\-elf.c.
+
+\hypertarget{reverse__elf_8c_a69d4d1ace964579845ff71b030bb08de}{
+\index{reverse\_\-elf.c@{reverse\_\-elf.c}!PRINT\_\-HALF@{PRINT\_\-HALF}}
+\index{PRINT\_\-HALF@{PRINT\_\-HALF}!reverse_elf.c@{reverse\_\-elf.c}}
+\subsubsection[{PRINT\_\-HALF}]{\setlength{\rightskip}{0pt plus 5cm}\#define PRINT\_\-HALF(
+\begin{DoxyParamCaption}
+\item[{}]{value, }
+\item[{}]{desc}
+\end{DoxyParamCaption}
+)~PRINT\_\-WORD(value, desc)}}
+\label{reverse__elf_8c_a69d4d1ace964579845ff71b030bb08de}
+
+
+Definition at line 113 of file reverse\_\-elf.c.
+
+\hypertarget{reverse__elf_8c_a6ffd8ff46a6ac94cd8c009a2faeba841}{
+\index{reverse\_\-elf.c@{reverse\_\-elf.c}!PRINT\_\-OFF@{PRINT\_\-OFF}}
+\index{PRINT\_\-OFF@{PRINT\_\-OFF}!reverse_elf.c@{reverse\_\-elf.c}}
+\subsubsection[{PRINT\_\-OFF}]{\setlength{\rightskip}{0pt plus 5cm}\#define PRINT\_\-OFF(
+\begin{DoxyParamCaption}
+\item[{}]{value, }
+\item[{}]{desc}
+\end{DoxyParamCaption}
+)~PRINT\_\-ADDR(value, desc)}}
+\label{reverse__elf_8c_a6ffd8ff46a6ac94cd8c009a2faeba841}
+
+
+Definition at line 116 of file reverse\_\-elf.c.
+
+\hypertarget{reverse__elf_8c_ad98822138b8364bf86debc9ae07cb23e}{
+\index{reverse\_\-elf.c@{reverse\_\-elf.c}!PRINT\_\-WORD@{PRINT\_\-WORD}}
+\index{PRINT\_\-WORD@{PRINT\_\-WORD}!reverse_elf.c@{reverse\_\-elf.c}}
+\subsubsection[{PRINT\_\-WORD}]{\setlength{\rightskip}{0pt plus 5cm}\#define PRINT\_\-WORD(
+\begin{DoxyParamCaption}
+\item[{}]{value, }
+\item[{}]{desc}
+\end{DoxyParamCaption}
+)~do \{ PRINT\_\-FILEADDR PRINT\_\-C(fd, \char`\"{}$\backslash$t\%d,$\backslash$t/$\ast$ \%s $\ast$/$\backslash$n\char`\"{}, value, desc); file\_\-addr += sizeof(value); \} while(0)}}
+\label{reverse__elf_8c_ad98822138b8364bf86debc9ae07cb23e}
+
+
+Definition at line 111 of file reverse\_\-elf.c.
+
+\hypertarget{reverse__elf_8c_a2ccd27439a9345f311cf85519228dd6d}{
+\index{reverse\_\-elf.c@{reverse\_\-elf.c}!PRINT\_\-WORD\_\-END@{PRINT\_\-WORD\_\-END}}
+\index{PRINT\_\-WORD\_\-END@{PRINT\_\-WORD\_\-END}!reverse_elf.c@{reverse\_\-elf.c}}
+\subsubsection[{PRINT\_\-WORD\_\-END}]{\setlength{\rightskip}{0pt plus 5cm}\#define PRINT\_\-WORD\_\-END(
+\begin{DoxyParamCaption}
+\item[{}]{value, }
+\item[{}]{desc}
+\end{DoxyParamCaption}
+)~do \{ PRINT\_\-FILEADDR PRINT\_\-C(fd, \char`\"{}$\backslash$t\%d$\backslash$t/$\ast$ \%s $\ast$/$\backslash$n\char`\"{}, value, desc); file\_\-addr += sizeof(value); \} while(0)}}
+\label{reverse__elf_8c_a2ccd27439a9345f311cf85519228dd6d}
+
+
+Definition at line 112 of file reverse\_\-elf.c.
+
+\hypertarget{reverse__elf_8c_a6f2f6cfafaa5cc6dab98670456a034c1}{
+\index{reverse\_\-elf.c@{reverse\_\-elf.c}!SELF\_\-GENERATE\_\-SRC@{SELF\_\-GENERATE\_\-SRC}}
+\index{SELF\_\-GENERATE\_\-SRC@{SELF\_\-GENERATE\_\-SRC}!reverse_elf.c@{reverse\_\-elf.c}}
+\subsubsection[{SELF\_\-GENERATE\_\-SRC}]{\setlength{\rightskip}{0pt plus 5cm}\#define SELF\_\-GENERATE\_\-SRC}}
+\label{reverse__elf_8c_a6f2f6cfafaa5cc6dab98670456a034c1}
+{\bfseries Value:}
+\begin{DoxyCode}
+"int main() { \n" \
+"    int fd; \n" \
+"    fd = open(\"%s\", O_RDWR|O_CREAT); \n" \
+"    if (fd == -1) { \n" \
+"        perror(\"Error opening file ...\\n\"); \n" \
+"        return 1; \n" \
+"    } \n" \
+"    if (write(fd, &elf_header, sizeof(elf_header)) != sizeof (elf_header)) { \n"
+       \
+"        perror(\"Error writing header to file\\n\"); \n" \
+"        return 1; \n" \
+"    } \n" \
+"    if (write(fd, pht, sizeof(pht)) != sizeof (pht)) { \n" \
+"        perror(\"Error writing pht to file\\n\"); \n" \
+"        return 1; \n" \
+"    } \n" \
+"    if (write(fd, segments, sizeof(segments)) != sizeof(segments)) { \n" \
+"        perror(\"Error writing segments to file...\\n\"); \n" \
+"        return 1; \n" \
+"    } \n" \
+"    if (write(fd, &sht, sizeof(sht)) != sizeof(sht)) { \n" \
+"        perror(\"Error writing sht to file\\n\"); \n" \
+"        return 1; \n" \
+"    } \n" \
+"    printf(\"binary file \\\"%s\\\" successfull created.\"); \n" \
+"    close(fd); \n" \
+"    return 0; \n" \
+"} \n"
+\end{DoxyCode}
+
+
+Definition at line 75 of file reverse\_\-elf.c.
+
+\hypertarget{reverse__elf_8c_a06f29430a62eaea6ef6e326e5322aaa2}{
+\index{reverse\_\-elf.c@{reverse\_\-elf.c}!TOP\_\-TEMPLATE@{TOP\_\-TEMPLATE}}
+\index{TOP\_\-TEMPLATE@{TOP\_\-TEMPLATE}!reverse_elf.c@{reverse\_\-elf.c}}
+\subsubsection[{TOP\_\-TEMPLATE}]{\setlength{\rightskip}{0pt plus 5cm}\#define TOP\_\-TEMPLATE~TOP\_\-TEMPLATE\_\-COMMENT \char`\"{}\#include $<$stdio.h$>$$\backslash$n $\backslash$\#include $<$elf.h$>$$\backslash$n $\backslash$\#include $<$sys/types.h$>$ $\backslash$n$\backslash$\#include $<$sys/stat.h$>$$\backslash$n\#include $<$unistd.h$>$$\backslash$n$\backslash$\#include $<$fcntl.h$>$$\backslash$n$\backslash$n\char`\"{}}}
+\label{reverse__elf_8c_a06f29430a62eaea6ef6e326e5322aaa2}
+
+
+Definition at line 70 of file reverse\_\-elf.c.
+
+\hypertarget{reverse__elf_8c_af65e1e6a295622bd6c74b699a7d83750}{
+\index{reverse\_\-elf.c@{reverse\_\-elf.c}!TOP\_\-TEMPLATE\_\-COMMENT@{TOP\_\-TEMPLATE\_\-COMMENT}}
+\index{TOP\_\-TEMPLATE\_\-COMMENT@{TOP\_\-TEMPLATE\_\-COMMENT}!reverse_elf.c@{reverse\_\-elf.c}}
+\subsubsection[{TOP\_\-TEMPLATE\_\-COMMENT}]{\setlength{\rightskip}{0pt plus 5cm}\#define TOP\_\-TEMPLATE\_\-COMMENT~\char`\"{}$\backslash$n\char`\"{}}}
+\label{reverse__elf_8c_af65e1e6a295622bd6c74b699a7d83750}
+
+
+Definition at line 67 of file reverse\_\-elf.c.
+
+
+
+\subsection{Function Documentation}
+\hypertarget{reverse__elf_8c_af105815abb941024cdf0c799b399ff91}{
+\index{reverse\_\-elf.c@{reverse\_\-elf.c}!reverse\_\-elf2c@{reverse\_\-elf2c}}
+\index{reverse\_\-elf2c@{reverse\_\-elf2c}!reverse_elf.c@{reverse\_\-elf.c}}
+\subsubsection[{reverse\_\-elf2c}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \_\-u8} reverse\_\-elf2c (
+\begin{DoxyParamCaption}
+\item[{{\bf malelf\_\-object} $\ast$}]{elf, }
+\item[{FILE $\ast$}]{fd}
+\end{DoxyParamCaption}
+)}}
+\label{reverse__elf_8c_af105815abb941024cdf0c799b399ff91}
+
+
+Definition at line 120 of file reverse\_\-elf.c.
+
+\hypertarget{reverse__elf_8c_ac917e62ed160fdcfb75beb21eca98f2d}{
+\index{reverse\_\-elf.c@{reverse\_\-elf.c}!reverse\_\-elf2cgen@{reverse\_\-elf2cgen}}
+\index{reverse\_\-elf2cgen@{reverse\_\-elf2cgen}!reverse_elf.c@{reverse\_\-elf.c}}
+\subsubsection[{reverse\_\-elf2cgen}]{\setlength{\rightskip}{0pt plus 5cm}void reverse\_\-elf2cgen (
+\begin{DoxyParamCaption}
+\item[{int}]{fd\_\-input, }
+\item[{int}]{fd\_\-output}
+\end{DoxyParamCaption}
+)}}
+\label{reverse__elf_8c_ac917e62ed160fdcfb75beb21eca98f2d}
+
+
+Definition at line 307 of file reverse\_\-elf.c.
+

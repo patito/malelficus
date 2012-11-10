@@ -1,0 +1,63 @@
+\hypertarget{shellcode_8c}{
+\section{src/libmalelf/shellcode.c File Reference}
+\label{shellcode_8c}\index{src/libmalelf/shellcode.c@{src/libmalelf/shellcode.c}}
+}
+{\ttfamily \#include $<$stdio.h$>$}\par
+{\ttfamily \#include $<$stdlib.h$>$}\par
+{\ttfamily \#include $<$sys/mman.h$>$}\par
+{\ttfamily \#include $<$malelf/object.h$>$}\par
+{\ttfamily \#include $<$malelf/defines.h$>$}\par
+{\ttfamily \#include $<$malelf/util.h$>$}\par
+{\ttfamily \#include $<$malelf/error.h$>$}\par
+{\ttfamily \#include $<$malelf/types.h$>$}\par
+{\ttfamily \#include $<$malelf/infect.h$>$}\par
+Include dependency graph for shellcode.c:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=400pt]{shellcode_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{types_8h_aacb1ea6e27efde1c708a8bc4b56ee1a2}{\_\-i32} \hyperlink{shellcode_8c_ae48b8cf662162251fb5f2acc23135295}{shellcode\_\-create\_\-malelficus} (FILE $\ast$fd\_\-o, int in\_\-size, FILE $\ast$fd\_\-i, unsigned long int original\_\-entry\_\-point, unsigned long int magic\_\-bytes)
+\item 
+\hyperlink{types_8h_af2b0f13cffd24f6dddf794ae0c7472b4}{\_\-u8} \hyperlink{shellcode_8c_af8c79b848eff9ca4ea257b7de598cc4c}{shellcode\_\-create\_\-c} (FILE $\ast$fd\_\-o, int in\_\-size, FILE $\ast$fd\_\-i, unsigned long int original\_\-entry\_\-point)
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\hypertarget{shellcode_8c_af8c79b848eff9ca4ea257b7de598cc4c}{
+\index{shellcode.c@{shellcode.c}!shellcode\_\-create\_\-c@{shellcode\_\-create\_\-c}}
+\index{shellcode\_\-create\_\-c@{shellcode\_\-create\_\-c}!shellcode.c@{shellcode.c}}
+\subsubsection[{shellcode\_\-create\_\-c}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \_\-u8} shellcode\_\-create\_\-c (
+\begin{DoxyParamCaption}
+\item[{FILE $\ast$}]{fd\_\-o, }
+\item[{int}]{in\_\-size, }
+\item[{FILE $\ast$}]{fd\_\-i, }
+\item[{unsigned long int}]{original\_\-entry\_\-point}
+\end{DoxyParamCaption}
+)}}
+\label{shellcode_8c_af8c79b848eff9ca4ea257b7de598cc4c}
+
+
+Definition at line 59 of file shellcode.c.
+
+\hypertarget{shellcode_8c_ae48b8cf662162251fb5f2acc23135295}{
+\index{shellcode.c@{shellcode.c}!shellcode\_\-create\_\-malelficus@{shellcode\_\-create\_\-malelficus}}
+\index{shellcode\_\-create\_\-malelficus@{shellcode\_\-create\_\-malelficus}!shellcode.c@{shellcode.c}}
+\subsubsection[{shellcode\_\-create\_\-malelficus}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \_\-i32} shellcode\_\-create\_\-malelficus (
+\begin{DoxyParamCaption}
+\item[{FILE $\ast$}]{fd\_\-o, }
+\item[{int}]{in\_\-size, }
+\item[{FILE $\ast$}]{fd\_\-i, }
+\item[{unsigned long int}]{original\_\-entry\_\-point, }
+\item[{unsigned long int}]{magic\_\-bytes}
+\end{DoxyParamCaption}
+)}}
+\label{shellcode_8c_ae48b8cf662162251fb5f2acc23135295}
+
+
+Definition at line 16 of file shellcode.c.
+

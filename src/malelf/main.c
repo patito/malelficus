@@ -361,7 +361,7 @@ _u8 shellcode(int argc, char** argv) {
 
 _u8 dissect(int argc, char** argv) {
     malelf_object input;
-    elf_t *elf = NULL;
+    malelf_elf_t *elf = NULL;
     _u16 option = 0;
     char* input_filename = NULL;
     int opt;

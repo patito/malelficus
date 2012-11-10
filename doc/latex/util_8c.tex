@@ -1,0 +1,164 @@
+\hypertarget{util_8c}{
+\section{src/libmalelf/util.c File Reference}
+\label{util_8c}\index{src/libmalelf/util.c@{src/libmalelf/util.c}}
+}
+{\ttfamily \#include $<$stdio.h$>$}\par
+{\ttfamily \#include $<$stdlib.h$>$}\par
+{\ttfamily \#include $<$string.h$>$}\par
+{\ttfamily \#include $<$strings.h$>$}\par
+{\ttfamily \#include $<$stdarg.h$>$}\par
+{\ttfamily \#include $<$sys/stat.h$>$}\par
+{\ttfamily \#include $<$fcntl.h$>$}\par
+{\ttfamily \#include $<$unistd.h$>$}\par
+{\ttfamily \#include $<$malelf/util.h$>$}\par
+{\ttfamily \#include $<$malelf/error.h$>$}\par
+Include dependency graph for util.c:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=400pt]{util_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{util_8c_a247542ae0b6acc9ada0109283141c737}{malelf\_\-log} (FILE $\ast$fd, const char $\ast$prefix, const char $\ast$format, va\_\-list args)
+\item 
+int \hyperlink{util_8c_ac6734a7443633a78f6a87d5511ca2364}{malelf\_\-print} (FILE $\ast$fd, const char $\ast$format,...)
+\item 
+int \hyperlink{util_8c_a1cd6a5086679cbb2b107e781aeb3835d}{malelf\_\-say} (const char $\ast$format,...)
+\item 
+int \hyperlink{util_8c_a9d6a039b287860279870f4297d80ef6a}{malelf\_\-error} (const char $\ast$format,...)
+\item 
+int \hyperlink{util_8c_aea4d2b93d2acad2b43abc0aff8680828}{malelf\_\-success} (const char $\ast$format,...)
+\item 
+int \hyperlink{util_8c_abf9a0a02da3599092c0aa5cbbe62ff2f}{malelf\_\-warn} (const char $\ast$format,...)
+\item 
+\hyperlink{types_8h_af2b0f13cffd24f6dddf794ae0c7472b4}{\_\-u8} \hyperlink{util_8c_a7030062f94da236e11cadbd65d7a2c29}{saveFile} (const char $\ast$fname, \hyperlink{types_8h_af2b0f13cffd24f6dddf794ae0c7472b4}{\_\-u8} $\ast$mem, off\_\-t size)
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{types_8h_af2b0f13cffd24f6dddf794ae0c7472b4}{\_\-u8} \hyperlink{util_8c_a9832bf9a14bd3b9656e7be172ac16c9b}{malelf\_\-quiet\_\-mode}
+\begin{DoxyCompactList}\small\item\em Quiet mode. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\hypertarget{util_8c_a9d6a039b287860279870f4297d80ef6a}{
+\index{util.c@{util.c}!malelf\_\-error@{malelf\_\-error}}
+\index{malelf\_\-error@{malelf\_\-error}!util.c@{util.c}}
+\subsubsection[{malelf\_\-error}]{\setlength{\rightskip}{0pt plus 5cm}int malelf\_\-error (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{format, }
+\item[{}]{...}
+\end{DoxyParamCaption}
+)}}
+\label{util_8c_a9d6a039b287860279870f4297d80ef6a}
+
+
+Definition at line 49 of file util.c.
+
+\hypertarget{util_8c_a247542ae0b6acc9ada0109283141c737}{
+\index{util.c@{util.c}!malelf\_\-log@{malelf\_\-log}}
+\index{malelf\_\-log@{malelf\_\-log}!util.c@{util.c}}
+\subsubsection[{malelf\_\-log}]{\setlength{\rightskip}{0pt plus 5cm}int malelf\_\-log (
+\begin{DoxyParamCaption}
+\item[{FILE $\ast$}]{fd, }
+\item[{const char $\ast$}]{prefix, }
+\item[{const char $\ast$}]{format, }
+\item[{va\_\-list}]{args}
+\end{DoxyParamCaption}
+)}}
+\label{util_8c_a247542ae0b6acc9ada0109283141c737}
+
+
+Definition at line 15 of file util.c.
+
+\hypertarget{util_8c_ac6734a7443633a78f6a87d5511ca2364}{
+\index{util.c@{util.c}!malelf\_\-print@{malelf\_\-print}}
+\index{malelf\_\-print@{malelf\_\-print}!util.c@{util.c}}
+\subsubsection[{malelf\_\-print}]{\setlength{\rightskip}{0pt plus 5cm}int malelf\_\-print (
+\begin{DoxyParamCaption}
+\item[{FILE $\ast$}]{fd, }
+\item[{const char $\ast$}]{format, }
+\item[{}]{...}
+\end{DoxyParamCaption}
+)}}
+\label{util_8c_ac6734a7443633a78f6a87d5511ca2364}
+
+
+Definition at line 37 of file util.c.
+
+\hypertarget{util_8c_a1cd6a5086679cbb2b107e781aeb3835d}{
+\index{util.c@{util.c}!malelf\_\-say@{malelf\_\-say}}
+\index{malelf\_\-say@{malelf\_\-say}!util.c@{util.c}}
+\subsubsection[{malelf\_\-say}]{\setlength{\rightskip}{0pt plus 5cm}int malelf\_\-say (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{format, }
+\item[{}]{...}
+\end{DoxyParamCaption}
+)}}
+\label{util_8c_a1cd6a5086679cbb2b107e781aeb3835d}
+
+
+Definition at line 43 of file util.c.
+
+\hypertarget{util_8c_aea4d2b93d2acad2b43abc0aff8680828}{
+\index{util.c@{util.c}!malelf\_\-success@{malelf\_\-success}}
+\index{malelf\_\-success@{malelf\_\-success}!util.c@{util.c}}
+\subsubsection[{malelf\_\-success}]{\setlength{\rightskip}{0pt plus 5cm}int malelf\_\-success (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{format, }
+\item[{}]{...}
+\end{DoxyParamCaption}
+)}}
+\label{util_8c_aea4d2b93d2acad2b43abc0aff8680828}
+
+
+Definition at line 55 of file util.c.
+
+\hypertarget{util_8c_abf9a0a02da3599092c0aa5cbbe62ff2f}{
+\index{util.c@{util.c}!malelf\_\-warn@{malelf\_\-warn}}
+\index{malelf\_\-warn@{malelf\_\-warn}!util.c@{util.c}}
+\subsubsection[{malelf\_\-warn}]{\setlength{\rightskip}{0pt plus 5cm}int malelf\_\-warn (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{format, }
+\item[{}]{...}
+\end{DoxyParamCaption}
+)}}
+\label{util_8c_abf9a0a02da3599092c0aa5cbbe62ff2f}
+
+
+Definition at line 61 of file util.c.
+
+\hypertarget{util_8c_a7030062f94da236e11cadbd65d7a2c29}{
+\index{util.c@{util.c}!saveFile@{saveFile}}
+\index{saveFile@{saveFile}!util.c@{util.c}}
+\subsubsection[{saveFile}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \_\-u8} saveFile (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{fname, }
+\item[{{\bf \_\-u8} $\ast$}]{mem, }
+\item[{off\_\-t}]{size}
+\end{DoxyParamCaption}
+)}}
+\label{util_8c_a7030062f94da236e11cadbd65d7a2c29}
+
+
+Definition at line 67 of file util.c.
+
+
+
+\subsection{Variable Documentation}
+\hypertarget{util_8c_a9832bf9a14bd3b9656e7be172ac16c9b}{
+\index{util.c@{util.c}!malelf\_\-quiet\_\-mode@{malelf\_\-quiet\_\-mode}}
+\index{malelf\_\-quiet\_\-mode@{malelf\_\-quiet\_\-mode}!util.c@{util.c}}
+\subsubsection[{malelf\_\-quiet\_\-mode}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \_\-u8} {\bf malelf\_\-quiet\_\-mode}}}
+\label{util_8c_a9832bf9a14bd3b9656e7be172ac16c9b}
+
+
+Quiet mode. 
+
+Enable quiet mode 
+
+Definition at line 54 of file object.c.
+

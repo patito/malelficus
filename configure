@@ -618,6 +618,7 @@ ac_subst_vars='am__EXEEXT_FALSE
 am__EXEEXT_TRUE
 LTLIBOBJS
 LIBOBJS
+M32_CFLAGS
 HAVE_NASM
 INCLUDE_TESTS
 INCLUDE_CUNIT
@@ -12139,6 +12140,46 @@ _ACEOF
 ;;
   esac
 
+
+case $host_cpu in
+    x86_64*|amd64*)
+	if  test "x$GCC" = xyes ; then
+	    SAVE_CFLAGS="$CFLAGS"
+	    CFLAGS="$CFLAGS -m32"
+	    { $as_echo "$as_me:${as_lineno-$LINENO}: checking if $CC supports the -m32 Intel/AMD option" >&5
+$as_echo_n "checking if $CC supports the -m32 Intel/AMD option... " >&6; }
+	    cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+#include <unistd.h>
+int
+main ()
+{
+  ;
+  return 0;
+
+  }
+_ACEOF
+if ac_fn_c_try_compile "$LINENO"; then :
+  m32_support=yes; M32_CFLAGS=-m32
+else
+  m32_support=no
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
+	    { $as_echo "$as_me:${as_lineno-$LINENO}: result: $m32_support" >&5
+$as_echo "$m32_support" >&6; }
+	    CFLAGS="$SAVE_CFLAGS"
+	fi
+	;;
+esac
+
+
+if test "x$m32_support" = "xno"; then
+   as_fn_error $? "Malelficus only supports x86 at the moment...
+   If you can help us, write a patch ;\)
+
+   sorry for the inconvenince..." "$LINENO" 5
+fi
 
 # Checks for library functions.
 for ac_header in stdlib.h

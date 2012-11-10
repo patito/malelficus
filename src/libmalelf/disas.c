@@ -73,7 +73,7 @@ _i32 malelf_disas_ehdr(ElfW(Ehdr)* ehdr, FILE* fd) {
     return MALELF_SUCCESS;
 }
 
-_i32 malelf_disas_phdr(elf_t* elf, FILE* fd) {
+_i32 malelf_disas_phdr(malelf_elf_t* elf, FILE* fd) {
     ElfW(Ehdr)* ehdr = elf->elfh;
     ElfW(Phdr)* phdr = elf->elfp;
     int i;

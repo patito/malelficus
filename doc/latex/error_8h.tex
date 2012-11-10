@@ -1,0 +1,370 @@
+\hypertarget{error_8h}{
+\section{src/libmalelf/include/malelf/error.h File Reference}
+\label{error_8h}\index{src/libmalelf/include/malelf/error.h@{src/libmalelf/include/malelf/error.h}}
+}
+{\ttfamily \#include \char`\"{}util.h\char`\"{}}\par
+Include dependency graph for error.h:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=342pt]{error_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=400pt]{error_8h__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Defines}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{error_8h_afce77b261af529ab2d27aede030e3d5d}{MAX\_\-MSG\_\-ERROR}~255
+\item 
+\#define \hyperlink{error_8h_adcb6e8221db334cb7abe5a95a69be738}{malelf\_\-perror}(code)~\_\-malelf\_\-perror(code, \_\-\_\-FUNCTION\_\-\_\-, \_\-\_\-FILE\_\-\_\-, \_\-\_\-LINE\_\-\_\-)
+\item 
+\#define \hyperlink{error_8h_a218041a27ba26b07e91ed8b9628e1175}{malelf\_\-fatal}(code)~do \{malelf\_\-perror(code); LOG\_\-ERROR(\char`\"{}Aborting...$\backslash$n\char`\"{}); exit(code); \} while(0)
+\end{DoxyCompactItemize}
+\subsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \hyperlink{error_8h_abd29c481acbfdbb1e3a130f584cd8396}{malelf\_\-status} \{ \par
+\hyperlink{error_8h_abd29c481acbfdbb1e3a130f584cd8396a38930d6cba46e530d1e66073b5de69e5}{MALELF\_\-SUCCESS} =  0, 
+\hyperlink{error_8h_abd29c481acbfdbb1e3a130f584cd8396aad0c08e49defceac643bb4f9988d9f8f}{MALELF\_\-EPERM}, 
+\hyperlink{error_8h_abd29c481acbfdbb1e3a130f584cd8396a5f45b921e06c13ee5b738ffb0c209296}{MALELF\_\-ENOENT} =  2, 
+\hyperlink{error_8h_abd29c481acbfdbb1e3a130f584cd8396a7c867d113b85c9c1870b4d203518b8cf}{MALELF\_\-ESRCH} =  3, 
+\par
+\hyperlink{error_8h_abd29c481acbfdbb1e3a130f584cd8396a2b6f3afc3b2fe630fcff3f2a46ba5919}{MALELF\_\-EINTR} =  4, 
+\hyperlink{error_8h_abd29c481acbfdbb1e3a130f584cd8396a2ebc3eaf7ef60e29312f76c2cb17de15}{MALELF\_\-EIO} =  5, 
+\hyperlink{error_8h_abd29c481acbfdbb1e3a130f584cd8396aa611099f72230193f83a8c9c193ddc23}{MALELF\_\-ENXIO} =  6, 
+\hyperlink{error_8h_abd29c481acbfdbb1e3a130f584cd8396a40292197fbfa2fb768734bf9c54d9229}{MALELF\_\-E2BIG} =  7, 
+\par
+\hyperlink{error_8h_abd29c481acbfdbb1e3a130f584cd8396a37b69ef863d181f9f544b453c43e72a4}{MALELF\_\-ENOEXEC} =  8, 
+\hyperlink{error_8h_abd29c481acbfdbb1e3a130f584cd8396a1fcb2c524e8b39b67d168f336ebcf80f}{MALELF\_\-EBADF} =  9, 
+\hyperlink{error_8h_abd29c481acbfdbb1e3a130f584cd8396a9d50af435c11e43ea4377f9eb01cfa86}{MALELF\_\-ECHILD} =  10, 
+\hyperlink{error_8h_abd29c481acbfdbb1e3a130f584cd8396adf96f48a66644f27844648b20efe732e}{MALELF\_\-EAGAIN} =  11, 
+\par
+\hyperlink{error_8h_abd29c481acbfdbb1e3a130f584cd8396af3340308d4a4f286b5b54f46f57dc6c7}{MALELF\_\-ENOMEM} =  12, 
+\hyperlink{error_8h_abd29c481acbfdbb1e3a130f584cd8396ab4722ff1f97425d6d698e5c9c10585c0}{MALELF\_\-EACCES} =  13, 
+\hyperlink{error_8h_abd29c481acbfdbb1e3a130f584cd8396a90a15e744bde0fcfa1188ffbfaed5853}{MALELF\_\-EFAULT} =  14, 
+\hyperlink{error_8h_abd29c481acbfdbb1e3a130f584cd8396a079897b63396ad30d1ead7594d5febcb}{MALELF\_\-ENOTBLK} =  15, 
+\par
+\hyperlink{error_8h_abd29c481acbfdbb1e3a130f584cd8396a75dd1a239a6945d146c894f5c69c227f}{MALELF\_\-EBUSY} =  16, 
+\hyperlink{error_8h_abd29c481acbfdbb1e3a130f584cd8396a074b9914c84d76d46f8241bbd07e1342}{MALELF\_\-EEXIST} =  17, 
+\hyperlink{error_8h_abd29c481acbfdbb1e3a130f584cd8396a3eda38632f4bc2f4d8ca1d77a349db31}{MALELF\_\-EXDEV} =  18, 
+\hyperlink{error_8h_abd29c481acbfdbb1e3a130f584cd8396a437a5f035b19248ab1d38bcb0bc68218}{MALELF\_\-ENODEV} =  19, 
+\par
+\hyperlink{error_8h_abd29c481acbfdbb1e3a130f584cd8396a03318bef646591285e4d3b46951fd0cb}{MALELF\_\-ENOTDIR} =  20, 
+\hyperlink{error_8h_abd29c481acbfdbb1e3a130f584cd8396ada956b7a01fb6a374b5d5d2d03f01dac}{MALELF\_\-EISDIR} =  21, 
+\hyperlink{error_8h_abd29c481acbfdbb1e3a130f584cd8396a1476c342aa1e55fcb98a3affbbc153f3}{MALELF\_\-EINVAL} =  22, 
+\hyperlink{error_8h_abd29c481acbfdbb1e3a130f584cd8396a5c8c81623f77ba3a8975a17b1b6f04c8}{MALELF\_\-ENFILE} =  23, 
+\par
+\hyperlink{error_8h_abd29c481acbfdbb1e3a130f584cd8396adb8a8c4338de65517e3a500cfa3c5b22}{MALELF\_\-EMFILE} =  24, 
+\hyperlink{error_8h_abd29c481acbfdbb1e3a130f584cd8396aee7fd0d8e05ec541514afc0762bca6ef}{MALELF\_\-ENOTTY} =  25, 
+\hyperlink{error_8h_abd29c481acbfdbb1e3a130f584cd8396a37c71f23d51e3fd49e7a7e56b2982cf6}{MALELF\_\-ETXTBSY} =  26, 
+\hyperlink{error_8h_abd29c481acbfdbb1e3a130f584cd8396a97ec90cd4dac35b522766e270ca77d6c}{MALELF\_\-EFBIG} =  27, 
+\par
+\hyperlink{error_8h_abd29c481acbfdbb1e3a130f584cd8396adc82412258b84334ffdede147c60333f}{MALELF\_\-ENOSPC} =  28, 
+\hyperlink{error_8h_abd29c481acbfdbb1e3a130f584cd8396a065351079e4e5c6516e97f50919faf4f}{MALELF\_\-ESPIPE} =  29, 
+\hyperlink{error_8h_abd29c481acbfdbb1e3a130f584cd8396a880c50d78649d8cd12dd8603d535668e}{MALELF\_\-EROFS} =  30, 
+\hyperlink{error_8h_abd29c481acbfdbb1e3a130f584cd8396abecdfa6cbdd9e7bb33fee5009198520f}{MALELF\_\-EMLINK} =  31, 
+\par
+\hyperlink{error_8h_abd29c481acbfdbb1e3a130f584cd8396ab5ca45afa1e06d9794ba8954effba1d5}{MALELF\_\-EPIPE} =  32, 
+\hyperlink{error_8h_abd29c481acbfdbb1e3a130f584cd8396a0c2471fb978bb3ad6d2e1d7e2f94f864}{MALELF\_\-EDOM} =  33, 
+\hyperlink{error_8h_abd29c481acbfdbb1e3a130f584cd8396a6abe58feecf46f632bc60024751c54f2}{MALELF\_\-ERANGE} =  34, 
+\hyperlink{error_8h_abd29c481acbfdbb1e3a130f584cd8396acc31e1d217a7c3609d0957fda7a60091}{MALELF\_\-LAST\_\-ERRNO} =  35, 
+\par
+\hyperlink{error_8h_abd29c481acbfdbb1e3a130f584cd8396af38b955564dfc1ad5b66a92ce9605292}{MALELF\_\-ERROR} =  40, 
+\hyperlink{error_8h_abd29c481acbfdbb1e3a130f584cd8396a4874e35f449f940637ae57c7df768819}{MALELF\_\-ECLOSED} =  41, 
+\hyperlink{error_8h_abd29c481acbfdbb1e3a130f584cd8396a2fd4b073eef0b92fee71d4dfcfdbf9e6}{MALELF\_\-EALLOC} =  42, 
+\hyperlink{error_8h_abd29c481acbfdbb1e3a130f584cd8396ad720e04b4a6485f7399d181a261b8f34}{MALELF\_\-ENOT\_\-ELF} =  43, 
+\par
+\hyperlink{error_8h_abd29c481acbfdbb1e3a130f584cd8396a1ef947cc4e5195824c2b2d0f8e100d59}{MALELF\_\-ECORRUPTED} =  44, 
+\hyperlink{error_8h_abd29c481acbfdbb1e3a130f584cd8396a6b303b728d27224f4f240e49c81f01f4}{MALELF\_\-ESUSPECT\_\-SECTIONS} =  45, 
+\hyperlink{error_8h_abd29c481acbfdbb1e3a130f584cd8396a709012064bf03c5cef267cecd22c704a}{MALELF\_\-EMISSING\_\-MAGIC\_\-BYTES} =  46, 
+\hyperlink{error_8h_abd29c481acbfdbb1e3a130f584cd8396ac08109e3a94a13028d8281d2a22a20a5}{MALELF\_\-EINV\_\-OFFSET\_\-ENTRY} =  47, 
+\par
+\hyperlink{error_8h_abd29c481acbfdbb1e3a130f584cd8396a210321970e70f26186c9470910e0ecc9}{MALELF\_\-EDISAS} =  48, 
+\hyperlink{error_8h_abd29c481acbfdbb1e3a130f584cd8396a90d553dba8b6c0969af7f0776fed67d0}{MALELF\_\-LAST\_\-ERROR} =  50
+ \}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{error_8h_ad60f880160e465f8f99c9d4ad8c95d21}{\_\-malelf\_\-perror} (int code, const char $\ast$func, const char $\ast$file, int line)
+\item 
+const char $\ast$ \hyperlink{error_8h_af225ce01f3f2709e264c7036e813c3b1}{malelf\_\-strerror} (int code)
+\end{DoxyCompactItemize}
+
+
+\subsection{Define Documentation}
+\hypertarget{error_8h_a218041a27ba26b07e91ed8b9628e1175}{
+\index{error.h@{error.h}!malelf\_\-fatal@{malelf\_\-fatal}}
+\index{malelf\_\-fatal@{malelf\_\-fatal}!error.h@{error.h}}
+\subsubsection[{malelf\_\-fatal}]{\setlength{\rightskip}{0pt plus 5cm}\#define malelf\_\-fatal(
+\begin{DoxyParamCaption}
+\item[{}]{code}
+\end{DoxyParamCaption}
+)~do \{malelf\_\-perror(code); LOG\_\-ERROR(\char`\"{}Aborting...$\backslash$n\char`\"{}); exit(code); \} while(0)}}
+\label{error_8h_a218041a27ba26b07e91ed8b9628e1175}
+
+
+Definition at line 60 of file error.h.
+
+\hypertarget{error_8h_adcb6e8221db334cb7abe5a95a69be738}{
+\index{error.h@{error.h}!malelf\_\-perror@{malelf\_\-perror}}
+\index{malelf\_\-perror@{malelf\_\-perror}!error.h@{error.h}}
+\subsubsection[{malelf\_\-perror}]{\setlength{\rightskip}{0pt plus 5cm}\#define malelf\_\-perror(
+\begin{DoxyParamCaption}
+\item[{}]{code}
+\end{DoxyParamCaption}
+)~\_\-malelf\_\-perror(code, \_\-\_\-FUNCTION\_\-\_\-, \_\-\_\-FILE\_\-\_\-, \_\-\_\-LINE\_\-\_\-)}}
+\label{error_8h_adcb6e8221db334cb7abe5a95a69be738}
+
+
+Definition at line 59 of file error.h.
+
+\hypertarget{error_8h_afce77b261af529ab2d27aede030e3d5d}{
+\index{error.h@{error.h}!MAX\_\-MSG\_\-ERROR@{MAX\_\-MSG\_\-ERROR}}
+\index{MAX\_\-MSG\_\-ERROR@{MAX\_\-MSG\_\-ERROR}!error.h@{error.h}}
+\subsubsection[{MAX\_\-MSG\_\-ERROR}]{\setlength{\rightskip}{0pt plus 5cm}\#define MAX\_\-MSG\_\-ERROR~255}}
+\label{error_8h_afce77b261af529ab2d27aede030e3d5d}
+
+
+Definition at line 6 of file error.h.
+
+
+
+\subsection{Enumeration Type Documentation}
+\hypertarget{error_8h_abd29c481acbfdbb1e3a130f584cd8396}{
+\index{error.h@{error.h}!malelf\_\-status@{malelf\_\-status}}
+\index{malelf\_\-status@{malelf\_\-status}!error.h@{error.h}}
+\subsubsection[{malelf\_\-status}]{\setlength{\rightskip}{0pt plus 5cm}enum {\bf malelf\_\-status}}}
+\label{error_8h_abd29c481acbfdbb1e3a130f584cd8396}
+\begin{Desc}
+\item[Enumerator: ]\par
+\begin{description}
+\index{MALELF\_\-SUCCESS@{MALELF\_\-SUCCESS}!error.h@{error.h}}\index{error.h@{error.h}!MALELF\_\-SUCCESS@{MALELF\_\-SUCCESS}}\item[{\em 
+\hypertarget{error_8h_abd29c481acbfdbb1e3a130f584cd8396a38930d6cba46e530d1e66073b5de69e5}{
+MALELF\_\-SUCCESS}
+\label{error_8h_abd29c481acbfdbb1e3a130f584cd8396a38930d6cba46e530d1e66073b5de69e5}
+}]\index{MALELF\_\-EPERM@{MALELF\_\-EPERM}!error.h@{error.h}}\index{error.h@{error.h}!MALELF\_\-EPERM@{MALELF\_\-EPERM}}\item[{\em 
+\hypertarget{error_8h_abd29c481acbfdbb1e3a130f584cd8396aad0c08e49defceac643bb4f9988d9f8f}{
+MALELF\_\-EPERM}
+\label{error_8h_abd29c481acbfdbb1e3a130f584cd8396aad0c08e49defceac643bb4f9988d9f8f}
+}]\index{MALELF\_\-ENOENT@{MALELF\_\-ENOENT}!error.h@{error.h}}\index{error.h@{error.h}!MALELF\_\-ENOENT@{MALELF\_\-ENOENT}}\item[{\em 
+\hypertarget{error_8h_abd29c481acbfdbb1e3a130f584cd8396a5f45b921e06c13ee5b738ffb0c209296}{
+MALELF\_\-ENOENT}
+\label{error_8h_abd29c481acbfdbb1e3a130f584cd8396a5f45b921e06c13ee5b738ffb0c209296}
+}]\index{MALELF\_\-ESRCH@{MALELF\_\-ESRCH}!error.h@{error.h}}\index{error.h@{error.h}!MALELF\_\-ESRCH@{MALELF\_\-ESRCH}}\item[{\em 
+\hypertarget{error_8h_abd29c481acbfdbb1e3a130f584cd8396a7c867d113b85c9c1870b4d203518b8cf}{
+MALELF\_\-ESRCH}
+\label{error_8h_abd29c481acbfdbb1e3a130f584cd8396a7c867d113b85c9c1870b4d203518b8cf}
+}]\index{MALELF\_\-EINTR@{MALELF\_\-EINTR}!error.h@{error.h}}\index{error.h@{error.h}!MALELF\_\-EINTR@{MALELF\_\-EINTR}}\item[{\em 
+\hypertarget{error_8h_abd29c481acbfdbb1e3a130f584cd8396a2b6f3afc3b2fe630fcff3f2a46ba5919}{
+MALELF\_\-EINTR}
+\label{error_8h_abd29c481acbfdbb1e3a130f584cd8396a2b6f3afc3b2fe630fcff3f2a46ba5919}
+}]\index{MALELF\_\-EIO@{MALELF\_\-EIO}!error.h@{error.h}}\index{error.h@{error.h}!MALELF\_\-EIO@{MALELF\_\-EIO}}\item[{\em 
+\hypertarget{error_8h_abd29c481acbfdbb1e3a130f584cd8396a2ebc3eaf7ef60e29312f76c2cb17de15}{
+MALELF\_\-EIO}
+\label{error_8h_abd29c481acbfdbb1e3a130f584cd8396a2ebc3eaf7ef60e29312f76c2cb17de15}
+}]\index{MALELF\_\-ENXIO@{MALELF\_\-ENXIO}!error.h@{error.h}}\index{error.h@{error.h}!MALELF\_\-ENXIO@{MALELF\_\-ENXIO}}\item[{\em 
+\hypertarget{error_8h_abd29c481acbfdbb1e3a130f584cd8396aa611099f72230193f83a8c9c193ddc23}{
+MALELF\_\-ENXIO}
+\label{error_8h_abd29c481acbfdbb1e3a130f584cd8396aa611099f72230193f83a8c9c193ddc23}
+}]\index{MALELF\_\-E2BIG@{MALELF\_\-E2BIG}!error.h@{error.h}}\index{error.h@{error.h}!MALELF\_\-E2BIG@{MALELF\_\-E2BIG}}\item[{\em 
+\hypertarget{error_8h_abd29c481acbfdbb1e3a130f584cd8396a40292197fbfa2fb768734bf9c54d9229}{
+MALELF\_\-E2BIG}
+\label{error_8h_abd29c481acbfdbb1e3a130f584cd8396a40292197fbfa2fb768734bf9c54d9229}
+}]\index{MALELF\_\-ENOEXEC@{MALELF\_\-ENOEXEC}!error.h@{error.h}}\index{error.h@{error.h}!MALELF\_\-ENOEXEC@{MALELF\_\-ENOEXEC}}\item[{\em 
+\hypertarget{error_8h_abd29c481acbfdbb1e3a130f584cd8396a37b69ef863d181f9f544b453c43e72a4}{
+MALELF\_\-ENOEXEC}
+\label{error_8h_abd29c481acbfdbb1e3a130f584cd8396a37b69ef863d181f9f544b453c43e72a4}
+}]\index{MALELF\_\-EBADF@{MALELF\_\-EBADF}!error.h@{error.h}}\index{error.h@{error.h}!MALELF\_\-EBADF@{MALELF\_\-EBADF}}\item[{\em 
+\hypertarget{error_8h_abd29c481acbfdbb1e3a130f584cd8396a1fcb2c524e8b39b67d168f336ebcf80f}{
+MALELF\_\-EBADF}
+\label{error_8h_abd29c481acbfdbb1e3a130f584cd8396a1fcb2c524e8b39b67d168f336ebcf80f}
+}]\index{MALELF\_\-ECHILD@{MALELF\_\-ECHILD}!error.h@{error.h}}\index{error.h@{error.h}!MALELF\_\-ECHILD@{MALELF\_\-ECHILD}}\item[{\em 
+\hypertarget{error_8h_abd29c481acbfdbb1e3a130f584cd8396a9d50af435c11e43ea4377f9eb01cfa86}{
+MALELF\_\-ECHILD}
+\label{error_8h_abd29c481acbfdbb1e3a130f584cd8396a9d50af435c11e43ea4377f9eb01cfa86}
+}]\index{MALELF\_\-EAGAIN@{MALELF\_\-EAGAIN}!error.h@{error.h}}\index{error.h@{error.h}!MALELF\_\-EAGAIN@{MALELF\_\-EAGAIN}}\item[{\em 
+\hypertarget{error_8h_abd29c481acbfdbb1e3a130f584cd8396adf96f48a66644f27844648b20efe732e}{
+MALELF\_\-EAGAIN}
+\label{error_8h_abd29c481acbfdbb1e3a130f584cd8396adf96f48a66644f27844648b20efe732e}
+}]\index{MALELF\_\-ENOMEM@{MALELF\_\-ENOMEM}!error.h@{error.h}}\index{error.h@{error.h}!MALELF\_\-ENOMEM@{MALELF\_\-ENOMEM}}\item[{\em 
+\hypertarget{error_8h_abd29c481acbfdbb1e3a130f584cd8396af3340308d4a4f286b5b54f46f57dc6c7}{
+MALELF\_\-ENOMEM}
+\label{error_8h_abd29c481acbfdbb1e3a130f584cd8396af3340308d4a4f286b5b54f46f57dc6c7}
+}]\index{MALELF\_\-EACCES@{MALELF\_\-EACCES}!error.h@{error.h}}\index{error.h@{error.h}!MALELF\_\-EACCES@{MALELF\_\-EACCES}}\item[{\em 
+\hypertarget{error_8h_abd29c481acbfdbb1e3a130f584cd8396ab4722ff1f97425d6d698e5c9c10585c0}{
+MALELF\_\-EACCES}
+\label{error_8h_abd29c481acbfdbb1e3a130f584cd8396ab4722ff1f97425d6d698e5c9c10585c0}
+}]\index{MALELF\_\-EFAULT@{MALELF\_\-EFAULT}!error.h@{error.h}}\index{error.h@{error.h}!MALELF\_\-EFAULT@{MALELF\_\-EFAULT}}\item[{\em 
+\hypertarget{error_8h_abd29c481acbfdbb1e3a130f584cd8396a90a15e744bde0fcfa1188ffbfaed5853}{
+MALELF\_\-EFAULT}
+\label{error_8h_abd29c481acbfdbb1e3a130f584cd8396a90a15e744bde0fcfa1188ffbfaed5853}
+}]\index{MALELF\_\-ENOTBLK@{MALELF\_\-ENOTBLK}!error.h@{error.h}}\index{error.h@{error.h}!MALELF\_\-ENOTBLK@{MALELF\_\-ENOTBLK}}\item[{\em 
+\hypertarget{error_8h_abd29c481acbfdbb1e3a130f584cd8396a079897b63396ad30d1ead7594d5febcb}{
+MALELF\_\-ENOTBLK}
+\label{error_8h_abd29c481acbfdbb1e3a130f584cd8396a079897b63396ad30d1ead7594d5febcb}
+}]\index{MALELF\_\-EBUSY@{MALELF\_\-EBUSY}!error.h@{error.h}}\index{error.h@{error.h}!MALELF\_\-EBUSY@{MALELF\_\-EBUSY}}\item[{\em 
+\hypertarget{error_8h_abd29c481acbfdbb1e3a130f584cd8396a75dd1a239a6945d146c894f5c69c227f}{
+MALELF\_\-EBUSY}
+\label{error_8h_abd29c481acbfdbb1e3a130f584cd8396a75dd1a239a6945d146c894f5c69c227f}
+}]\index{MALELF\_\-EEXIST@{MALELF\_\-EEXIST}!error.h@{error.h}}\index{error.h@{error.h}!MALELF\_\-EEXIST@{MALELF\_\-EEXIST}}\item[{\em 
+\hypertarget{error_8h_abd29c481acbfdbb1e3a130f584cd8396a074b9914c84d76d46f8241bbd07e1342}{
+MALELF\_\-EEXIST}
+\label{error_8h_abd29c481acbfdbb1e3a130f584cd8396a074b9914c84d76d46f8241bbd07e1342}
+}]\index{MALELF\_\-EXDEV@{MALELF\_\-EXDEV}!error.h@{error.h}}\index{error.h@{error.h}!MALELF\_\-EXDEV@{MALELF\_\-EXDEV}}\item[{\em 
+\hypertarget{error_8h_abd29c481acbfdbb1e3a130f584cd8396a3eda38632f4bc2f4d8ca1d77a349db31}{
+MALELF\_\-EXDEV}
+\label{error_8h_abd29c481acbfdbb1e3a130f584cd8396a3eda38632f4bc2f4d8ca1d77a349db31}
+}]\index{MALELF\_\-ENODEV@{MALELF\_\-ENODEV}!error.h@{error.h}}\index{error.h@{error.h}!MALELF\_\-ENODEV@{MALELF\_\-ENODEV}}\item[{\em 
+\hypertarget{error_8h_abd29c481acbfdbb1e3a130f584cd8396a437a5f035b19248ab1d38bcb0bc68218}{
+MALELF\_\-ENODEV}
+\label{error_8h_abd29c481acbfdbb1e3a130f584cd8396a437a5f035b19248ab1d38bcb0bc68218}
+}]\index{MALELF\_\-ENOTDIR@{MALELF\_\-ENOTDIR}!error.h@{error.h}}\index{error.h@{error.h}!MALELF\_\-ENOTDIR@{MALELF\_\-ENOTDIR}}\item[{\em 
+\hypertarget{error_8h_abd29c481acbfdbb1e3a130f584cd8396a03318bef646591285e4d3b46951fd0cb}{
+MALELF\_\-ENOTDIR}
+\label{error_8h_abd29c481acbfdbb1e3a130f584cd8396a03318bef646591285e4d3b46951fd0cb}
+}]\index{MALELF\_\-EISDIR@{MALELF\_\-EISDIR}!error.h@{error.h}}\index{error.h@{error.h}!MALELF\_\-EISDIR@{MALELF\_\-EISDIR}}\item[{\em 
+\hypertarget{error_8h_abd29c481acbfdbb1e3a130f584cd8396ada956b7a01fb6a374b5d5d2d03f01dac}{
+MALELF\_\-EISDIR}
+\label{error_8h_abd29c481acbfdbb1e3a130f584cd8396ada956b7a01fb6a374b5d5d2d03f01dac}
+}]\index{MALELF\_\-EINVAL@{MALELF\_\-EINVAL}!error.h@{error.h}}\index{error.h@{error.h}!MALELF\_\-EINVAL@{MALELF\_\-EINVAL}}\item[{\em 
+\hypertarget{error_8h_abd29c481acbfdbb1e3a130f584cd8396a1476c342aa1e55fcb98a3affbbc153f3}{
+MALELF\_\-EINVAL}
+\label{error_8h_abd29c481acbfdbb1e3a130f584cd8396a1476c342aa1e55fcb98a3affbbc153f3}
+}]\index{MALELF\_\-ENFILE@{MALELF\_\-ENFILE}!error.h@{error.h}}\index{error.h@{error.h}!MALELF\_\-ENFILE@{MALELF\_\-ENFILE}}\item[{\em 
+\hypertarget{error_8h_abd29c481acbfdbb1e3a130f584cd8396a5c8c81623f77ba3a8975a17b1b6f04c8}{
+MALELF\_\-ENFILE}
+\label{error_8h_abd29c481acbfdbb1e3a130f584cd8396a5c8c81623f77ba3a8975a17b1b6f04c8}
+}]\index{MALELF\_\-EMFILE@{MALELF\_\-EMFILE}!error.h@{error.h}}\index{error.h@{error.h}!MALELF\_\-EMFILE@{MALELF\_\-EMFILE}}\item[{\em 
+\hypertarget{error_8h_abd29c481acbfdbb1e3a130f584cd8396adb8a8c4338de65517e3a500cfa3c5b22}{
+MALELF\_\-EMFILE}
+\label{error_8h_abd29c481acbfdbb1e3a130f584cd8396adb8a8c4338de65517e3a500cfa3c5b22}
+}]\index{MALELF\_\-ENOTTY@{MALELF\_\-ENOTTY}!error.h@{error.h}}\index{error.h@{error.h}!MALELF\_\-ENOTTY@{MALELF\_\-ENOTTY}}\item[{\em 
+\hypertarget{error_8h_abd29c481acbfdbb1e3a130f584cd8396aee7fd0d8e05ec541514afc0762bca6ef}{
+MALELF\_\-ENOTTY}
+\label{error_8h_abd29c481acbfdbb1e3a130f584cd8396aee7fd0d8e05ec541514afc0762bca6ef}
+}]\index{MALELF\_\-ETXTBSY@{MALELF\_\-ETXTBSY}!error.h@{error.h}}\index{error.h@{error.h}!MALELF\_\-ETXTBSY@{MALELF\_\-ETXTBSY}}\item[{\em 
+\hypertarget{error_8h_abd29c481acbfdbb1e3a130f584cd8396a37c71f23d51e3fd49e7a7e56b2982cf6}{
+MALELF\_\-ETXTBSY}
+\label{error_8h_abd29c481acbfdbb1e3a130f584cd8396a37c71f23d51e3fd49e7a7e56b2982cf6}
+}]\index{MALELF\_\-EFBIG@{MALELF\_\-EFBIG}!error.h@{error.h}}\index{error.h@{error.h}!MALELF\_\-EFBIG@{MALELF\_\-EFBIG}}\item[{\em 
+\hypertarget{error_8h_abd29c481acbfdbb1e3a130f584cd8396a97ec90cd4dac35b522766e270ca77d6c}{
+MALELF\_\-EFBIG}
+\label{error_8h_abd29c481acbfdbb1e3a130f584cd8396a97ec90cd4dac35b522766e270ca77d6c}
+}]\index{MALELF\_\-ENOSPC@{MALELF\_\-ENOSPC}!error.h@{error.h}}\index{error.h@{error.h}!MALELF\_\-ENOSPC@{MALELF\_\-ENOSPC}}\item[{\em 
+\hypertarget{error_8h_abd29c481acbfdbb1e3a130f584cd8396adc82412258b84334ffdede147c60333f}{
+MALELF\_\-ENOSPC}
+\label{error_8h_abd29c481acbfdbb1e3a130f584cd8396adc82412258b84334ffdede147c60333f}
+}]\index{MALELF\_\-ESPIPE@{MALELF\_\-ESPIPE}!error.h@{error.h}}\index{error.h@{error.h}!MALELF\_\-ESPIPE@{MALELF\_\-ESPIPE}}\item[{\em 
+\hypertarget{error_8h_abd29c481acbfdbb1e3a130f584cd8396a065351079e4e5c6516e97f50919faf4f}{
+MALELF\_\-ESPIPE}
+\label{error_8h_abd29c481acbfdbb1e3a130f584cd8396a065351079e4e5c6516e97f50919faf4f}
+}]\index{MALELF\_\-EROFS@{MALELF\_\-EROFS}!error.h@{error.h}}\index{error.h@{error.h}!MALELF\_\-EROFS@{MALELF\_\-EROFS}}\item[{\em 
+\hypertarget{error_8h_abd29c481acbfdbb1e3a130f584cd8396a880c50d78649d8cd12dd8603d535668e}{
+MALELF\_\-EROFS}
+\label{error_8h_abd29c481acbfdbb1e3a130f584cd8396a880c50d78649d8cd12dd8603d535668e}
+}]\index{MALELF\_\-EMLINK@{MALELF\_\-EMLINK}!error.h@{error.h}}\index{error.h@{error.h}!MALELF\_\-EMLINK@{MALELF\_\-EMLINK}}\item[{\em 
+\hypertarget{error_8h_abd29c481acbfdbb1e3a130f584cd8396abecdfa6cbdd9e7bb33fee5009198520f}{
+MALELF\_\-EMLINK}
+\label{error_8h_abd29c481acbfdbb1e3a130f584cd8396abecdfa6cbdd9e7bb33fee5009198520f}
+}]\index{MALELF\_\-EPIPE@{MALELF\_\-EPIPE}!error.h@{error.h}}\index{error.h@{error.h}!MALELF\_\-EPIPE@{MALELF\_\-EPIPE}}\item[{\em 
+\hypertarget{error_8h_abd29c481acbfdbb1e3a130f584cd8396ab5ca45afa1e06d9794ba8954effba1d5}{
+MALELF\_\-EPIPE}
+\label{error_8h_abd29c481acbfdbb1e3a130f584cd8396ab5ca45afa1e06d9794ba8954effba1d5}
+}]\index{MALELF\_\-EDOM@{MALELF\_\-EDOM}!error.h@{error.h}}\index{error.h@{error.h}!MALELF\_\-EDOM@{MALELF\_\-EDOM}}\item[{\em 
+\hypertarget{error_8h_abd29c481acbfdbb1e3a130f584cd8396a0c2471fb978bb3ad6d2e1d7e2f94f864}{
+MALELF\_\-EDOM}
+\label{error_8h_abd29c481acbfdbb1e3a130f584cd8396a0c2471fb978bb3ad6d2e1d7e2f94f864}
+}]\index{MALELF\_\-ERANGE@{MALELF\_\-ERANGE}!error.h@{error.h}}\index{error.h@{error.h}!MALELF\_\-ERANGE@{MALELF\_\-ERANGE}}\item[{\em 
+\hypertarget{error_8h_abd29c481acbfdbb1e3a130f584cd8396a6abe58feecf46f632bc60024751c54f2}{
+MALELF\_\-ERANGE}
+\label{error_8h_abd29c481acbfdbb1e3a130f584cd8396a6abe58feecf46f632bc60024751c54f2}
+}]\index{MALELF\_\-LAST\_\-ERRNO@{MALELF\_\-LAST\_\-ERRNO}!error.h@{error.h}}\index{error.h@{error.h}!MALELF\_\-LAST\_\-ERRNO@{MALELF\_\-LAST\_\-ERRNO}}\item[{\em 
+\hypertarget{error_8h_abd29c481acbfdbb1e3a130f584cd8396acc31e1d217a7c3609d0957fda7a60091}{
+MALELF\_\-LAST\_\-ERRNO}
+\label{error_8h_abd29c481acbfdbb1e3a130f584cd8396acc31e1d217a7c3609d0957fda7a60091}
+}]\index{MALELF\_\-ERROR@{MALELF\_\-ERROR}!error.h@{error.h}}\index{error.h@{error.h}!MALELF\_\-ERROR@{MALELF\_\-ERROR}}\item[{\em 
+\hypertarget{error_8h_abd29c481acbfdbb1e3a130f584cd8396af38b955564dfc1ad5b66a92ce9605292}{
+MALELF\_\-ERROR}
+\label{error_8h_abd29c481acbfdbb1e3a130f584cd8396af38b955564dfc1ad5b66a92ce9605292}
+}]\index{MALELF\_\-ECLOSED@{MALELF\_\-ECLOSED}!error.h@{error.h}}\index{error.h@{error.h}!MALELF\_\-ECLOSED@{MALELF\_\-ECLOSED}}\item[{\em 
+\hypertarget{error_8h_abd29c481acbfdbb1e3a130f584cd8396a4874e35f449f940637ae57c7df768819}{
+MALELF\_\-ECLOSED}
+\label{error_8h_abd29c481acbfdbb1e3a130f584cd8396a4874e35f449f940637ae57c7df768819}
+}]\index{MALELF\_\-EALLOC@{MALELF\_\-EALLOC}!error.h@{error.h}}\index{error.h@{error.h}!MALELF\_\-EALLOC@{MALELF\_\-EALLOC}}\item[{\em 
+\hypertarget{error_8h_abd29c481acbfdbb1e3a130f584cd8396a2fd4b073eef0b92fee71d4dfcfdbf9e6}{
+MALELF\_\-EALLOC}
+\label{error_8h_abd29c481acbfdbb1e3a130f584cd8396a2fd4b073eef0b92fee71d4dfcfdbf9e6}
+}]\index{MALELF\_\-ENOT\_\-ELF@{MALELF\_\-ENOT\_\-ELF}!error.h@{error.h}}\index{error.h@{error.h}!MALELF\_\-ENOT\_\-ELF@{MALELF\_\-ENOT\_\-ELF}}\item[{\em 
+\hypertarget{error_8h_abd29c481acbfdbb1e3a130f584cd8396ad720e04b4a6485f7399d181a261b8f34}{
+MALELF\_\-ENOT\_\-ELF}
+\label{error_8h_abd29c481acbfdbb1e3a130f584cd8396ad720e04b4a6485f7399d181a261b8f34}
+}]\index{MALELF\_\-ECORRUPTED@{MALELF\_\-ECORRUPTED}!error.h@{error.h}}\index{error.h@{error.h}!MALELF\_\-ECORRUPTED@{MALELF\_\-ECORRUPTED}}\item[{\em 
+\hypertarget{error_8h_abd29c481acbfdbb1e3a130f584cd8396a1ef947cc4e5195824c2b2d0f8e100d59}{
+MALELF\_\-ECORRUPTED}
+\label{error_8h_abd29c481acbfdbb1e3a130f584cd8396a1ef947cc4e5195824c2b2d0f8e100d59}
+}]\index{MALELF\_\-ESUSPECT\_\-SECTIONS@{MALELF\_\-ESUSPECT\_\-SECTIONS}!error.h@{error.h}}\index{error.h@{error.h}!MALELF\_\-ESUSPECT\_\-SECTIONS@{MALELF\_\-ESUSPECT\_\-SECTIONS}}\item[{\em 
+\hypertarget{error_8h_abd29c481acbfdbb1e3a130f584cd8396a6b303b728d27224f4f240e49c81f01f4}{
+MALELF\_\-ESUSPECT\_\-SECTIONS}
+\label{error_8h_abd29c481acbfdbb1e3a130f584cd8396a6b303b728d27224f4f240e49c81f01f4}
+}]\index{MALELF\_\-EMISSING\_\-MAGIC\_\-BYTES@{MALELF\_\-EMISSING\_\-MAGIC\_\-BYTES}!error.h@{error.h}}\index{error.h@{error.h}!MALELF\_\-EMISSING\_\-MAGIC\_\-BYTES@{MALELF\_\-EMISSING\_\-MAGIC\_\-BYTES}}\item[{\em 
+\hypertarget{error_8h_abd29c481acbfdbb1e3a130f584cd8396a709012064bf03c5cef267cecd22c704a}{
+MALELF\_\-EMISSING\_\-MAGIC\_\-BYTES}
+\label{error_8h_abd29c481acbfdbb1e3a130f584cd8396a709012064bf03c5cef267cecd22c704a}
+}]\index{MALELF\_\-EINV\_\-OFFSET\_\-ENTRY@{MALELF\_\-EINV\_\-OFFSET\_\-ENTRY}!error.h@{error.h}}\index{error.h@{error.h}!MALELF\_\-EINV\_\-OFFSET\_\-ENTRY@{MALELF\_\-EINV\_\-OFFSET\_\-ENTRY}}\item[{\em 
+\hypertarget{error_8h_abd29c481acbfdbb1e3a130f584cd8396ac08109e3a94a13028d8281d2a22a20a5}{
+MALELF\_\-EINV\_\-OFFSET\_\-ENTRY}
+\label{error_8h_abd29c481acbfdbb1e3a130f584cd8396ac08109e3a94a13028d8281d2a22a20a5}
+}]\index{MALELF\_\-EDISAS@{MALELF\_\-EDISAS}!error.h@{error.h}}\index{error.h@{error.h}!MALELF\_\-EDISAS@{MALELF\_\-EDISAS}}\item[{\em 
+\hypertarget{error_8h_abd29c481acbfdbb1e3a130f584cd8396a210321970e70f26186c9470910e0ecc9}{
+MALELF\_\-EDISAS}
+\label{error_8h_abd29c481acbfdbb1e3a130f584cd8396a210321970e70f26186c9470910e0ecc9}
+}]\index{MALELF\_\-LAST\_\-ERROR@{MALELF\_\-LAST\_\-ERROR}!error.h@{error.h}}\index{error.h@{error.h}!MALELF\_\-LAST\_\-ERROR@{MALELF\_\-LAST\_\-ERROR}}\item[{\em 
+\hypertarget{error_8h_abd29c481acbfdbb1e3a130f584cd8396a90d553dba8b6c0969af7f0776fed67d0}{
+MALELF\_\-LAST\_\-ERROR}
+\label{error_8h_abd29c481acbfdbb1e3a130f584cd8396a90d553dba8b6c0969af7f0776fed67d0}
+}]\end{description}
+\end{Desc}
+
+
+
+Definition at line 8 of file error.h.
+
+
+
+\subsection{Function Documentation}
+\hypertarget{error_8h_ad60f880160e465f8f99c9d4ad8c95d21}{
+\index{error.h@{error.h}!\_\-malelf\_\-perror@{\_\-malelf\_\-perror}}
+\index{\_\-malelf\_\-perror@{\_\-malelf\_\-perror}!error.h@{error.h}}
+\subsubsection[{\_\-malelf\_\-perror}]{\setlength{\rightskip}{0pt plus 5cm}void \_\-malelf\_\-perror (
+\begin{DoxyParamCaption}
+\item[{int}]{code, }
+\item[{const char $\ast$}]{func, }
+\item[{const char $\ast$}]{file, }
+\item[{int}]{line}
+\end{DoxyParamCaption}
+)}}
+\label{error_8h_ad60f880160e465f8f99c9d4ad8c95d21}
+
+
+Definition at line 24 of file error.c.
+
+\hypertarget{error_8h_af225ce01f3f2709e264c7036e813c3b1}{
+\index{error.h@{error.h}!malelf\_\-strerror@{malelf\_\-strerror}}
+\index{malelf\_\-strerror@{malelf\_\-strerror}!error.h@{error.h}}
+\subsubsection[{malelf\_\-strerror}]{\setlength{\rightskip}{0pt plus 5cm}const char$\ast$ malelf\_\-strerror (
+\begin{DoxyParamCaption}
+\item[{int}]{code}
+\end{DoxyParamCaption}
+)}}
+\label{error_8h_af225ce01f3f2709e264c7036e813c3b1}
+
+
+Definition at line 20 of file error.c.
+

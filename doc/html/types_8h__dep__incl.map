@@ -1,0 +1,19 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$defines_8h.html" title="src/libmalelf/include/malelf/defines.h" alt="" coords="764,83,996,112"/>
+<area shape="rect" id="node9" href="$util_8h.html" title="src/libmalelf/include/malelf/util.h" alt="" coords="488,160,696,189"/>
+<area shape="rect" id="node23" href="$object_8c.html" title="src/libmalelf/object.c" alt="" coords="5,315,147,344"/>
+<area shape="rect" id="node25" href="$shellcode_8c.html" title="src/libmalelf/shellcode.c" alt="" coords="1477,315,1640,344"/>
+<area shape="rect" id="node32" href="$reverse__elf_8c.html" title="src/libmalelf/reverse_elf.c" alt="" coords="1928,315,2099,344"/>
+<area shape="rect" id="node41" href="$object_8h.html" title="src/libmalelf/include/malelf/object.h" alt="" coords="1039,160,1265,189"/>
+<area shape="rect" id="node64" href="$print__table_8c.html" title="src/libmalelf/print_table.c" alt="" coords="2203,83,2368,112"/>
+<area shape="rect" id="node5" href="$disas_8c.html" title="src/libmalelf/disas.c" alt="" coords="648,315,787,344"/>
+<area shape="rect" id="node7" href="$dissect_8c.html" title="src/libmalelf/dissect.c" alt="" coords="171,315,320,344"/>
+<area shape="rect" id="node19" href="$malelf_8h.html" title="src/libmalelf/include/malelf/malelf.h" alt="" coords="976,315,1203,344"/>
+<area shape="rect" id="node13" href="$error_8h.html" title="src/libmalelf/include/malelf/error.h" alt="" coords="384,237,600,267"/>
+<area shape="rect" id="node21" href="$infect_8c.html" title="src/libmalelf/infect.c" alt="" coords="812,315,951,344"/>
+<area shape="rect" id="node27" href="$util_8c.html" title="src/libmalelf/util.c" alt="" coords="344,315,467,344"/>
+<area shape="rect" id="node17" href="$error_8c.html" title="src/libmalelf/error.c" alt="" coords="491,315,624,344"/>
+<area shape="rect" id="node45" href="$disas_8h.html" title="src/libmalelf/include/malelf/disas.h" alt="" coords="979,237,1200,267"/>
+<area shape="rect" id="node49" href="$infect_8h.html" title="src/libmalelf/include/malelf/infect.h" alt="" coords="1224,237,1445,267"/>
+<area shape="rect" id="node55" href="$reverse__elf_8h.html" title="src/libmalelf/include/malelf/reverse_elf.h" alt="" coords="1672,237,1925,267"/>
+</map>

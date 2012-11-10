@@ -1,0 +1,12 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$disas_8c.html" title="src/libmalelf/disas.c" alt="" coords="5,160,144,189"/>
+<area shape="rect" id="node5" href="$dissect_8c.html" title="src/libmalelf/dissect.c" alt="" coords="168,160,317,189"/>
+<area shape="rect" id="node7" href="$error_8h.html" title="src/libmalelf/include/malelf/error.h" alt="" coords="565,83,781,112"/>
+<area shape="rect" id="node13" href="$malelf_8h.html" title="src/libmalelf/include/malelf/malelf.h" alt="" coords="341,160,568,189"/>
+<area shape="rect" id="node15" href="$infect_8c.html" title="src/libmalelf/infect.c" alt="" coords="749,160,888,189"/>
+<area shape="rect" id="node17" href="$object_8c.html" title="src/libmalelf/object.c" alt="" coords="912,160,1053,189"/>
+<area shape="rect" id="node19" href="$shellcode_8c.html" title="src/libmalelf/shellcode.c" alt="" coords="1077,160,1240,189"/>
+<area shape="rect" id="node21" href="$util_8c.html" title="src/libmalelf/util.c" alt="" coords="1264,160,1387,189"/>
+<area shape="rect" id="node26" href="$reverse__elf_8c.html" title="src/libmalelf/reverse_elf.c" alt="" coords="1008,83,1179,112"/>
+<area shape="rect" id="node11" href="$error_8c.html" title="src/libmalelf/error.c" alt="" coords="592,160,725,189"/>
+</map>

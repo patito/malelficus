@@ -1,0 +1,550 @@
+\hypertarget{object_8h}{
+\section{src/libmalelf/include/malelf/object.h File Reference}
+\label{object_8h}\index{src/libmalelf/include/malelf/object.h@{src/libmalelf/include/malelf/object.h}}
+}
+{\ttfamily \#include $<$elf.h$>$}\par
+{\ttfamily \#include $<$link.h$>$}\par
+{\ttfamily \#include $<$errno.h$>$}\par
+{\ttfamily \#include $<$sys/stat.h$>$}\par
+{\ttfamily \#include \char`\"{}types.h\char`\"{}}\par
+Include dependency graph for object.h:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=400pt]{object_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=400pt]{object_8h__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+union \hyperlink{unionmalelf__dword}{malelf\_\-dword}
+\item 
+struct \hyperlink{structmalelf__elf__t}{malelf\_\-elf\_\-t}
+\item 
+struct \hyperlink{structmalelf__object}{malelf\_\-object}
+\item 
+struct \hyperlink{structmalelf__elf__attr}{malelf\_\-elf\_\-attr}
+\item 
+struct \hyperlink{structmalelf__add__section__t}{malelf\_\-add\_\-section\_\-t}
+\end{DoxyCompactItemize}
+\subsection*{Defines}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{object_8h_a6743b71b8a58ab8376edf49b3cf42636}{GET\_\-ATTR\_\-NAME}(attr)~attr != NULL ? (attr-\/$>$name) : \char`\"{}UNKNOWN\char`\"{}
+\item 
+\#define \hyperlink{object_8h_a08f951398aa734d26e7ebbedca5c330a}{GET\_\-ATTR\_\-DESC}(attr)~attr != NULL ? (attr-\/$>$desc) : \char`\"{}UNKNOWN\char`\"{}
+\item 
+\#define \hyperlink{object_8h_a39c18e5458ff5e329030fb2f3b8cf5ac}{GET\_\-SECTION\_\-NAME}(obj, header, sections, sec\_\-idx)~(char$\ast$) (obj-\/$>$mem + sections\mbox{[}header-\/$>$e\_\-shstrndx\mbox{]}.sh\_\-offset + sections\mbox{[}sec\_\-idx\mbox{]}.sh\_\-name)
+\item 
+\#define \hyperlink{object_8h_af892106ece3d0045a92cf757d9c600ee}{MALELF\_\-MAP\_\-ELF}(obj)
+\end{DoxyCompactItemize}
+\subsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \hyperlink{object_8h_a24f8376c4f2e7c8f8c023d1733ab02e9}{alloc\_\-type\_\-t} \{ \hyperlink{object_8h_a24f8376c4f2e7c8f8c023d1733ab02e9ad48c3ed5205532e83d005272cf247088}{ALLOC\_\-MMAP} =  0, 
+\hyperlink{object_8h_a24f8376c4f2e7c8f8c023d1733ab02e9a5f6717a7ef93d84ae1ab71597b789971}{ALLOC\_\-MALLOC}
+ \}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{object_8h_a9036ce6733bf255896811721f303b30f}{malelf\_\-init\_\-object} (\hyperlink{structmalelf__object}{malelf\_\-object} $\ast$)
+\begin{DoxyCompactList}\small\item\em Initialize the malelf object data type. \end{DoxyCompactList}\item 
+void \hyperlink{object_8h_a4488b6a72bba36d27511d65b454cb158}{read\_\-elf\_\-file} (\hyperlink{structmalelf__object}{malelf\_\-object} $\ast$)
+\item 
+void \hyperlink{object_8h_a52de7c3bdc0efbd6f87b2286b505f449}{create\_\-elf\_\-file} (\hyperlink{structmalelf__object}{malelf\_\-object} $\ast$)
+\item 
+\hyperlink{types_8h_af2b0f13cffd24f6dddf794ae0c7472b4}{\_\-u8} \hyperlink{object_8h_a5019afc93abb304c5ccdd1e3f5131d72}{copy\_\-malelf\_\-object\_\-raw} (\hyperlink{structmalelf__object}{malelf\_\-object} $\ast$, \hyperlink{structmalelf__object}{malelf\_\-object} $\ast$)
+\item 
+\hyperlink{types_8h_aacb1ea6e27efde1c708a8bc4b56ee1a2}{\_\-i32} \hyperlink{object_8h_a54b384361ec6e433175bb58ef217467b}{malelf\_\-open} (\hyperlink{structmalelf__object}{malelf\_\-object} $\ast$obj, char $\ast$filename, int flags)
+\begin{DoxyCompactList}\small\item\em Open the binary file 'filename' and fill the struct \hyperlink{structmalelf__object}{malelf\_\-object}. \end{DoxyCompactList}\item 
+\hyperlink{types_8h_aacb1ea6e27efde1c708a8bc4b56ee1a2}{\_\-i32} \hyperlink{object_8h_a6daa20f1e4fb72096a9eb27ee0234a85}{malelf\_\-openr} (\hyperlink{structmalelf__object}{malelf\_\-object} $\ast$obj, char $\ast$filename)
+\item 
+\hyperlink{types_8h_aacb1ea6e27efde1c708a8bc4b56ee1a2}{\_\-i32} \hyperlink{object_8h_a44e74dbe97ac2f3a4571b53cafa3833f}{malelf\_\-openw} (\hyperlink{structmalelf__object}{malelf\_\-object} $\ast$obj, char $\ast$filename)
+\item 
+\hyperlink{types_8h_a07491c35a48354e0e7b56974a04cc3de}{\_\-u32} \hyperlink{object_8h_a9dc624caa7e16317902d3d5ce93a3b55}{malelf\_\-close} (\hyperlink{structmalelf__object}{malelf\_\-object} $\ast$obj)
+\item 
+\hyperlink{types_8h_af2b0f13cffd24f6dddf794ae0c7472b4}{\_\-u8} \hyperlink{object_8h_ab72f2409e093e754523c77367c4d92cf}{malelf\_\-check\_\-elf} (\hyperlink{structmalelf__object}{malelf\_\-object} $\ast$obj)
+\begin{DoxyCompactList}\small\item\em Check if the binary file mapped in obj is of type ELF. \end{DoxyCompactList}\item 
+\hyperlink{types_8h_af2b0f13cffd24f6dddf794ae0c7472b4}{\_\-u8} \hyperlink{object_8h_a705bb64cb648ecd8936c8643bb880b09}{malelf\_\-add\_\-section} (\hyperlink{structmalelf__object}{malelf\_\-object} $\ast$i, \hyperlink{structmalelf__object}{malelf\_\-object} $\ast$o, \hyperlink{structmalelf__add__section__t}{malelf\_\-add\_\-section\_\-t} opt)
+\item 
+\hyperlink{structmalelf__elf__attr}{malelf\_\-elf\_\-attr} $\ast$ \hyperlink{object_8h_a3ba28c3bb78eea1572e6ee916c73de5e}{get\_\-header\_\-type} (ElfW(Half) etype)
+\item 
+\hyperlink{structmalelf__elf__attr}{malelf\_\-elf\_\-attr} $\ast$ \hyperlink{object_8h_a2775a595939a915c18d425eb6fd20c82}{get\_\-section\_\-type} (ElfW(Half) stype)
+\item 
+\hyperlink{structmalelf__elf__attr}{malelf\_\-elf\_\-attr} $\ast$ \hyperlink{object_8h_a5f6d74f6d972ce48a0e59a1f429029b6}{get\_\-machine} (ElfW(Half) emach)
+\item 
+\hyperlink{structmalelf__elf__attr}{malelf\_\-elf\_\-attr} $\ast$ \hyperlink{object_8h_a99ec39bacadbebc3fdf63963e132e9a6}{get\_\-segment\_\-type} (ElfW(Word) seg)
+\item 
+void \hyperlink{object_8h_a971197508f3beef099c814f783531895}{pretty\_\-print\_\-elf\_\-header} (ElfW(Ehdr)$\ast$)
+\item 
+void \hyperlink{object_8h_af8d6c6aa67501fb81bdca9776cb91f9e}{pretty\_\-print\_\-pht} (ElfW(Ehdr)$\ast$, ElfW(Phdr)$\ast$)
+\item 
+void \hyperlink{object_8h_a6216012206b8aac78cee92d2f9bbd6a6}{pretty\_\-print\_\-sht} (\hyperlink{structmalelf__object}{malelf\_\-object} $\ast$, ElfW(Ehdr)$\ast$, ElfW(Shdr)$\ast$)
+\item 
+void \hyperlink{object_8h_ae665cd2bb839b13f26324d9ba11d5e0c}{pretty\_\-print\_\-strtab} (\hyperlink{structmalelf__object}{malelf\_\-object} $\ast$, ElfW(Ehdr)$\ast$, ElfW(Shdr)$\ast$)
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{structmalelf__elf__attr}{malelf\_\-elf\_\-attr} \hyperlink{object_8h_acc10cae2b21d17dee26af9734f7868b6}{elf\_\-object\_\-types} \mbox{[}$\,$\mbox{]}
+\item 
+\hyperlink{structmalelf__elf__attr}{malelf\_\-elf\_\-attr} \hyperlink{object_8h_a3b6e5f8c8d062229d7e9383a2a9fb246}{elf\_\-machine} \mbox{[}$\,$\mbox{]}
+\begin{DoxyCompactList}\small\item\em Possible target machines. \end{DoxyCompactList}\item 
+\hyperlink{structmalelf__elf__attr}{malelf\_\-elf\_\-attr} \hyperlink{object_8h_a7174cbdd18cf8537c1b49a4c4a56455f}{elf\_\-section\_\-types} \mbox{[}$\,$\mbox{]}
+\begin{DoxyCompactList}\small\item\em Possible section types. \end{DoxyCompactList}\item 
+\hyperlink{structmalelf__elf__attr}{malelf\_\-elf\_\-attr} \hyperlink{object_8h_ac3502bce5138fd64604041f1955901c0}{elf\_\-segment\_\-types} \mbox{[}$\,$\mbox{]}
+\begin{DoxyCompactList}\small\item\em Possible segment types. \end{DoxyCompactList}\item 
+\hyperlink{structmalelf__elf__attr}{malelf\_\-elf\_\-attr} \hyperlink{object_8h_a32503e0e5e17c5c84a14ff7940ad78c9}{elf\_\-segment\_\-flags} \mbox{[}$\,$\mbox{]}
+\begin{DoxyCompactList}\small\item\em Possible segment flags. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Define Documentation}
+\hypertarget{object_8h_a08f951398aa734d26e7ebbedca5c330a}{
+\index{object.h@{object.h}!GET\_\-ATTR\_\-DESC@{GET\_\-ATTR\_\-DESC}}
+\index{GET\_\-ATTR\_\-DESC@{GET\_\-ATTR\_\-DESC}!object.h@{object.h}}
+\subsubsection[{GET\_\-ATTR\_\-DESC}]{\setlength{\rightskip}{0pt plus 5cm}\#define GET\_\-ATTR\_\-DESC(
+\begin{DoxyParamCaption}
+\item[{}]{attr}
+\end{DoxyParamCaption}
+)~attr != NULL ? (attr-\/$>$desc) : \char`\"{}UNKNOWN\char`\"{}}}
+\label{object_8h_a08f951398aa734d26e7ebbedca5c330a}
+
+
+Definition at line 11 of file object.h.
+
+\hypertarget{object_8h_a6743b71b8a58ab8376edf49b3cf42636}{
+\index{object.h@{object.h}!GET\_\-ATTR\_\-NAME@{GET\_\-ATTR\_\-NAME}}
+\index{GET\_\-ATTR\_\-NAME@{GET\_\-ATTR\_\-NAME}!object.h@{object.h}}
+\subsubsection[{GET\_\-ATTR\_\-NAME}]{\setlength{\rightskip}{0pt plus 5cm}\#define GET\_\-ATTR\_\-NAME(
+\begin{DoxyParamCaption}
+\item[{}]{attr}
+\end{DoxyParamCaption}
+)~attr != NULL ? (attr-\/$>$name) : \char`\"{}UNKNOWN\char`\"{}}}
+\label{object_8h_a6743b71b8a58ab8376edf49b3cf42636}
+
+
+Definition at line 10 of file object.h.
+
+\hypertarget{object_8h_a39c18e5458ff5e329030fb2f3b8cf5ac}{
+\index{object.h@{object.h}!GET\_\-SECTION\_\-NAME@{GET\_\-SECTION\_\-NAME}}
+\index{GET\_\-SECTION\_\-NAME@{GET\_\-SECTION\_\-NAME}!object.h@{object.h}}
+\subsubsection[{GET\_\-SECTION\_\-NAME}]{\setlength{\rightskip}{0pt plus 5cm}\#define GET\_\-SECTION\_\-NAME(
+\begin{DoxyParamCaption}
+\item[{}]{obj, }
+\item[{}]{header, }
+\item[{}]{sections, }
+\item[{}]{sec\_\-idx}
+\end{DoxyParamCaption}
+)~(char$\ast$) (obj-\/$>$mem + sections\mbox{[}header-\/$>$e\_\-shstrndx\mbox{]}.sh\_\-offset + sections\mbox{[}sec\_\-idx\mbox{]}.sh\_\-name)}}
+\label{object_8h_a39c18e5458ff5e329030fb2f3b8cf5ac}
+
+
+Definition at line 13 of file object.h.
+
+\hypertarget{object_8h_af892106ece3d0045a92cf757d9c600ee}{
+\index{object.h@{object.h}!MALELF\_\-MAP\_\-ELF@{MALELF\_\-MAP\_\-ELF}}
+\index{MALELF\_\-MAP\_\-ELF@{MALELF\_\-MAP\_\-ELF}!object.h@{object.h}}
+\subsubsection[{MALELF\_\-MAP\_\-ELF}]{\setlength{\rightskip}{0pt plus 5cm}\#define MALELF\_\-MAP\_\-ELF(
+\begin{DoxyParamCaption}
+\item[{}]{obj}
+\end{DoxyParamCaption}
+)}}
+\label{object_8h_af892106ece3d0045a92cf757d9c600ee}
+{\bfseries Value:}
+\begin{DoxyCode}
+do {\
+  assert(obj->mem != NULL);\
+  obj->elf.elfh = (ElfW(Ehdr)*) obj->mem;\
+  assert(obj->elf.elfh != NULL); \
+  assert((off_t)obj->elf.elfh->e_phoff < obj->st_info.st_size); \
+  assert((off_t)obj->elf.elfh->e_shoff < obj->st_info.st_size);         \
+  obj->elf.elfp = (ElfW(Phdr)*) (obj->mem + obj->elf.elfh->e_phoff);\
+  obj->elf.elfs = (ElfW(Shdr)*) (obj->mem + obj->elf.elfh->e_shoff);\
+  } while(0)
+\end{DoxyCode}
+
+
+Definition at line 14 of file object.h.
+
+
+
+\subsection{Enumeration Type Documentation}
+\hypertarget{object_8h_a24f8376c4f2e7c8f8c023d1733ab02e9}{
+\index{object.h@{object.h}!alloc\_\-type\_\-t@{alloc\_\-type\_\-t}}
+\index{alloc\_\-type\_\-t@{alloc\_\-type\_\-t}!object.h@{object.h}}
+\subsubsection[{alloc\_\-type\_\-t}]{\setlength{\rightskip}{0pt plus 5cm}enum {\bf alloc\_\-type\_\-t}}}
+\label{object_8h_a24f8376c4f2e7c8f8c023d1733ab02e9}
+\begin{Desc}
+\item[Enumerator: ]\par
+\begin{description}
+\index{ALLOC\_\-MMAP@{ALLOC\_\-MMAP}!object.h@{object.h}}\index{object.h@{object.h}!ALLOC\_\-MMAP@{ALLOC\_\-MMAP}}\item[{\em 
+\hypertarget{object_8h_a24f8376c4f2e7c8f8c023d1733ab02e9ad48c3ed5205532e83d005272cf247088}{
+ALLOC\_\-MMAP}
+\label{object_8h_a24f8376c4f2e7c8f8c023d1733ab02e9ad48c3ed5205532e83d005272cf247088}
+}]\index{ALLOC\_\-MALLOC@{ALLOC\_\-MALLOC}!object.h@{object.h}}\index{object.h@{object.h}!ALLOC\_\-MALLOC@{ALLOC\_\-MALLOC}}\item[{\em 
+\hypertarget{object_8h_a24f8376c4f2e7c8f8c023d1733ab02e9a5f6717a7ef93d84ae1ab71597b789971}{
+ALLOC\_\-MALLOC}
+\label{object_8h_a24f8376c4f2e7c8f8c023d1733ab02e9a5f6717a7ef93d84ae1ab71597b789971}
+}]\end{description}
+\end{Desc}
+
+
+
+Definition at line 24 of file object.h.
+
+
+
+\subsection{Function Documentation}
+\hypertarget{object_8h_a5019afc93abb304c5ccdd1e3f5131d72}{
+\index{object.h@{object.h}!copy\_\-malelf\_\-object\_\-raw@{copy\_\-malelf\_\-object\_\-raw}}
+\index{copy\_\-malelf\_\-object\_\-raw@{copy\_\-malelf\_\-object\_\-raw}!object.h@{object.h}}
+\subsubsection[{copy\_\-malelf\_\-object\_\-raw}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \_\-u8} copy\_\-malelf\_\-object\_\-raw (
+\begin{DoxyParamCaption}
+\item[{{\bf malelf\_\-object} $\ast$}]{, }
+\item[{{\bf malelf\_\-object} $\ast$}]{}
+\end{DoxyParamCaption}
+)}}
+\label{object_8h_a5019afc93abb304c5ccdd1e3f5131d72}
+
+
+Definition at line 302 of file object.c.
+
+\hypertarget{object_8h_a52de7c3bdc0efbd6f87b2286b505f449}{
+\index{object.h@{object.h}!create\_\-elf\_\-file@{create\_\-elf\_\-file}}
+\index{create\_\-elf\_\-file@{create\_\-elf\_\-file}!object.h@{object.h}}
+\subsubsection[{create\_\-elf\_\-file}]{\setlength{\rightskip}{0pt plus 5cm}void create\_\-elf\_\-file (
+\begin{DoxyParamCaption}
+\item[{{\bf malelf\_\-object} $\ast$}]{}
+\end{DoxyParamCaption}
+)}}
+\label{object_8h_a52de7c3bdc0efbd6f87b2286b505f449}
+\hypertarget{object_8h_a3ba28c3bb78eea1572e6ee916c73de5e}{
+\index{object.h@{object.h}!get\_\-header\_\-type@{get\_\-header\_\-type}}
+\index{get\_\-header\_\-type@{get\_\-header\_\-type}!object.h@{object.h}}
+\subsubsection[{get\_\-header\_\-type}]{\setlength{\rightskip}{0pt plus 5cm}{\bf malelf\_\-elf\_\-attr}$\ast$ get\_\-header\_\-type (
+\begin{DoxyParamCaption}
+\item[{ElfW(Half)}]{etype}
+\end{DoxyParamCaption}
+)}}
+\label{object_8h_a3ba28c3bb78eea1572e6ee916c73de5e}
+
+
+Definition at line 254 of file object.c.
+
+\hypertarget{object_8h_a5f6d74f6d972ce48a0e59a1f429029b6}{
+\index{object.h@{object.h}!get\_\-machine@{get\_\-machine}}
+\index{get\_\-machine@{get\_\-machine}!object.h@{object.h}}
+\subsubsection[{get\_\-machine}]{\setlength{\rightskip}{0pt plus 5cm}{\bf malelf\_\-elf\_\-attr}$\ast$ get\_\-machine (
+\begin{DoxyParamCaption}
+\item[{ElfW(Half)}]{emach}
+\end{DoxyParamCaption}
+)}}
+\label{object_8h_a5f6d74f6d972ce48a0e59a1f429029b6}
+
+
+Definition at line 278 of file object.c.
+
+\hypertarget{object_8h_a2775a595939a915c18d425eb6fd20c82}{
+\index{object.h@{object.h}!get\_\-section\_\-type@{get\_\-section\_\-type}}
+\index{get\_\-section\_\-type@{get\_\-section\_\-type}!object.h@{object.h}}
+\subsubsection[{get\_\-section\_\-type}]{\setlength{\rightskip}{0pt plus 5cm}{\bf malelf\_\-elf\_\-attr}$\ast$ get\_\-section\_\-type (
+\begin{DoxyParamCaption}
+\item[{ElfW(Half)}]{stype}
+\end{DoxyParamCaption}
+)}}
+\label{object_8h_a2775a595939a915c18d425eb6fd20c82}
+
+
+Definition at line 266 of file object.c.
+
+\hypertarget{object_8h_a99ec39bacadbebc3fdf63963e132e9a6}{
+\index{object.h@{object.h}!get\_\-segment\_\-type@{get\_\-segment\_\-type}}
+\index{get\_\-segment\_\-type@{get\_\-segment\_\-type}!object.h@{object.h}}
+\subsubsection[{get\_\-segment\_\-type}]{\setlength{\rightskip}{0pt plus 5cm}{\bf malelf\_\-elf\_\-attr}$\ast$ get\_\-segment\_\-type (
+\begin{DoxyParamCaption}
+\item[{ElfW(Word)}]{seg}
+\end{DoxyParamCaption}
+)}}
+\label{object_8h_a99ec39bacadbebc3fdf63963e132e9a6}
+
+
+Definition at line 290 of file object.c.
+
+\hypertarget{object_8h_a705bb64cb648ecd8936c8643bb880b09}{
+\index{object.h@{object.h}!malelf\_\-add\_\-section@{malelf\_\-add\_\-section}}
+\index{malelf\_\-add\_\-section@{malelf\_\-add\_\-section}!object.h@{object.h}}
+\subsubsection[{malelf\_\-add\_\-section}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \_\-u8} malelf\_\-add\_\-section (
+\begin{DoxyParamCaption}
+\item[{{\bf malelf\_\-object} $\ast$}]{i, }
+\item[{{\bf malelf\_\-object} $\ast$}]{o, }
+\item[{{\bf malelf\_\-add\_\-section\_\-t}}]{opt}
+\end{DoxyParamCaption}
+)}}
+\label{object_8h_a705bb64cb648ecd8936c8643bb880b09}
+
+
+Definition at line 209 of file object.c.
+
+\hypertarget{object_8h_ab72f2409e093e754523c77367c4d92cf}{
+\index{object.h@{object.h}!malelf\_\-check\_\-elf@{malelf\_\-check\_\-elf}}
+\index{malelf\_\-check\_\-elf@{malelf\_\-check\_\-elf}!object.h@{object.h}}
+\subsubsection[{malelf\_\-check\_\-elf}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \_\-u8} malelf\_\-check\_\-elf (
+\begin{DoxyParamCaption}
+\item[{{\bf malelf\_\-object} $\ast$}]{obj}
+\end{DoxyParamCaption}
+)}}
+\label{object_8h_ab72f2409e093e754523c77367c4d92cf}
+
+
+Check if the binary file mapped in obj is of type ELF. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em malelf\_\-object$\ast$} & Malelf object type \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\_\-u8 Returns a malelf\_\-status enum number. 
+\end{DoxyReturn}
+
+
+Definition at line 117 of file object.c.
+
+\hypertarget{object_8h_a9dc624caa7e16317902d3d5ce93a3b55}{
+\index{object.h@{object.h}!malelf\_\-close@{malelf\_\-close}}
+\index{malelf\_\-close@{malelf\_\-close}!object.h@{object.h}}
+\subsubsection[{malelf\_\-close}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \_\-u32} malelf\_\-close (
+\begin{DoxyParamCaption}
+\item[{{\bf malelf\_\-object} $\ast$}]{obj}
+\end{DoxyParamCaption}
+)}}
+\label{object_8h_a9dc624caa7e16317902d3d5ce93a3b55}
+
+
+Definition at line 195 of file object.c.
+
+\hypertarget{object_8h_a9036ce6733bf255896811721f303b30f}{
+\index{object.h@{object.h}!malelf\_\-init\_\-object@{malelf\_\-init\_\-object}}
+\index{malelf\_\-init\_\-object@{malelf\_\-init\_\-object}!object.h@{object.h}}
+\subsubsection[{malelf\_\-init\_\-object}]{\setlength{\rightskip}{0pt plus 5cm}void malelf\_\-init\_\-object (
+\begin{DoxyParamCaption}
+\item[{{\bf malelf\_\-object} $\ast$}]{obj}
+\end{DoxyParamCaption}
+)}}
+\label{object_8h_a9036ce6733bf255896811721f303b30f}
+
+
+Initialize the malelf object data type. 
+
+Never forget to call this function before use the malelf API with \hyperlink{structmalelf__object}{malelf\_\-object}.
+
+
+\begin{DoxyParams}{Parameters}
+{\em malelf\_\-object$\ast$} & Malelf object type \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+
+
+Definition at line 102 of file object.c.
+
+\hypertarget{object_8h_a54b384361ec6e433175bb58ef217467b}{
+\index{object.h@{object.h}!malelf\_\-open@{malelf\_\-open}}
+\index{malelf\_\-open@{malelf\_\-open}!object.h@{object.h}}
+\subsubsection[{malelf\_\-open}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \_\-i32} malelf\_\-open (
+\begin{DoxyParamCaption}
+\item[{{\bf malelf\_\-object} $\ast$}]{obj, }
+\item[{char $\ast$}]{filename, }
+\item[{int}]{flags}
+\end{DoxyParamCaption}
+)}}
+\label{object_8h_a54b384361ec6e433175bb58ef217467b}
+
+
+Open the binary file 'filename' and fill the struct \hyperlink{structmalelf__object}{malelf\_\-object}. 
+
+Uses mmap to map the binary in memory.
+
+
+\begin{DoxyParams}{Parameters}
+{\em malelf\_\-object$\ast$} & obj \\
+\hline
+{\em char$\ast$} & filename \\
+\hline
+{\em int} & flags \\
+\hline
+\end{DoxyParams}
+
+
+If the file was created right now, then there is no buffer to map in memory.
+
+
+
+Definition at line 144 of file object.c.
+
+\hypertarget{object_8h_a6daa20f1e4fb72096a9eb27ee0234a85}{
+\index{object.h@{object.h}!malelf\_\-openr@{malelf\_\-openr}}
+\index{malelf\_\-openr@{malelf\_\-openr}!object.h@{object.h}}
+\subsubsection[{malelf\_\-openr}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \_\-i32} malelf\_\-openr (
+\begin{DoxyParamCaption}
+\item[{{\bf malelf\_\-object} $\ast$}]{obj, }
+\item[{char $\ast$}]{filename}
+\end{DoxyParamCaption}
+)}}
+\label{object_8h_a6daa20f1e4fb72096a9eb27ee0234a85}
+
+
+Definition at line 185 of file object.c.
+
+\hypertarget{object_8h_a44e74dbe97ac2f3a4571b53cafa3833f}{
+\index{object.h@{object.h}!malelf\_\-openw@{malelf\_\-openw}}
+\index{malelf\_\-openw@{malelf\_\-openw}!object.h@{object.h}}
+\subsubsection[{malelf\_\-openw}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \_\-i32} malelf\_\-openw (
+\begin{DoxyParamCaption}
+\item[{{\bf malelf\_\-object} $\ast$}]{obj, }
+\item[{char $\ast$}]{filename}
+\end{DoxyParamCaption}
+)}}
+\label{object_8h_a44e74dbe97ac2f3a4571b53cafa3833f}
+
+
+Definition at line 190 of file object.c.
+
+\hypertarget{object_8h_a971197508f3beef099c814f783531895}{
+\index{object.h@{object.h}!pretty\_\-print\_\-elf\_\-header@{pretty\_\-print\_\-elf\_\-header}}
+\index{pretty\_\-print\_\-elf\_\-header@{pretty\_\-print\_\-elf\_\-header}!object.h@{object.h}}
+\subsubsection[{pretty\_\-print\_\-elf\_\-header}]{\setlength{\rightskip}{0pt plus 5cm}void pretty\_\-print\_\-elf\_\-header (
+\begin{DoxyParamCaption}
+\item[{ElfW(Ehdr)$\ast$}]{}
+\end{DoxyParamCaption}
+)}}
+\label{object_8h_a971197508f3beef099c814f783531895}
+
+
+Definition at line 63 of file dissect.c.
+
+\hypertarget{object_8h_af8d6c6aa67501fb81bdca9776cb91f9e}{
+\index{object.h@{object.h}!pretty\_\-print\_\-pht@{pretty\_\-print\_\-pht}}
+\index{pretty\_\-print\_\-pht@{pretty\_\-print\_\-pht}!object.h@{object.h}}
+\subsubsection[{pretty\_\-print\_\-pht}]{\setlength{\rightskip}{0pt plus 5cm}void pretty\_\-print\_\-pht (
+\begin{DoxyParamCaption}
+\item[{ElfW(Ehdr)$\ast$}]{, }
+\item[{ElfW(Phdr)$\ast$}]{}
+\end{DoxyParamCaption}
+)}}
+\label{object_8h_af8d6c6aa67501fb81bdca9776cb91f9e}
+
+
+Definition at line 157 of file dissect.c.
+
+\hypertarget{object_8h_a6216012206b8aac78cee92d2f9bbd6a6}{
+\index{object.h@{object.h}!pretty\_\-print\_\-sht@{pretty\_\-print\_\-sht}}
+\index{pretty\_\-print\_\-sht@{pretty\_\-print\_\-sht}!object.h@{object.h}}
+\subsubsection[{pretty\_\-print\_\-sht}]{\setlength{\rightskip}{0pt plus 5cm}void pretty\_\-print\_\-sht (
+\begin{DoxyParamCaption}
+\item[{{\bf malelf\_\-object} $\ast$}]{, }
+\item[{ElfW(Ehdr)$\ast$}]{, }
+\item[{ElfW(Shdr)$\ast$}]{}
+\end{DoxyParamCaption}
+)}}
+\label{object_8h_a6216012206b8aac78cee92d2f9bbd6a6}
+
+
+Definition at line 196 of file dissect.c.
+
+\hypertarget{object_8h_ae665cd2bb839b13f26324d9ba11d5e0c}{
+\index{object.h@{object.h}!pretty\_\-print\_\-strtab@{pretty\_\-print\_\-strtab}}
+\index{pretty\_\-print\_\-strtab@{pretty\_\-print\_\-strtab}!object.h@{object.h}}
+\subsubsection[{pretty\_\-print\_\-strtab}]{\setlength{\rightskip}{0pt plus 5cm}void pretty\_\-print\_\-strtab (
+\begin{DoxyParamCaption}
+\item[{{\bf malelf\_\-object} $\ast$}]{elf, }
+\item[{ElfW(Ehdr)$\ast$}]{header, }
+\item[{ElfW(Shdr)$\ast$}]{sections}
+\end{DoxyParamCaption}
+)}}
+\label{object_8h_ae665cd2bb839b13f26324d9ba11d5e0c}
+Algorithm based on Elfrw function elfr\_\-symtable\_\-dump at (\href{https://github.com/felipensp/ELFrw}{\tt https://github.com/felipensp/ELFrw})
+
+TODO: $\ast$rewrite this$\ast$ 
+
+Definition at line 257 of file dissect.c.
+
+\hypertarget{object_8h_a4488b6a72bba36d27511d65b454cb158}{
+\index{object.h@{object.h}!read\_\-elf\_\-file@{read\_\-elf\_\-file}}
+\index{read\_\-elf\_\-file@{read\_\-elf\_\-file}!object.h@{object.h}}
+\subsubsection[{read\_\-elf\_\-file}]{\setlength{\rightskip}{0pt plus 5cm}void read\_\-elf\_\-file (
+\begin{DoxyParamCaption}
+\item[{{\bf malelf\_\-object} $\ast$}]{}
+\end{DoxyParamCaption}
+)}}
+\label{object_8h_a4488b6a72bba36d27511d65b454cb158}
+
+
+\subsection{Variable Documentation}
+\hypertarget{object_8h_a3b6e5f8c8d062229d7e9383a2a9fb246}{
+\index{object.h@{object.h}!elf\_\-machine@{elf\_\-machine}}
+\index{elf\_\-machine@{elf\_\-machine}!object.h@{object.h}}
+\subsubsection[{elf\_\-machine}]{\setlength{\rightskip}{0pt plus 5cm}{\bf malelf\_\-elf\_\-attr} {\bf elf\_\-machine}\mbox{[}$\,$\mbox{]}}}
+\label{object_8h_a3b6e5f8c8d062229d7e9383a2a9fb246}
+
+
+Possible target machines. 
+
+
+
+Definition at line 68 of file object.c.
+
+\hypertarget{object_8h_acc10cae2b21d17dee26af9734f7868b6}{
+\index{object.h@{object.h}!elf\_\-object\_\-types@{elf\_\-object\_\-types}}
+\index{elf\_\-object\_\-types@{elf\_\-object\_\-types}!object.h@{object.h}}
+\subsubsection[{elf\_\-object\_\-types}]{\setlength{\rightskip}{0pt plus 5cm}{\bf malelf\_\-elf\_\-attr} {\bf elf\_\-object\_\-types}\mbox{[}$\,$\mbox{]}}}
+\label{object_8h_acc10cae2b21d17dee26af9734f7868b6}
+\hypertarget{object_8h_a7174cbdd18cf8537c1b49a4c4a56455f}{
+\index{object.h@{object.h}!elf\_\-section\_\-types@{elf\_\-section\_\-types}}
+\index{elf\_\-section\_\-types@{elf\_\-section\_\-types}!object.h@{object.h}}
+\subsubsection[{elf\_\-section\_\-types}]{\setlength{\rightskip}{0pt plus 5cm}{\bf malelf\_\-elf\_\-attr} {\bf elf\_\-section\_\-types}\mbox{[}$\,$\mbox{]}}}
+\label{object_8h_a7174cbdd18cf8537c1b49a4c4a56455f}
+
+
+Possible section types. 
+
+
+
+Definition at line 75 of file object.c.
+
+\hypertarget{object_8h_a32503e0e5e17c5c84a14ff7940ad78c9}{
+\index{object.h@{object.h}!elf\_\-segment\_\-flags@{elf\_\-segment\_\-flags}}
+\index{elf\_\-segment\_\-flags@{elf\_\-segment\_\-flags}!object.h@{object.h}}
+\subsubsection[{elf\_\-segment\_\-flags}]{\setlength{\rightskip}{0pt plus 5cm}{\bf malelf\_\-elf\_\-attr} {\bf elf\_\-segment\_\-flags}\mbox{[}$\,$\mbox{]}}}
+\label{object_8h_a32503e0e5e17c5c84a14ff7940ad78c9}
+
+
+Possible segment flags. 
+
+
+
+Definition at line 89 of file object.c.
+
+\hypertarget{object_8h_ac3502bce5138fd64604041f1955901c0}{
+\index{object.h@{object.h}!elf\_\-segment\_\-types@{elf\_\-segment\_\-types}}
+\index{elf\_\-segment\_\-types@{elf\_\-segment\_\-types}!object.h@{object.h}}
+\subsubsection[{elf\_\-segment\_\-types}]{\setlength{\rightskip}{0pt plus 5cm}{\bf malelf\_\-elf\_\-attr} {\bf elf\_\-segment\_\-types}\mbox{[}$\,$\mbox{]}}}
+\label{object_8h_ac3502bce5138fd64604041f1955901c0}
+
+
+Possible segment types. 
+
+
+
+Definition at line 82 of file object.c.
+

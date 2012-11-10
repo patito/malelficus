@@ -1,0 +1,112 @@
+\hypertarget{dissect_8c}{
+\section{src/libmalelf/dissect.c File Reference}
+\label{dissect_8c}\index{src/libmalelf/dissect.c@{src/libmalelf/dissect.c}}
+}
+{\ttfamily \#include $<$stdio.h$>$}\par
+{\ttfamily \#include $<$stdlib.h$>$}\par
+{\ttfamily \#include $<$string.h$>$}\par
+{\ttfamily \#include $<$assert.h$>$}\par
+{\ttfamily \#include $<$link.h$>$}\par
+{\ttfamily \#include $<$malelf/defines.h$>$}\par
+{\ttfamily \#include $<$malelf/object.h$>$}\par
+{\ttfamily \#include $<$malelf/error.h$>$}\par
+{\ttfamily \#include $<$malelf/util.h$>$}\par
+{\ttfamily \#include $<$malelf/dissect.h$>$}\par
+{\ttfamily \#include $<$malelf/print\_\-table.h$>$}\par
+Include dependency graph for dissect.c:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=400pt]{dissect_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{types_8h_aacb1ea6e27efde1c708a8bc4b56ee1a2}{\_\-i32} \hyperlink{dissect_8c_a6fad0db775504c32cd2bbdbb984902ce}{malelf\_\-sections\_\-exec} (\hyperlink{structmalelf__object}{malelf\_\-object} $\ast$elf\_\-obj, \hyperlink{types_8h_aacb1ea6e27efde1c708a8bc4b56ee1a2}{\_\-i32}($\ast$callback)(char $\ast$sect\_\-n, char $\ast$sect\_\-t, void $\ast$arg), void $\ast$arg)
+\item 
+void \hyperlink{dissect_8c_a2f7affe0bdf4f8c32b8b05c344131567}{pretty\_\-print\_\-elf\_\-header} (ElfW(Ehdr)$\ast$header)
+\item 
+void \hyperlink{dissect_8c_a572189fd54f1c3e152f237a63d863823}{pretty\_\-print\_\-pht} (ElfW(Ehdr)$\ast$header, ElfW(Phdr)$\ast$pheaders)
+\item 
+void \hyperlink{dissect_8c_a9650c93bd5c6d16d810825a8206b70fd}{pretty\_\-print\_\-sht} (\hyperlink{structmalelf__object}{malelf\_\-object} $\ast$elf, ElfW(Ehdr)$\ast$header, ElfW(Shdr)$\ast$sections)
+\item 
+void \hyperlink{dissect_8c_aed66520a6daf153a1259eebb41348027}{pretty\_\-print\_\-strtab} (\hyperlink{structmalelf__object}{malelf\_\-object} $\ast$elf, ElfW(Ehdr)$\ast$header, ElfW(Shdr)$\ast$sections)
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\hypertarget{dissect_8c_a6fad0db775504c32cd2bbdbb984902ce}{
+\index{dissect.c@{dissect.c}!malelf\_\-sections\_\-exec@{malelf\_\-sections\_\-exec}}
+\index{malelf\_\-sections\_\-exec@{malelf\_\-sections\_\-exec}!dissect.c@{dissect.c}}
+\subsubsection[{malelf\_\-sections\_\-exec}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \_\-i32} malelf\_\-sections\_\-exec (
+\begin{DoxyParamCaption}
+\item[{{\bf malelf\_\-object} $\ast$}]{elf\_\-obj, }
+\item[{{\bf \_\-i32}($\ast$)(char $\ast$sect\_\-n, char $\ast$sect\_\-t, void $\ast$arg)}]{callback, }
+\item[{void $\ast$}]{arg}
+\end{DoxyParamCaption}
+)}}
+\label{dissect_8c_a6fad0db775504c32cd2bbdbb984902ce}
+
+
+Definition at line 14 of file dissect.c.
+
+\hypertarget{dissect_8c_a2f7affe0bdf4f8c32b8b05c344131567}{
+\index{dissect.c@{dissect.c}!pretty\_\-print\_\-elf\_\-header@{pretty\_\-print\_\-elf\_\-header}}
+\index{pretty\_\-print\_\-elf\_\-header@{pretty\_\-print\_\-elf\_\-header}!dissect.c@{dissect.c}}
+\subsubsection[{pretty\_\-print\_\-elf\_\-header}]{\setlength{\rightskip}{0pt plus 5cm}void pretty\_\-print\_\-elf\_\-header (
+\begin{DoxyParamCaption}
+\item[{ElfW(Ehdr)$\ast$}]{header}
+\end{DoxyParamCaption}
+)}}
+\label{dissect_8c_a2f7affe0bdf4f8c32b8b05c344131567}
+
+
+Definition at line 63 of file dissect.c.
+
+\hypertarget{dissect_8c_a572189fd54f1c3e152f237a63d863823}{
+\index{dissect.c@{dissect.c}!pretty\_\-print\_\-pht@{pretty\_\-print\_\-pht}}
+\index{pretty\_\-print\_\-pht@{pretty\_\-print\_\-pht}!dissect.c@{dissect.c}}
+\subsubsection[{pretty\_\-print\_\-pht}]{\setlength{\rightskip}{0pt plus 5cm}void pretty\_\-print\_\-pht (
+\begin{DoxyParamCaption}
+\item[{ElfW(Ehdr)$\ast$}]{header, }
+\item[{ElfW(Phdr)$\ast$}]{pheaders}
+\end{DoxyParamCaption}
+)}}
+\label{dissect_8c_a572189fd54f1c3e152f237a63d863823}
+
+
+Definition at line 157 of file dissect.c.
+
+\hypertarget{dissect_8c_a9650c93bd5c6d16d810825a8206b70fd}{
+\index{dissect.c@{dissect.c}!pretty\_\-print\_\-sht@{pretty\_\-print\_\-sht}}
+\index{pretty\_\-print\_\-sht@{pretty\_\-print\_\-sht}!dissect.c@{dissect.c}}
+\subsubsection[{pretty\_\-print\_\-sht}]{\setlength{\rightskip}{0pt plus 5cm}void pretty\_\-print\_\-sht (
+\begin{DoxyParamCaption}
+\item[{{\bf malelf\_\-object} $\ast$}]{elf, }
+\item[{ElfW(Ehdr)$\ast$}]{header, }
+\item[{ElfW(Shdr)$\ast$}]{sections}
+\end{DoxyParamCaption}
+)}}
+\label{dissect_8c_a9650c93bd5c6d16d810825a8206b70fd}
+
+
+Definition at line 196 of file dissect.c.
+
+\hypertarget{dissect_8c_aed66520a6daf153a1259eebb41348027}{
+\index{dissect.c@{dissect.c}!pretty\_\-print\_\-strtab@{pretty\_\-print\_\-strtab}}
+\index{pretty\_\-print\_\-strtab@{pretty\_\-print\_\-strtab}!dissect.c@{dissect.c}}
+\subsubsection[{pretty\_\-print\_\-strtab}]{\setlength{\rightskip}{0pt plus 5cm}void pretty\_\-print\_\-strtab (
+\begin{DoxyParamCaption}
+\item[{{\bf malelf\_\-object} $\ast$}]{elf, }
+\item[{ElfW(Ehdr)$\ast$}]{header, }
+\item[{ElfW(Shdr)$\ast$}]{sections}
+\end{DoxyParamCaption}
+)}}
+\label{dissect_8c_aed66520a6daf153a1259eebb41348027}
+Algorithm based on Elfrw function elfr\_\-symtable\_\-dump at (\href{https://github.com/felipensp/ELFrw}{\tt https://github.com/felipensp/ELFrw})
+
+TODO: $\ast$rewrite this$\ast$ 
+
+Definition at line 257 of file dissect.c.
+

@@ -35,14 +35,14 @@ typedef struct {
   ElfW(Ehdr) *elfh;
   ElfW(Phdr) *elfp;
   ElfW(Shdr) *elfs;
-} elf_t;
+} malelf_elf_t;
 
 typedef struct {
   char* fname;
   int fd;
   struct stat st_info;
   _u8* mem;
-  elf_t elf;
+  malelf_elf_t elf;
   _u8 is_readonly;
   alloc_type_t alloc_type;
 } malelf_object;
@@ -51,18 +51,18 @@ typedef struct {
   char* name;
   _u32 val;
   char* desc;
-} elf_attr;
+} malelf_elf_attr;
 
 typedef struct {
   const char* name;
   const char* data_fname;
 } malelf_add_section_t;
 
-extern elf_attr elf_object_types[];
-extern elf_attr elf_machine[];
-extern elf_attr elf_section_types[];
-extern elf_attr elf_segment_types[];
-extern elf_attr elf_segment_flags[];
+extern malelf_elf_attr elf_object_types[];
+extern malelf_elf_attr elf_machine[];
+extern malelf_elf_attr elf_section_types[];
+extern malelf_elf_attr elf_segment_types[];
+extern malelf_elf_attr elf_segment_flags[];
 
 extern void malelf_init_object(malelf_object*);
 extern void read_elf_file(malelf_object*);
@@ -75,10 +75,10 @@ extern _u32 malelf_close(malelf_object* obj);
 extern _u8 malelf_check_elf(malelf_object* obj);
 extern _u8 malelf_add_section(malelf_object* i, malelf_object* o, malelf_add_section_t opt);
 
-extern elf_attr* get_header_type(ElfW(Half) etype);
-extern elf_attr* get_section_type(ElfW(Half) stype);
-extern elf_attr* get_machine(ElfW(Half) emach);
-extern elf_attr* get_segment_type(ElfW(Word) seg);
+extern malelf_elf_attr* get_header_type(ElfW(Half) etype);
+extern malelf_elf_attr* get_section_type(ElfW(Half) stype);
+extern malelf_elf_attr* get_machine(ElfW(Half) emach);
+extern malelf_elf_attr* get_segment_type(ElfW(Word) seg);
 
 extern void pretty_print_elf_header(ElfW(Ehdr)*);
 extern void pretty_print_pht(ElfW(Ehdr)*, ElfW(Phdr)*);
